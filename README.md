@@ -10,7 +10,7 @@
 
 ## 怎么玩
 
-用 Chrome、Safari 或 Edge 打开上面的地址（或本地的 `index.html`）。每句法语旁边有喇叭按钮，发音用的是电脑或手机自带的法语语音。
+用 Chrome、Safari 或 Edge 打开上面的地址（或本地的 `index.html`）。每句法语旁边有喇叭按钮，播放的是提前录好的神经语音（`audio/` 下的 mp3）；录音加载不出来时才改用设备自带的法语语音。
 
 ## 路线
 
@@ -27,5 +27,7 @@
 ## 文件
 
 - `page.html`：游戏本体，情节、插图和程序都在这一个文件里。改内容只改它。
+- `make_audio.py`：给 `page.html` 里所有法语生成录音。改了法语内容后运行 `.venv/bin/python make_audio.py`（首次需要 `python3 -m venv .venv && .venv/bin/pip install edge-tts`）。
+- `audio/`：录音文件，文件名是文本的哈希。
 - `build.py`：运行 `python3 build.py`，把 `page.html` 包成 `index.html`。
 - `index.html`：生成出来的成品，可以直接打开。

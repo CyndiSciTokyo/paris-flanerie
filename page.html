@@ -129,7 +129,7 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
       <button id="tab-carnet" role="tab" type="button">手帐</button>
     </div>
   </header>
-  <p id="warn" class="warn" hidden>没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
+  <p id="warn" class="warn" hidden>录音文件没有加载出来，这台设备上也没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
 
   <main id="jeu" style="display:contents">
     <ol class="route" id="route" aria-label="路线"></ol>
@@ -147,7 +147,7 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
   <main id="carnet" hidden></main>
 
   <div class="voice" id="voicebox" hidden>
-    <label for="voice">法语语音</label>
+    <label for="voice">录音没加载出来，改用设备语音</label>
     <select id="voice"></select>
     <span class="spk"><button type="button" id="voicetest">试听</button></span>
   </div>
@@ -353,31 +353,42 @@ if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length))st.step=0;
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
 let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
 
-/* ---------- speech ---------- */
+/* ---------- speech: recorded audio first, the device's own voice as a fallback ---------- */
+const akey=t=>{let x=2166136261;for(let i=0;i<t.length;i++){x^=t.charCodeAt(i);x=Math.imul(x,16777619)>>>0}return ('0000000'+x.toString(16)).slice(-8)};
 const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
-let voices=[],voice=null;
+let voices=[],voice=null,player=null,fellBack=false;
+function fallbackUI(){
+  $('#voicebox').hidden=!(fellBack&&voices.length>1);
+  $('#warn').hidden=!(fellBack&&!voices.length);
+}
 function loadVoices(){
   if(!synth)return;
   voices=(synth.getVoices()||[]).filter(v=>/^fr/i.test(v.lang));
   const score=v=>(/fr[-_]FR/i.test(v.lang)?2:0)+(/google|am[ée]lie|thomas|audrey|premium|enhanced|natural/i.test(v.name)?1:0);
   voices.sort((a,b)=>score(b)-score(a));
   voice=voices.find(v=>v.name===st.voice)||voices[0]||null;
-  const sel=$('#voice');sel.replaceChildren(...voices.map(v=>h('option',{value:v.name,selected:v===voice},v.name+'（'+v.lang+'）')));
-  $('#voicebox').hidden=voices.length<2;
-  if(voices.length)$('#warn').hidden=true;
+  $('#voice').replaceChildren(...voices.map(v=>h('option',{value:v.name,selected:v===voice},v.name+'（'+v.lang+'）')));
+  fallbackUI();
 }
-function speak(text,slow){
+function speakTTS(text,slow){
   if(!synth||!text)return;
   synth.cancel();
   const u=new SpeechSynthesisUtterance(text.replace(/—/g,'.'));
   u.lang='fr-FR';if(voice)u.voice=voice;u.rate=slow?0.6:0.92;
   synth.speak(u);
 }
-if(synth){loadVoices();synth.addEventListener&&synth.addEventListener('voiceschanged',loadVoices);
-  setTimeout(()=>{if(!voices.length)$('#warn').hidden=false},2000);}
-else{$('#warn').hidden=false;$('#warn').textContent='这个浏览器不支持语音朗读，发音按钮不会有声音。请换用 Chrome、Safari 或 Edge 打开。';}
-$('#voice').addEventListener('change',e=>{st.voice=e.target.value;voice=voices.find(v=>v.name===st.voice)||voice;save();speak('Bonjour, bienvenue à Paris !')});
-$('#voicetest').addEventListener('click',()=>speak('Bonjour, bienvenue à Paris !'));
+function speak(text,slow){
+  if(!text)return;
+  if(player){player.pause();player=null}
+  if(synth)synth.cancel();
+  const a=new Audio('audio/'+akey(text)+'.mp3');player=a;
+  a.playbackRate=slow?0.7:1;
+  a.addEventListener('error',()=>{if(player!==a)return;player=null;fellBack=true;fallbackUI();speakTTS(text,slow)});
+  const p=a.play();if(p&&p.catch)p.catch(()=>{});
+}
+if(synth){loadVoices();synth.addEventListener&&synth.addEventListener('voiceschanged',loadVoices);}
+$('#voice').addEventListener('change',e=>{st.voice=e.target.value;voice=voices.find(v=>v.name===st.voice)||voice;save();speakTTS('Bonjour, bienvenue à Paris !')});
+$('#voicetest').addEventListener('click',()=>speakTTS('Bonjour, bienvenue à Paris !'));
 
 function spk(text,big){
   const b=h('button',{class:'spk-b',type:'button','aria-label':'播放发音',onclick:e=>{e.stopPropagation();speak(text)}});
