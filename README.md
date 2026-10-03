@@ -2,9 +2,15 @@
 
 在巴黎七个文学艺术地点完成小任务，边听发音边学法语日常用语和语法的小游戏。
 
+## 点这里开始玩
+
+**https://cyndiscitokyo.github.io/paris-flanerie/**
+
+不用登录，电脑和手机都能打开。
+
 ## 怎么玩
 
-用 Chrome、Safari 或 Edge 打开 `index.html`。每句法语旁边有喇叭按钮，发音用的是电脑或手机自带的法语语音。
+用 Chrome、Safari 或 Edge 打开上面的地址（或本地的 `index.html`）。每句法语旁边有喇叭按钮，发音用的是电脑或手机自带的法语语音。
 
 ## 路线
 
