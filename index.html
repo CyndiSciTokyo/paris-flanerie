@@ -1,0 +1,532 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style></head><body>
+<title>巴黎文艺漫步</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: one narrow column, like walking a single street. A métro-style route line on top,
+   then a Paris enamel street plaque naming the stop, then the conversation. */
+:root{
+  --bg:#eceff3; --surface:#f9fafc; --ink:#1a2233; --muted:#586275; --line:#cfd5de;
+  --enamel:#1b3f94; --enamel-ink:#ffffff; --frame:#2f6b4f; --accent:#1b3f94;
+  --ok:#2a6549; --ok-bg:#dfeee6; --bad:#a9342c; --bad-bg:#f6e1df;
+  --f-plaque:'Barlow Condensed','Arial Narrow',sans-serif;
+  --f-fr:'Spectral',Georgia,'Times New Roman',serif;
+  --f-ui:system-ui,-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f141d; --surface:#18202d; --ink:#e7eaf0; --muted:#9aa5b8; --line:#2d3748;
+  --enamel:#2449a6; --enamel-ink:#ffffff; --frame:#3f8c68; --accent:#93adf2;
+  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0f141d; --surface:#18202d; --ink:#e7eaf0; --muted:#9aa5b8; --line:#2d3748;
+  --enamel:#2449a6; --enamel-ink:#ffffff; --frame:#3f8c68; --accent:#93adf2;
+  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f; color-scheme:dark }
+
+body{background:var(--bg);color:var(--ink);font:16px/1.65 var(--f-ui)}
+.wrap{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:20px 56px;display:flex;flex-direction:column;gap:20px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p{margin:0}
+
+header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+h1{margin:0;font-size:1.25rem;font-weight:600}
+h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
+.tabs{display:flex;gap:4px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:4px 10px;color:var(--muted)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent);font-weight:600}
+
+/* route line */
+.route{display:flex;align-items:center;list-style:none;margin:0;padding:0}
+.route li{display:flex;align-items:center;flex:1}
+.route li:last-child{flex:0}
+.route li::after{content:"";flex:1;height:3px;background:var(--line)}
+.route li:last-child::after{display:none}
+.route li.done::after{background:var(--frame)}
+.route button{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);background:var(--surface);
+  font:600 .95rem var(--f-plaque);padding:0;flex:none;color:var(--muted)}
+.route li.done button{background:var(--frame);border-color:var(--frame);color:var(--enamel-ink)}
+.route li.cur button{border-color:var(--accent);color:var(--ink)}
+.route button:disabled{cursor:default;opacity:.6}
+
+/* street plaque */
+.plaque-wrap{display:inline-flex;flex-direction:column;align-items:center;align-self:flex-start;max-width:100%}
+.arr{background:var(--enamel);color:var(--enamel-ink);border:3px solid var(--frame);border-bottom:0;
+  border-radius:40px 40px 0 0;padding:3px 18px 1px;font:600 .85rem var(--f-plaque);letter-spacing:.1em}
+.plaque{background:var(--enamel);color:var(--enamel-ink);border:3px solid var(--frame);border-radius:4px;
+  padding:8px 22px 10px;font:600 clamp(1.5rem,6.5vw,2.3rem)/1.08 var(--f-plaque);text-transform:uppercase;
+  letter-spacing:.05em;text-align:center;text-wrap:balance}
+.place{font-size:.9rem;color:var(--muted)}
+.place b{color:var(--ink);font-weight:600}
+.scene{max-width:62ch}
+
+.picbox{display:flex;flex-direction:column;gap:6px}
+#pic svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.hot{cursor:pointer;outline:none}
+.hot .mk{fill:#ffffff;stroke:#1b3f94;stroke-width:2.5}
+.hot .mkdot{fill:#1b3f94}
+.hot.found .mk{stroke:#2f6b4f}
+.hot.found .mkdot{fill:#2f6b4f}
+.hot:hover .mk,.hot:focus-visible .mk,.hot.sel .mk{stroke-width:5}
+#word:empty{display:none}
+.fr{font-family:var(--f-fr);font-size:1.2rem;line-height:1.45}
+.zh{color:var(--muted);font-size:.9rem}
+.count{font:600 .8rem var(--f-plaque);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+#step{display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);padding-top:16px}
+.bubble{background:var(--surface);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.bubble .who{font:600 .8rem var(--f-plaque);letter-spacing:.1em;text-transform:uppercase;color:var(--frame)}
+.line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.line > .fr{min-width:0}
+.ctx{font-weight:600}
+
+.spk{display:inline-flex;gap:4px;flex:none}
+.spk button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);
+  border-radius:999px;padding:4px 9px;font-size:.8rem;color:var(--accent);line-height:1}
+.spk button:hover{border-color:var(--accent)}
+.spk.big .spk-b{background:var(--enamel);border-color:var(--enamel);color:var(--enamel-ink);padding:9px 16px;font-size:.95rem}
+.spk.big .spk-s{padding:9px 12px}
+.reveal{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;font-size:.9rem;align-self:flex-start}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.optrow{display:flex;align-items:center;gap:8px}
+.opt{flex:1;min-width:0;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);opacity:.75}
+.opt:disabled{cursor:default}
+.blank{display:inline-block;min-width:3.5em;border-bottom:2px solid var(--accent);text-align:center;color:var(--accent)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pills .opt{flex:none}
+
+.slot,.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:46px;align-items:center}
+.slot{border-bottom:2px solid var(--line);padding-bottom:8px}
+.slot:empty::before{content:"点下面的词，拼出这句话";color:var(--muted);font-size:.9rem}
+.tile{background:var(--surface);border:1px solid var(--line);border-bottom-width:3px;border-radius:8px;padding:6px 12px}
+.tile[disabled]{visibility:hidden}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.primary{background:var(--enamel);color:var(--enamel-ink);border:0;border-radius:8px;padding:10px 20px;font-weight:600}
+.primary:disabled{opacity:.45;cursor:default}
+
+.fb{display:flex;flex-direction:column;gap:8px}
+.fb:empty{display:none}
+.fb .ok{color:var(--ok);font:500 1.15rem var(--f-fr)}
+.fb .no{color:var(--bad);font-size:.95rem}
+.note{border-left:3px solid var(--frame);padding-left:12px;font-size:.95rem;max-width:60ch}
+
+h2{margin:0;font-size:1.1rem}
+h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:uppercase;color:var(--frame)}
+.entries{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.entries li{padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.stop{display:flex;flex-direction:column;gap:8px}
+.locked{color:var(--muted);font-size:.9rem}
+.warn{background:var(--bad-bg);color:var(--ink);border:1px solid var(--bad);border-radius:8px;padding:10px 14px;font-size:.9rem}
+.voice{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:.85rem;color:var(--muted)}
+.voice select{font:inherit;max-width:100%;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>巴黎文艺漫步<span>Flânerie à Paris</span></h1>
+    <div class="tabs" role="tablist">
+      <button id="tab-jeu" role="tab" type="button">漫步</button>
+      <button id="tab-carnet" role="tab" type="button">手帐</button>
+    </div>
+  </header>
+  <p id="warn" class="warn" hidden>没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
+
+  <main id="jeu" style="display:contents">
+    <ol class="route" id="route" aria-label="路线"></ol>
+    <div class="plaque-wrap"><div class="arr" id="arr"></div><div class="plaque" id="plaque"></div></div>
+    <p class="place" id="place"></p>
+    <div class="picbox">
+      <div id="pic"></div>
+      <p class="zh" id="pichint"></p>
+      <div id="word" aria-live="polite"></div>
+    </div>
+    <p class="scene" id="scene"></p>
+    <section id="step"></section>
+  </main>
+
+  <main id="carnet" hidden></main>
+
+  <div class="voice" id="voicebox" hidden>
+    <label for="voice">法语语音</label>
+    <select id="voice"></select>
+    <span class="spk"><button type="button" id="voicetest">试听</button></span>
+  </div>
+</div>
+
+<script>
+const DATA=[
+{plaque:"Quai de Conti",arr:"6e Arr.",place:"塞纳河畔的旧书摊",frPlace:"Les bouquinistes",who:"Le bouquiniste",
+ scene:"周六上午十点，你沿着塞纳河左岸走。河堤上一排墨绿色的铁皮箱子打开着，这是巴黎的旧书摊，已经摆了四百多年。一位戴贝雷帽的老先生抬头看见了你。任务：买到一本波德莱尔的《恶之花》。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Vous cherchez quelque chose ?",q:"老先生在问什么？",opts:["您在找什么东西吗？","您想喝点什么吗？","您是从哪里来的？"],
+   note:"chercher 是“找”。vous 是“您”，对陌生人都用它；熟人之间才用 tu。"},
+  {t:"build",ctx:"告诉他：您好，我在找一本波德莱尔的书。",tokens:["Bonjour,","je","cherche","un","livre","de","Baudelaire."],extra:["une"],
+   zh:"您好，我在找一本波德莱尔的书。",note:"Je cherche… 是“我在找……”。livre（书）是阳性词，所以“一本”用 un。"},
+  {t:"fill",npc:["Ah, Les Fleurs du mal ! Voilà.","啊，《恶之花》！给您。"],ctx:"他把书递给你，又补了一句。选出正确的词：",before:"C'est ",after:" belle édition.",opts:["une","un","des"],
+   full:"C'est une belle édition.",zh:"这是一个很漂亮的版本。",note:"édition 是阴性词，用 une。小窍门：以 -tion 结尾的词几乎都是阴性。"},
+  {t:"choose",ctx:"你想问价钱，该怎么说？",opts:[["C'est combien, s'il vous plaît ?","请问多少钱？"],["C'est où, s'il vous plaît ?","请问在哪里？"],["C'est qui ?","这是谁？"]],
+   note:"combien 是“多少”，où 是“哪里”，qui 是“谁”。s'il vous plaît 加在句尾就很客气。"},
+  {t:"listen",fr:"Douze euros.",q:"这本书多少钱？",opts:["12 欧元","2 欧元","20 欧元"],
+   note:"三个容易混的数字：deux（2）、douze（12）、vingt（20）。点慢速多听几遍 douze。"}
+ ],
+ carnet:[["Je cherche un livre de Baudelaire.","我在找一本波德莱尔的书。"],["C'est combien, s'il vous plaît ?","请问多少钱？"],["C'est une belle édition.","这是一个很漂亮的版本。"],["Douze euros.","十二欧元。"]],
+ gram:"名词分阳性和阴性，“一个”跟着变：阳性 un livre，阴性 une édition。"},
+
+{plaque:"Boulevard Saint-Germain",arr:"6e Arr.",place:"花神咖啡馆",frPlace:"Café de Flore",who:"Le serveur",
+ scene:"拿着诗集，你走进花神咖啡馆。萨特和波伏瓦当年就在这里的桌子上写作，一坐一整天。穿白围裙的服务生走了过来。任务：点一杯咖啡，聊两句，然后结账。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Qu'est-ce que vous désirez ?",q:"服务生在问什么？",opts:["您想要点什么？","您叫什么名字？","你们一共几位？"],
+   note:"Qu'est-ce que… 是最常用的“什么”问句开头。désirer 是“想要”，店员常用。"},
+  {t:"build",ctx:"点单：我想要一杯奶油咖啡，谢谢。",tokens:["Je","voudrais","un","café","crème,","s'il vous plaît."],extra:["une"],
+   zh:"我想要一杯奶油咖啡，劳驾。",note:"Je voudrais… 是客气的“我想要”，点东西、买东西都用它，比 je veux（我要）礼貌得多。"},
+  {t:"fill",npc:["Vous êtes touriste ?","您是游客吗？"],ctx:"你回答：不，我是为了文学来的。",before:"Non, je ",after:" ici pour la littérature.",opts:["suis","es","est"],
+   full:"Non, je suis ici pour la littérature.",zh:"不，我是为了文学来这里的。",note:"“是／在”这个动词跟着人称变：je suis（我）、tu es（你）、il / elle est（他／她）、vous êtes（您）。"},
+  {t:"choose",ctx:"咖啡喝完了，你想结账。",opts:[["L'addition, s'il vous plaît.","请结账。"],["La carte, s'il vous plaît.","请给我菜单。"],["Le livre, s'il vous plaît.","请给我那本书。"]],
+   note:"l'addition 是账单，la carte 是菜单。在法国要自己开口要账单，服务生不会主动拿来。"},
+  {t:"listen",fr:"Merci, bonne journée !",q:"服务生最后说了什么？",opts:["谢谢，祝您今天愉快！","谢谢，晚上好！","谢谢，明天见！"],
+   note:"Bonne journée 是白天分别时说的“祝一天愉快”。你可以回一句 Merci, vous aussi（谢谢，您也是）。"}
+ ],
+ carnet:[["Je voudrais un café crème, s'il vous plaît.","我想要一杯奶油咖啡，劳驾。"],["Je suis ici pour la littérature.","我是为了文学来这里的。"],["L'addition, s'il vous plaît.","请结账。"],["Bonne journée !","祝您今天愉快！"]],
+ gram:"想要东西时说 je voudrais，不说 je veux。“是”跟人称变：je suis、tu es、il est、vous êtes。"},
+
+{plaque:"Quai Anatole-France",arr:"7e Arr.",place:"奥赛博物馆",frPlace:"Musée d'Orsay",who:"L'agent d'accueil",
+ scene:"这条河岸以作家阿纳托尔·法朗士命名。岸边的奥赛博物馆原本是一座火车站，现在挂满了莫奈、雷诺阿和梵高。任务：买票，找到印象派的展厅，说说你喜欢什么。",
+ steps:[
+  {t:"build",ctx:"在售票处：您好，一张博物馆的票，谢谢。",tokens:["Bonjour,","un","billet","pour","le","musée,","s'il vous plaît."],extra:["la"],
+   zh:"您好，一张博物馆的票，劳驾。",note:"musée 虽然以 e 结尾，却是阳性词：le musée。billet 是票。"},
+  {t:"choose",ctx:"你想问印象派画家的作品在哪里。",opts:[["Où sont les impressionnistes ?","印象派在哪里？"],["Où est les impressionnistes ?","（语法不对：复数不能用 est）"],["Qui sont les impressionnistes ?","印象派是谁？"]],
+   note:"问一个东西在哪：Où est… ? 问好几个东西在哪：Où sont… ?"},
+  {t:"listen",fr:"Au cinquième étage, à droite.",q:"工作人员怎么回答？",opts:["在第五层，右手边","在第一层，左手边","在第三层，一直走"],
+   note:"à droite 右边，à gauche 左边。注意法国的楼层从地面上一层开始数，地面那层叫 rez-de-chaussée，所以 cinquième étage 其实是中国说的六楼。"},
+  {t:"fill",ctx:"你站在梵高的《罗讷河上的星夜》前。说：我很喜欢这些颜色。",before:"J'aime beaucoup ",after:" couleurs.",opts:["les","le","la"],
+   full:"J'aime beaucoup les couleurs.",zh:"我很喜欢这些颜色。",note:"说喜欢什么，名词前要加 le / la / les。couleurs 是复数，所以用 les。"},
+  {t:"choose",npc:["Vous aimez Van Gogh ?","您喜欢梵高吗？"],ctx:"旁边一位看画的人问你。你很喜欢，怎么回答？",opts:[["Oui, j'adore !","是的，我特别喜欢！"],["Oui, je suis Van Gogh.","是的，我就是梵高。"],["Non merci, pas de café.","不用了谢谢，不要咖啡。"]],
+   note:"喜欢的程度从低到高：j'aime bien（还不错）、j'aime beaucoup（很喜欢）、j'adore（特别喜欢）。"}
+ ],
+ carnet:[["Un billet pour le musée, s'il vous plaît.","一张博物馆的票，劳驾。"],["Où sont les impressionnistes ?","印象派在哪里？"],["Au cinquième étage, à droite.","在第五层，右手边。"],["J'aime beaucoup les couleurs.","我很喜欢这些颜色。"],["J'adore !","我特别喜欢！"]],
+ gram:"“这个／这些”有三种：阳性 le，阴性 la，复数 les。问在哪里：单数 où est，复数 où sont。"},
+
+{plaque:"Place des Vosges",arr:"4e Arr.",place:"雨果故居",frPlace:"Maison de Victor Hugo",who:"Une passante",
+ scene:"玛黑区的孚日广场四面是红砖拱廊。维克多·雨果在这里的 6 号住了十六年，《悲惨世界》的一部分就写在这里。可是拱廊一圈都长得一样，你找不到门。任务：问路。",
+ steps:[
+  {t:"build",ctx:"拦住一位路人：打扰一下，雨果故居在哪里？",tokens:["Excusez-moi,","où","est","la","maison","de","Victor Hugo ?"],extra:["sont"],
+   zh:"打扰一下，雨果故居在哪里？",note:"Excusez-moi 是开口问陌生人之前的“打扰一下”。maison（房子）是阴性词：la maison。"},
+  {t:"listen",fr:"Allez tout droit, puis tournez à gauche.",q:"她让你怎么走？",opts:["一直走，然后左转","右转，然后一直走","往回走，然后右转"],
+   note:"tout droit 是“一直走”，和 à droite（右边）只差一个音，点慢速对比着听。puis 是“然后”。"},
+  {t:"fill",ctx:"你确认一下：我要去那个博物馆。",before:"Je vais ",after:" musée.",opts:["au","à la","à le"],
+   full:"Je vais au musée.",zh:"我去博物馆。",note:"“去某地”用 à。但 à 碰到 le 必须合成 au：au musée。碰到 la 不变：à la maison。"},
+  {t:"listen",fr:"C'est au deuxième étage. L'entrée est gratuite.",q:"她还告诉了你什么？",opts:["在第二层，免费入场","在第二层，门票两欧元","今天不开门"],
+   note:"gratuit / gratuite 是“免费的”。l'entrée 是入口，也指门票。"},
+  {t:"choose",ctx:"向她道谢并告别。",opts:[["Merci beaucoup, bonne journée !","非常感谢，祝您愉快！"],["De rien.","不客气。（这是对方回答你的话）"],["Pardon.","对不起／借过。"]],
+   note:"别人说 Merci，你回 De rien（不客气）或更客气的 Je vous en prie。"}
+ ],
+ carnet:[["Excusez-moi, où est la maison de Victor Hugo ?","打扰一下，雨果故居在哪里？"],["Allez tout droit, puis tournez à gauche.","一直走，然后左转。"],["Je vais au musée.","我去博物馆。"],["L'entrée est gratuite.","免费入场。"],["Merci beaucoup ! — De rien.","非常感谢！——不客气。"]],
+ gram:"à + le 合成 au（au musée），à + la 不变（à la maison），à + les 合成 aux。"},
+
+{plaque:"Place du Tertre",arr:"18e Arr.",place:"蒙马特高地的画家广场",frPlace:"Montmartre",who:"Le peintre",
+ scene:"蒙马特山顶的小丘广场上支满了画架。毕加索、莫迪利亚尼年轻时都住在这一带。一位画家举着炭笔向你招手。任务：礼貌地应对，再夸一夸他的画。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Un portrait ? Dix minutes seulement !",q:"画家在说什么？",opts:["画张肖像吗？只要十分钟！","画张肖像吗？只要十欧元！","请等我十分钟！"],
+   note:"seulement 是“只、仅仅”。dix 是 10。"},
+  {t:"choose",ctx:"你只想先看看。",opts:[["Je regarde seulement, merci.","我只是看看，谢谢。"],["Je regarde la télé.","我在看电视。"],["Je ne regarde pas.","我不看。"]],
+   note:"Je regarde seulement, merci. 这句在任何商店都用得上。"},
+  {t:"fill",ctx:"他画的圣心堂很好看。tableau（画）是阳性词。",before:"Le tableau est très ",after:".",opts:["beau","belle","beaux"],
+   full:"Le tableau est très beau.",zh:"这幅画很美。",note:"形容词要跟着名词变。阳性 le tableau 配 beau。"},
+  {t:"fill",ctx:"再夸一句光线。lumière（光）是阴性词。",before:"La lumière est ",after:".",opts:["belle","beau","bel"],
+   full:"La lumière est belle.",zh:"光线很美。",note:"阴性 la lumière 配 belle。多数形容词的阴性只是加一个 e，比如 grand → grande；beau → belle 是特殊的。"},
+  {t:"build",ctx:"最后说：我喜欢这幅画，它太棒了。",tokens:["J'aime","ce","tableau,","il","est","magnifique."],extra:["elle"],
+   zh:"我喜欢这幅画，它太棒了。",note:"阳性的东西用 il 指代，阴性的用 elle，法语里没有单独的“它”。ce 是“这个”（阳性），阴性是 cette。"}
+ ],
+ carnet:[["Je regarde seulement, merci.","我只是看看，谢谢。"],["Le tableau est très beau.","这幅画很美。"],["La lumière est belle.","光线很美。"],["J'aime ce tableau, il est magnifique.","我喜欢这幅画，它太棒了。"]],
+ gram:"形容词跟着名词的阴阳性变：un beau tableau，une belle lumière。指代东西也分 il 和 elle。"},
+
+{plaque:"Boulevard de Ménilmontant",arr:"20e Arr.",place:"拉雪兹神父公墓",frPlace:"Cimetière du Père-Lachaise",who:"Le gardien",
+ scene:"巴黎东边的这座公墓像一座安静的小城。莫里哀、巴尔扎克、肖邦、王尔德、普鲁斯特都葬在这里。小路纵横，你需要帮助。任务：找到普鲁斯特的墓，并用过去的时间谈谈他。",
+ steps:[
+  {t:"build",ctx:"问门口的管理员：我在找马塞尔·普鲁斯特的墓。",tokens:["Je","cherche","la","tombe","de","Marcel Proust."],extra:["le"],
+   zh:"我在找马塞尔·普鲁斯特的墓。",note:"还记得第一站的 Je cherche… 吗？tombe（墓）是阴性词：la tombe。"},
+  {t:"listen",fr:"Proust ? Division quatre-vingt-cinq. Prenez un plan !",q:"管理员怎么说？",opts:["在 85 区，拿一张地图吧","在 45 区，拿一张地图吧","在 25 区，跟我来"],
+   note:"法语的 80 是 quatre-vingts，字面是“四个二十”，85 就是 quatre-vingt-cinq。un plan 是地图。"},
+  {t:"fill",ctx:"站在黑色大理石墓前，你说：普鲁斯特写了《追忆似水年华》。",before:"Proust a ",after:" À la recherche du temps perdu.",opts:["écrit","écrire","écrivez"],
+   full:"Proust a écrit À la recherche du temps perdu.",zh:"普鲁斯特写了《追忆似水年华》。",note:"说过去做了什么，用两个词：avoir（a）加上动词的过去形式。écrire（写）→ il a écrit（他写了）。"},
+  {t:"fill",ctx:"他 1871 年生于巴黎。",before:"Il ",after:" né à Paris en 1871.",opts:["est","a","es"],
+   full:"Il est né à Paris en 1871.",zh:"他 1871 年生于巴黎。",note:"少数表示“来、去、生、死”的动词不用 avoir，改用 être：il est né（他出生了）、il est mort（他去世了）、il est allé（他去了）。"},
+  {t:"choose",npc:["Vous avez lu Proust ?","您读过普鲁斯特吗？"],ctx:"一位来献花的读者问你。老实回答：还没有，不过我会试试。",opts:[["Pas encore, mais je vais essayer !","还没有，不过我会试试！"],["Oui, je suis Proust.","是的，我就是普鲁斯特。"],["Non, j'ai faim.","不，我饿了。"]],
+   note:"Pas encore 是“还没有”。je vais essayer 是“我要去试试”，下一站专门练这个说法。"}
+ ],
+ carnet:[["Je cherche la tombe de Marcel Proust.","我在找马塞尔·普鲁斯特的墓。"],["Proust a écrit À la recherche du temps perdu.","普鲁斯特写了《追忆似水年华》。"],["Il est né à Paris en 1871.","他 1871 年生于巴黎。"],["Vous avez lu Proust ? — Pas encore.","您读过普鲁斯特吗？——还没有。"]],
+ gram:"过去的事 = avoir + 动词的过去形式（il a écrit）。来、去、生、死这类动词改用 être（il est né）。"},
+
+{plaque:"Rue de Médicis",arr:"6e Arr.",place:"卢森堡公园",frPlace:"Jardin du Luxembourg",who:"Une voisine de banc",
+ scene:"傍晚，你在卢森堡公园的美第奇喷泉旁找了一把绿色铁椅坐下。不远处立着诗人魏尔伦的雕像，隔一条街就是奥德翁剧院。长椅另一头的老太太合上了书。任务：聊聊天气，说说你接下来的打算，然后道别。",
+ steps:[
+  {t:"listen",fr:"Il fait beau aujourd'hui, n'est-ce pas ?",q:"老太太说了什么？",opts:["今天天气真好，不是吗？","今天真冷，不是吗？","您今天真漂亮，不是吗？"],
+   note:"说天气用 il fait：il fait beau（天气好）、il fait froid（冷）、il fait chaud（热）。n'est-ce pas ? 加在句尾是“对吧？”"},
+  {t:"fill",ctx:"告诉她：我要读一首魏尔伦的诗。",before:"Je ",after:" lire un poème de Verlaine.",opts:["vais","va","allez"],
+   full:"Je vais lire un poème de Verlaine.",zh:"我要读一首魏尔伦的诗。",note:"马上要做的事 = aller（去）+ 动词原形：je vais lire（我要读）。aller 的变化：je vais、tu vas、il va、vous allez。"},
+  {t:"build",ctx:"再说说晚上的安排：今晚我去剧院。",tokens:["Ce soir,","je","vais","au","théâtre."],extra:["à la"],
+   zh:"今晚我去剧院。",note:"ce soir 是“今晚”。théâtre 是阳性词，所以 à + le 合成 au，和第四站的 au musée 一样。"},
+  {t:"listen",fr:"La pièce commence à vingt heures.",q:"她提醒你什么？",opts:["戏晚上八点开始","戏晚上八点结束","戏二十分钟后开始"],
+   note:"法国人说时间常用二十四小时：vingt heures 是晚上八点。la pièce 是一出戏。"},
+  {t:"choose",ctx:"天色暗了，向她道别。",opts:[["Bonne soirée, à bientôt !","祝您晚上愉快，回头见！"],["Bonjour, enchanté !","您好，幸会！"],["Bon appétit !","祝您好胃口！"]],
+   note:"白天分别说 Bonne journée，傍晚以后说 Bonne soirée。à bientôt 是“回头见”。"}
+ ],
+ carnet:[["Il fait beau aujourd'hui.","今天天气很好。"],["Je vais lire un poème de Verlaine.","我要读一首魏尔伦的诗。"],["Ce soir, je vais au théâtre.","今晚我去剧院。"],["La pièce commence à vingt heures.","戏晚上八点开始。"],["Bonne soirée, à bientôt !","祝您晚上愉快，回头见！"]],
+ gram:"马上要做的事 = aller + 动词原形：je vais lire，il va écrire，vous allez voir。"}
+];
+
+/* ---------- illustrated scenes: [fr, zh, markerX, markerY, shapes] ---------- */
+const C={sky:'#cfdcec',stone:'#e6dcc6',zinc:'#7d8796',blue:'#1b3f94',green:'#2f6b4f',dark:'#26303f',yel:'#f1c453',red:'#b8483b',white:'#f7f5ef',water:'#7fa3c7',skin:'#e9c9a8',wood:'#8a5a34'};
+const SCENES=[
+{bg:`<rect width="680" height="280" fill="${C.sky}"/><rect y="92" width="680" height="50" fill="#b3bfcf"/><rect x="40" y="70" width="60" height="72" fill="#a4b1c3"/><rect x="470" y="60" width="90" height="82" fill="#a4b1c3"/><rect y="200" width="680" height="80" fill="${C.stone}"/>`,
+ hots:[
+  ["la Seine","塞纳河",30,162,`<rect y="140" width="680" height="60" fill="${C.water}"/><path d="M450 160h60M520 180h70M30 185h50" stroke="${C.white}" stroke-width="3" stroke-linecap="round" opacity=".7"/>`],
+  ["le pont","桥",240,124,`<path d="M60 116H420V178h-15a45 40 0 0 0-90 0h-30a45 40 0 0 0-90 0h-30a45 40 0 0 0-90 0h-15Z" fill="#d8ccb2"/><rect x="60" y="112" width="360" height="6" fill="#bfb293"/>`],
+  ["la boîte","书箱",614,138,`<rect x="430" y="126" width="200" height="24" fill="#24543e"/><rect x="430" y="150" width="200" height="72" fill="${C.green}"/>`],
+  ["le livre","书",457,186,`<rect x="445" y="165" width="22" height="45" fill="${C.red}"/><rect x="470" y="160" width="18" height="50" fill="${C.yel}"/><rect x="491" y="168" width="24" height="42" fill="${C.white}"/><rect x="518" y="162" width="20" height="48" fill="${C.blue}"/><rect x="541" y="166" width="26" height="44" fill="#c98a3c"/><rect x="570" y="160" width="20" height="50" fill="${C.red}"/><rect x="593" y="168" width="24" height="42" fill="${C.white}"/>`],
+  ["le bouquiniste","旧书摊主",363,205,`<rect x="345" y="170" width="36" height="85" rx="10" fill="${C.dark}"/><circle cx="363" cy="155" r="13" fill="${C.skin}"/><ellipse cx="363" cy="144" rx="16" ry="6" fill="${C.dark}"/>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="#efe6d2"/><rect width="680" height="46" fill="${C.green}"/><path d="M0 46h680v10H0z" fill="#24543e"/><rect x="380" y="76" width="270" height="130" fill="#3a4658"/><rect x="390" y="86" width="250" height="110" fill="#566378"/><rect y="222" width="680" height="58" fill="#b9c3d1"/>`,
+ hots:[
+  ["la table","桌子",180,170,`<rect x="245" y="176" width="10" height="64" fill="${C.dark}"/><ellipse cx="250" cy="243" rx="32" ry="6" fill="${C.dark}"/><ellipse cx="250" cy="172" rx="84" ry="14" fill="${C.white}" stroke="${C.dark}" stroke-width="3"/>`],
+  ["la tasse","杯子",228,140,`<ellipse cx="238" cy="169" rx="22" ry="4" fill="#d9d4c5"/><rect x="226" y="150" width="24" height="18" rx="3" fill="${C.white}" stroke="${C.dark}" stroke-width="2"/><circle cx="254" cy="158" r="5" fill="none" stroke="${C.dark}" stroke-width="2"/>`],
+  ["le croissant","羊角面包",300,150,`<path d="M276 172q24-30 48 0q-24-11-48 0z" fill="#d99a4e" stroke="#a86c2b" stroke-width="2"/>`],
+  ["la chaise","椅子",110,128,`<path d="M84 240V182M136 240V182" stroke="${C.dark}" stroke-width="5"/><rect x="84" y="112" width="52" height="66" rx="22" fill="none" stroke="${C.red}" stroke-width="6"/><ellipse cx="110" cy="184" rx="34" ry="8" fill="#d9b35f"/>`],
+  ["le serveur","服务生",482,135,`<rect x="462" y="108" width="40" height="125" rx="8" fill="${C.dark}"/><rect x="464" y="160" width="36" height="73" fill="${C.white}"/><circle cx="482" cy="92" r="14" fill="${C.skin}"/><path d="M500 132L532 122" stroke="${C.dark}" stroke-width="7" stroke-linecap="round"/><ellipse cx="540" cy="118" rx="28" ry="5" fill="${C.zinc}"/>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="#e9e3d6"/><path d="M0 0h680v40Q340-10 0 40z" fill="#cfc6b2"/><rect y="232" width="680" height="48" fill="#b7ad98"/>`,
+ hots:[
+  ["l'horloge","钟（阴性）",160,52,`<circle cx="110" cy="115" r="72" fill="${C.white}" stroke="${C.dark}" stroke-width="7"/><path d="M110 52v12M110 166v12M47 115h12M161 115h12" stroke="${C.dark}" stroke-width="5"/><path d="M110 115V72M110 115l30 18" stroke="${C.dark}" stroke-width="6" stroke-linecap="round"/>`],
+  ["le tableau","画",418,62,`<rect x="250" y="56" width="170" height="124" fill="#c9a24a"/><rect x="261" y="67" width="148" height="102" fill="#1d2f5e"/><g fill="${C.yel}"><circle cx="285" cy="88" r="5"/><circle cx="318" cy="80" r="4"/><circle cx="350" cy="92" r="6"/><circle cx="385" cy="82" r="4"/><circle cx="300" cy="108" r="3"/><circle cx="372" cy="110" r="4"/></g><path d="M275 140v22M305 136v26M340 142v20M375 138v24" stroke="${C.yel}" stroke-width="4" opacity=".75"/>`],
+  ["la sculpture","雕塑",556,128,`<rect x="500" y="172" width="60" height="60" fill="#d5cdbb"/><ellipse cx="530" cy="137" rx="18" ry="36" fill="${C.white}"/><circle cx="530" cy="92" r="11" fill="${C.white}"/>`],
+  ["le banc","长椅",270,210,`<rect x="250" y="216" width="170" height="10" fill="${C.dark}"/><path d="M265 226v22M405 226v22" stroke="${C.dark}" stroke-width="7"/>`],
+  ["le billet","票",628,214,`<g transform="rotate(-8 625 245)"><rect x="590" y="228" width="72" height="36" rx="4" fill="${C.white}" stroke="${C.red}" stroke-width="2" stroke-dasharray="5 3"/><path d="M602 240h34M602 250h22" stroke="${C.red}" stroke-width="3"/></g>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="${C.sky}"/><rect y="220" width="680" height="60" fill="#d9d2c0"/>`,
+ hots:[
+  ["la maison","房子",378,48,`<path d="M60 62H390L370 18H80Z" fill="#4f5b6b"/><rect x="60" y="62" width="330" height="158" fill="#b8563f"/><path d="M90 220v-40a35 35 0 0 1 70 0v40zM190 220v-40a35 35 0 0 1 70 0v40zM290 220v-40a35 35 0 0 1 70 0v40z" fill="${C.dark}"/>`],
+  ["la fenêtre","窗户",125,74,`<g fill="#dfe8f2" stroke="${C.white}" stroke-width="4"><rect x="107" y="80" width="36" height="50"/><rect x="207" y="80" width="36" height="50"/><rect x="307" y="80" width="36" height="50"/></g>`],
+  ["la porte","门",225,196,`<rect x="204" y="172" width="42" height="48" fill="${C.green}"/><circle cx="238" cy="198" r="3" fill="${C.yel}"/>`],
+  ["la fontaine","喷泉",520,132,`<ellipse cx="520" cy="218" rx="72" ry="13" fill="${C.water}" stroke="#bfb293" stroke-width="5"/><rect x="512" y="152" width="16" height="62" fill="#cfc4a8"/><ellipse cx="520" cy="152" rx="32" ry="7" fill="#cfc4a8"/><path d="M498 158v40M542 158v40" stroke="${C.water}" stroke-width="3" stroke-dasharray="6 5"/>`],
+  ["l'arbre","树（阳性）",632,104,`<rect x="626" y="140" width="12" height="82" fill="${C.wood}"/><rect x="592" y="70" width="80" height="78" rx="14" fill="${C.green}"/>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="${C.sky}"/><path d="M0 170Q340 80 680 170V280H0z" fill="#cdd9c0"/><path d="M0 232Q340 212 680 232V280H0z" fill="#c9c2b3"/>`,
+ hots:[
+  ["la basilique","大教堂（圣心堂）",210,40,`<rect x="150" y="100" width="120" height="52" fill="${C.white}"/><ellipse cx="165" cy="102" rx="12" ry="22" fill="${C.white}"/><ellipse cx="255" cy="102" rx="12" ry="22" fill="${C.white}"/><ellipse cx="210" cy="90" rx="26" ry="42" fill="${C.white}"/><rect x="284" y="62" width="18" height="90" fill="${C.white}"/><ellipse cx="293" cy="62" rx="9" ry="14" fill="${C.white}"/><path d="M175 152v-22M210 152v-26M245 152v-22" stroke="#b3bfcf" stroke-width="8"/>`],
+  ["le chevalet","画架",474,118,`<path d="M430 112L398 252M430 112L462 252M430 112V256" stroke="${C.wood}" stroke-width="6" stroke-linecap="round"/><rect x="394" y="124" width="72" height="62" fill="${C.white}" stroke="${C.wood}" stroke-width="3"/><circle cx="420" cy="150" r="10" fill="${C.yel}"/><path d="M400 176q30-20 60 0" fill="none" stroke="${C.blue}" stroke-width="5"/>`],
+  ["le peintre","画家",330,190,`<rect x="312" y="150" width="36" height="98" rx="10" fill="${C.blue}"/><circle cx="330" cy="134" r="13" fill="${C.skin}"/><ellipse cx="330" cy="123" rx="16" ry="6" fill="${C.red}"/>`],
+  ["la palette","调色板",540,192,`<ellipse cx="540" cy="228" rx="38" ry="24" fill="#c98a3c"/><circle cx="556" cy="236" r="6" fill="#c9c2b3"/><circle cx="518" cy="222" r="6" fill="${C.red}"/><circle cx="534" cy="214" r="6" fill="${C.yel}"/><circle cx="552" cy="216" r="6" fill="${C.blue}"/><circle cx="526" cy="238" r="6" fill="${C.white}"/>`],
+  ["le pinceau","画笔",660,190,`<path d="M596 252L648 200" stroke="${C.wood}" stroke-width="6" stroke-linecap="round"/><path d="M648 200l12-12" stroke="${C.red}" stroke-width="9" stroke-linecap="round"/>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="#d5dde0"/><circle cx="60" cy="70" r="60" fill="#3d6b55"/><circle cx="290" cy="60" r="50" fill="#4a7a62"/><circle cx="470" cy="50" r="64" fill="#3d6b55"/><circle cx="640" cy="80" r="56" fill="#4a7a62"/><rect y="150" width="680" height="130" fill="#c8cfbf"/><g fill="#9aa3ad"><path d="M250 150v-34a14 14 0 0 1 28 0v34z"/><rect x="420" y="118" width="34" height="32"/><path d="M500 150v-30l14-12 14 12v30z"/></g>`,
+ hots:[
+  ["le chemin","小路",346,180,`<path d="M270 280H410L364 150H330Z" fill="#b9b2a2"/>`],
+  ["la tombe","墓",92,186,`<path d="M120 196v-62a30 30 0 0 1 60 0v62z" fill="#9aa3ad"/><rect x="70" y="224" width="172" height="14" fill="${C.zinc}"/><rect x="80" y="194" width="152" height="30" fill="#2b2f36"/>`],
+  ["la fleur","花",200,160,`<path d="M152 194v-14M170 194v-18M188 194v-12" stroke="${C.green}" stroke-width="3"/><circle cx="152" cy="178" r="8" fill="${C.red}"/><circle cx="170" cy="172" r="8" fill="${C.yel}"/><circle cx="188" cy="180" r="7" fill="${C.white}"/>`],
+  ["le chat","猫",466,196,`<path d="M446 230q-26-4-20-26" fill="none" stroke="${C.dark}" stroke-width="6" stroke-linecap="round"/><ellipse cx="472" cy="228" rx="28" ry="15" fill="${C.dark}"/><circle cx="500" cy="212" r="12" fill="${C.dark}"/><path d="M491 204l2-13 8 8zM502 199l8-8 2 13z" fill="${C.dark}"/><circle cx="496" cy="211" r="2" fill="${C.yel}"/><circle cx="505" cy="211" r="2" fill="${C.yel}"/>`],
+  ["le plan","地图",654,112,`<rect x="596" y="180" width="8" height="72" fill="${C.dark}"/><rect x="548" y="110" width="104" height="72" fill="${C.white}" stroke="${C.dark}" stroke-width="4"/><path d="M560 130h80M560 146h80M560 162h80M580 118v56M612 118v56" stroke="${C.green}" stroke-width="2"/><circle cx="596" cy="146" r="5" fill="${C.red}"/>`]
+ ]},
+{bg:`<rect width="680" height="280" fill="#f0d9bb"/><rect y="60" width="680" height="100" fill="#f4e3cc"/><circle cx="40" cy="120" r="50" fill="#3d6b55"/><circle cx="660" cy="130" r="44" fill="#3d6b55"/><rect y="160" width="680" height="120" fill="#d2c5a6"/>`,
+ hots:[
+  ["le soleil","太阳",622,48,`<circle cx="580" cy="70" r="30" fill="${C.yel}"/>`],
+  ["le palais","宫殿",156,84,`<rect x="265" y="52" width="50" height="34" fill="#d8ccb2"/><ellipse cx="290" cy="52" rx="25" ry="17" fill="${C.zinc}"/><rect x="140" y="84" width="300" height="78" fill="${C.stone}" stroke="#bfb293" stroke-width="2"/><rect x="140" y="76" width="300" height="10" fill="${C.zinc}"/><g fill="#8fa0b5"><rect x="160" y="102" width="16" height="30"/><rect x="196" y="102" width="16" height="30"/><rect x="232" y="102" width="16" height="30"/><rect x="332" y="102" width="16" height="30"/><rect x="368" y="102" width="16" height="30"/><rect x="404" y="102" width="16" height="30"/></g><path d="M276 162v-34a14 14 0 0 1 28 0v34z" fill="${C.dark}"/>`],
+  ["le bassin","水池",150,220,`<ellipse cx="290" cy="220" rx="172" ry="40" fill="${C.water}" stroke="${C.stone}" stroke-width="6"/>`],
+  ["le bateau","小船",330,178,`<path d="M295 216V170" stroke="${C.dark}" stroke-width="3"/><path d="M297 174v38h28z" fill="${C.white}"/><path d="M268 216h54l-9 13h-36z" fill="${C.red}"/>`],
+  ["la statue","雕像",586,150,`<rect x="540" y="192" width="40" height="60" fill="#bfb293"/><ellipse cx="560" cy="158" rx="13" ry="34" fill="${C.white}"/><circle cx="560" cy="116" r="9" fill="${C.white}"/>`]
+ ]}
+];
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const h=(t,a={},...c)=>{const e=document.createElement(t);
+  for(const k in a){const v=a[k];if(v==null||v===false)continue;
+    if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?'':v);}
+  c.flat().forEach(x=>{if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x))});return e};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
+/* ---------- state ---------- */
+let st={done:[],cur:0,step:0,tab:'jeu',voice:null,found:{}};
+try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
+if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
+if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length))st.step=0;
+const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
+let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
+
+/* ---------- speech ---------- */
+const synth=('speechSynthesis' in window)?window.speechSynthesis:null;
+let voices=[],voice=null;
+function loadVoices(){
+  if(!synth)return;
+  voices=(synth.getVoices()||[]).filter(v=>/^fr/i.test(v.lang));
+  const score=v=>(/fr[-_]FR/i.test(v.lang)?2:0)+(/google|am[ée]lie|thomas|audrey|premium|enhanced|natural/i.test(v.name)?1:0);
+  voices.sort((a,b)=>score(b)-score(a));
+  voice=voices.find(v=>v.name===st.voice)||voices[0]||null;
+  const sel=$('#voice');sel.replaceChildren(...voices.map(v=>h('option',{value:v.name,selected:v===voice},v.name+'（'+v.lang+'）')));
+  $('#voicebox').hidden=voices.length<2;
+  if(voices.length)$('#warn').hidden=true;
+}
+function speak(text,slow){
+  if(!synth||!text)return;
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/—/g,'.'));
+  u.lang='fr-FR';if(voice)u.voice=voice;u.rate=slow?0.6:0.92;
+  synth.speak(u);
+}
+if(synth){loadVoices();synth.addEventListener&&synth.addEventListener('voiceschanged',loadVoices);
+  setTimeout(()=>{if(!voices.length)$('#warn').hidden=false},2000);}
+else{$('#warn').hidden=false;$('#warn').textContent='这个浏览器不支持语音朗读，发音按钮不会有声音。请换用 Chrome、Safari 或 Edge 打开。';}
+$('#voice').addEventListener('change',e=>{st.voice=e.target.value;voice=voices.find(v=>v.name===st.voice)||voice;save();speak('Bonjour, bienvenue à Paris !')});
+$('#voicetest').addEventListener('click',()=>speak('Bonjour, bienvenue à Paris !'));
+
+function spk(text,big){
+  const b=h('button',{class:'spk-b',type:'button','aria-label':'播放发音',onclick:e=>{e.stopPropagation();speak(text)}});
+  b.innerHTML=ICON;if(big)b.append('听一听');
+  const s=h('button',{class:'spk-s',type:'button','aria-label':'慢速播放',onclick:e=>{e.stopPropagation();speak(text,true)}},'慢速');
+  return h('span',{class:'spk'+(big?' big':'')},b,s);
+}
+const frLine=(fr,zh)=>[h('div',{class:'line'},h('span',{class:'fr',lang:'fr'},fr),spk(fr)),zh&&h('p',{class:'zh'},zh)];
+const bubble=(who,fr,zh)=>h('div',{class:'bubble'},h('span',{class:'who',lang:'fr'},who),frLine(fr,zh));
+
+/* ---------- route & station ---------- */
+function renderRoute(){
+  const unlocked=Math.min(st.done.length,DATA.length-1);
+  $('#route').replaceChildren(...DATA.map((S,i)=>h('li',{class:(st.done.includes(i)?'done ':'')+(i===st.cur?'cur':'')},
+    h('button',{type:'button',disabled:i>unlocked,title:S.place,'aria-label':'第 '+(i+1)+' 站：'+S.place,
+      'aria-current':i===st.cur?'step':null,onclick:()=>{st.cur=i;st.step=0;save();renderStation(true)}},String(i+1)))));
+}
+function renderStation(auto){
+  const S=DATA[st.cur];
+  renderRoute();
+  $('#arr').textContent=S.arr;$('#plaque').textContent=S.plaque;
+  $('#place').replaceChildren('第 '+(st.cur+1)+' 站 · ',h('b',{},S.place),' ',h('span',{class:'fr',lang:'fr',style:'font-size:1rem'},S.frPlace),' ',spk(S.frPlace));
+  $('#scene').textContent=S.scene;
+  renderPic();
+  if(st.step>=S.steps.length)renderReward();else renderStep(auto);
+}
+
+function renderPic(){
+  const i=st.cur,sc=SCENES[i],found=(st.found[i]=st.found[i]||[]);
+  $('#pic').innerHTML='<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">'+sc.bg+sc.hots.map((o,k)=>
+    '<g class="hot'+(found.includes(k)?' found':'')+'" data-k="'+k+'" tabindex="0" role="button" aria-label="'+o[0]+'">'+o[4]+
+    '<circle class="mk" cx="'+o[2]+'" cy="'+o[3]+'" r="9"/><circle class="mkdot" cx="'+o[2]+'" cy="'+o[3]+'" r="3.5"/></g>').join('')+'</svg>';
+  const tally=()=>{$('#pichint').textContent='点图里带圆点的东西，听它的法语名字。已发现 '+found.length+' / '+sc.hots.length};
+  const pick=g=>{const k=+g.dataset.k,o=sc.hots[k];
+    if(!found.includes(k)){found.push(k);save()}
+    $('#pic').querySelectorAll('.hot').forEach(x=>x.classList.remove('sel'));g.classList.add('found','sel');
+    $('#word').replaceChildren(...frLine(o[0],o[1]));speak(o[0]);tally();};
+  $('#pic').querySelectorAll('.hot').forEach(g=>{
+    g.addEventListener('click',()=>pick(g));
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(g)}});});
+  $('#word').replaceChildren();tally();
+}
+
+function renderStep(auto){
+  const S=DATA[st.cur],p=S.steps[st.step],box=$('#step');
+  const fb=h('div',{class:'fb','aria-live':'polite'});
+  const kids=[h('p',{class:'count'},'任务 '+(st.step+1)+' / '+S.steps.length)];
+  if(p.npc)kids.push(bubble(S.who,p.npc[0],p.npc[1]));
+  const lock=()=>box.querySelectorAll('.opt,.tile,.check').forEach(b=>b.disabled=true);
+  const win=(fr,zh,say)=>{lock();
+    fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),...(fr?frLine(fr,zh):[]),h('p',{class:'note'},p.note),
+      h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:next},st.step+1<S.steps.length?'继续':'完成这一站')));
+    if(say)speak(fr);fb.querySelector('.primary').focus({preventScroll:true});};
+  const miss=msg=>fb.replaceChildren(h('p',{class:'no'},msg));
+
+  if(p.t==='listen'){
+    const txt=h('p',{class:'fr',lang:'fr',hidden:true},p.fr);
+    kids.push(h('div',{class:'bubble'},h('span',{class:'who',lang:'fr'},S.who),h('div',{class:'line'},spk(p.fr,true)),txt,
+      h('button',{class:'reveal',type:'button',onclick:e=>{txt.hidden=false;e.target.hidden=true}},'听不出来？显示文字')));
+    kids.push(h('p',{class:'ctx'},p.q));
+    const right=p.opts[0];
+    kids.push(h('div',{class:'opts'},shuffle(p.opts).map(o=>h('button',{class:'opt',type:'button',onclick:e=>{
+      if(o===right){e.target.classList.add('right');win(p.fr,right,false)}
+      else{e.target.classList.add('wrong');e.target.disabled=true;miss('不是这个意思。再听一遍，可以点慢速。')}}},o))));
+  }
+  if(p.t==='choose'){
+    kids.push(h('p',{class:'ctx'},p.ctx));
+    const right=p.opts[0];
+    kids.push(h('div',{class:'opts'},shuffle(p.opts).map(o=>h('div',{class:'optrow'},
+      h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
+        if(o===right){e.target.classList.add('right');win(o[0],o[1],true)}
+        else{e.target.classList.add('wrong');e.target.disabled=true;miss('这句的意思是：'+o[1])}}},o[0]),spk(o[0])))));
+  }
+  if(p.t==='fill'){
+    kids.push(h('p',{class:'ctx'},p.ctx));
+    const blank=h('span',{class:'blank'},'　');
+    kids.push(h('p',{class:'fr',lang:'fr'},p.before,blank,p.after));
+    const right=p.opts[0];
+    kids.push(h('div',{class:'opts pills'},shuffle(p.opts).map(o=>h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
+      if(o===right){e.target.classList.add('right');blank.textContent=o;win(p.full,p.zh,true)}
+      else{e.target.classList.add('wrong');e.target.disabled=true;miss('不是 '+o+'。再看看提示里这个词的阴阳性或人称。')}}},o))));
+  }
+  if(p.t==='build'){
+    kids.push(h('p',{class:'ctx'},p.ctx));
+    const target=p.tokens.join(' ');
+    const slot=h('div',{class:'slot fr',lang:'fr'}),pool=h('div',{class:'pool fr',lang:'fr'});
+    const check=h('button',{class:'primary check',type:'button',disabled:true,onclick:()=>{
+      const got=[...slot.children].map(x=>x.textContent).join(' ');
+      if(got===target)win(target,p.zh,true);else miss('还不对。可以点“听答案”，照着听到的顺序排。')}},'检查');
+    shuffle(p.tokens.concat(p.extra||[])).forEach(tok=>{
+      const src=h('button',{class:'tile',type:'button'},tok);
+      src.addEventListener('click',()=>{src.disabled=true;
+        const put=h('button',{class:'tile',type:'button',onclick:()=>{put.remove();src.disabled=false;check.disabled=!slot.children.length}},tok);
+        slot.append(put);check.disabled=false;});
+      pool.append(src);});
+    kids.push(slot,pool,h('div',{class:'row'},check,
+      h('span',{class:'spk'},h('button',{type:'button',onclick:()=>speak(target)},'听答案'),h('button',{type:'button',onclick:()=>speak(target,true)},'慢速'))));
+  }
+  kids.push(fb);
+  box.replaceChildren(...kids);
+  if(auto&&acted)speak(p.t==='listen'?p.fr:(p.npc?p.npc[0]:''));
+}
+
+function next(){
+  const S=DATA[st.cur];st.step++;
+  if(st.step>=S.steps.length){if(!st.done.includes(st.cur))st.done.push(st.cur);save();renderRoute();renderReward();}
+  else{save();renderStep(true);}
+  $('#step').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+
+function entryList(S){return h('ul',{class:'entries'},S.carnet.map(c=>h('li',{},frLine(c[0],c[1]))))}
+
+function renderReward(){
+  const S=DATA[st.cur],last=st.cur===DATA.length-1,all=st.done.length===DATA.length;
+  $('#step').replaceChildren(
+    h('p',{class:'count'},'这一站完成'),
+    h('h2',{},last&&all?'Bravo ! 你走完了整条路线':'这几句话收进了你的手帐'),
+    last&&all&&h('p',{class:'scene'},'从河边的旧书摊到傍晚的卢森堡公园，你已经能用法语买书、点咖啡、问路、夸一幅画、谈一位作家的生平，还能说出今晚的打算。打开“手帐”可以随时回来听。'),
+    entryList(S),
+    h('p',{class:'note'},S.gram),
+    h('div',{class:'row'},
+      !last&&h('button',{class:'primary',type:'button',onclick:()=>{st.cur++;st.step=0;save();renderStation(false);window.scrollTo(0,0)}},'下一站：'+DATA[st.cur+1].place),
+      h('button',{class:'tile',type:'button',onclick:()=>{st.step=0;save();renderStep(true)}},'再走一遍这一站'),
+      last&&h('button',{class:'primary',type:'button',onclick:()=>setTab('carnet')},'打开手帐')));
+}
+
+function renderCarnet(){
+  const n=st.done.reduce((s,i)=>s+DATA[i].carnet.length,0);
+  $('#carnet').replaceChildren(
+    h('h2',{},'我的手帐 · Mon carnet'),
+    h('p',{class:'zh'},n?'已收集 '+n+' 句。每句都可以点喇叭听，点“慢速”跟读。':'还没有句子。每走完一站，那一站的句子和语法会收到这里。'),
+    ...DATA.map((S,i)=>h('section',{class:'stop'},h('h3',{lang:'fr'},(i+1)+' · '+S.frPlace),
+      st.done.includes(i)?[entryList(S),h('p',{class:'note'},S.gram),h('p',{class:'zh'},'图里的词'),
+        h('ul',{class:'entries'},SCENES[i].hots.map(o=>h('li',{},frLine(o[0],o[1]))))]:h('p',{class:'locked'},S.place+'：走完这一站后解锁'))));
+}
+
+function setTab(t){
+  st.tab=t;save();
+  const jeu=t!=='carnet';
+  $('#jeu').hidden=!jeu;$('#jeu').style.display=jeu?'contents':'';
+  $('#carnet').hidden=jeu;$('#carnet').style.display=jeu?'':'flex';
+  $('#carnet').style.flexDirection='column';$('#carnet').style.gap='20px';
+  $('#tab-jeu').setAttribute('aria-selected',jeu);$('#tab-carnet').setAttribute('aria-selected',!jeu);
+  if(jeu)renderStation(false);else renderCarnet();
+}
+$('#tab-jeu').addEventListener('click',()=>setTab('jeu'));
+$('#tab-carnet').addEventListener('click',()=>setTab('carnet'));
+setTab(st.tab);
+</script>
+
+</body></html>
