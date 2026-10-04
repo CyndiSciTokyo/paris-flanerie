@@ -7,6 +7,7 @@
   --bg:#eceff3; --surface:#f9fafc; --ink:#1a2233; --muted:#586275; --line:#cfd5de;
   --enamel:#1b3f94; --enamel-ink:#ffffff; --frame:#2f6b4f; --accent:#1b3f94;
   --ok:#2a6549; --ok-bg:#dfeee6; --bad:#a9342c; --bad-bg:#f6e1df;
+  --water:#a9c2dd; --park:#cfe0cf; --gold:#a8770a;
   --f-plaque:'Barlow Condensed','Arial Narrow',sans-serif;
   --f-fr:'Spectral',Georgia,'Times New Roman',serif;
   --f-ui:system-ui,-apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
@@ -14,11 +15,13 @@
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#0f141d; --surface:#18202d; --ink:#e7eaf0; --muted:#9aa5b8; --line:#2d3748;
   --enamel:#2449a6; --enamel-ink:#ffffff; --frame:#3f8c68; --accent:#93adf2;
-  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f; color-scheme:dark } }
+  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f;
+  --water:#2c476b; --park:#243d31; --gold:#e6b94a; color-scheme:dark } }
 :root[data-theme="dark"]{
   --bg:#0f141d; --surface:#18202d; --ink:#e7eaf0; --muted:#9aa5b8; --line:#2d3748;
   --enamel:#2449a6; --enamel-ink:#ffffff; --frame:#3f8c68; --accent:#93adf2;
-  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f; color-scheme:dark }
+  --ok:#6cc097; --ok-bg:#17302a; --bad:#ec857c; --bad-bg:#3a1f1f;
+  --water:#2c476b; --park:#243d31; --gold:#e6b94a; color-scheme:dark }
 
 body{background:var(--bg);color:var(--ink);font:16px/1.65 var(--f-ui)}
 .wrap{max-width:680px;margin:0 auto;padding-inline:16px;padding-block:20px 56px;display:flex;flex-direction:column;gap:20px}
@@ -33,19 +36,6 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .tabs button{background:none;border:0;border-bottom:2px solid transparent;padding:4px 10px;color:var(--muted)}
 .tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--accent);font-weight:600}
 
-/* route line */
-.route{display:flex;align-items:center;list-style:none;margin:0;padding:0}
-.route li{display:flex;align-items:center;flex:1}
-.route li:last-child{flex:0}
-.route li::after{content:"";flex:1;height:3px;background:var(--line)}
-.route li:last-child::after{display:none}
-.route li.done::after{background:var(--frame)}
-.route button{width:30px;height:30px;border-radius:50%;border:3px solid var(--line);background:var(--surface);
-  font:600 .95rem var(--f-plaque);padding:0;flex:none;color:var(--muted)}
-.route li.done button{background:var(--frame);border-color:var(--frame);color:var(--enamel-ink)}
-.route li.cur button{border-color:var(--accent);color:var(--ink)}
-.route button:disabled{cursor:default;opacity:.6}
-
 /* street plaque */
 .plaque-wrap{display:inline-flex;flex-direction:column;align-items:center;align-self:flex-start;max-width:100%}
 .arr{background:var(--enamel);color:var(--enamel-ink);border:3px solid var(--frame);border-bottom:0;
@@ -57,6 +47,52 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .place b{color:var(--ink);font-weight:600}
 .scene{max-width:62ch}
 
+.view{display:flex;flex-direction:column;gap:20px}
+.back{align-self:flex-start;background:none;border:0;padding:0;color:var(--accent);font-size:.95rem}
+#map svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+#map .road{stroke:var(--line);fill:none;stroke-width:2}
+#map .water{stroke:var(--water);fill:none;stroke-width:18;stroke-linecap:round}
+#map .isle{fill:var(--surface)}
+#map .park{fill:var(--park)}
+#map .maptxt{fill:var(--muted);font:600 12px var(--f-plaque);letter-spacing:.22em}
+.pin{cursor:pointer;outline:none}
+.pin .hit{fill:transparent}
+.pin .dot{fill:var(--enamel);stroke:var(--surface);stroke-width:3}
+.pin.done .dot{fill:var(--frame)}
+.pin.gold .dot{stroke:var(--gold)}
+.pin:hover .dot,.pin:focus-visible .dot{stroke:var(--accent);stroke-width:5}
+.pin .num{fill:var(--enamel-ink);font:600 17px var(--f-plaque);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.pin .lab{fill:var(--ink);font:500 15px var(--f-fr);paint-order:stroke;stroke:var(--surface);stroke-width:4px}
+@media (max-width:520px){.pin .lab{display:none}}
+.chapters{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.chapters button{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 0}
+.chapters button:hover .cname b{color:var(--accent)}
+.cnum{width:30px;height:30px;border-radius:50%;background:var(--enamel);color:var(--enamel-ink);display:flex;align-items:center;justify-content:center;font:600 .95rem var(--f-plaque)}
+.cnum.done{background:var(--frame)}
+.cname{display:flex;flex-direction:column;min-width:0}
+.cname span{color:var(--muted);font-size:.9rem}
+.stars{color:var(--gold);letter-spacing:2px;white-space:nowrap}
+.stars .off{color:var(--line)}
+.bigstars{font-size:2rem;line-height:1}
+.combo{color:var(--gold)}
+.souv{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+@media (max-width:560px){.souv{grid-template-columns:repeat(4,1fr)}}
+.scard{display:flex;flex-direction:column;overflow:hidden;background:var(--surface);border:2px solid var(--line);border-radius:10px;min-width:0}
+.scard svg{display:block;width:100%;height:auto}
+.scard .qbg{fill:#b9c6d6}
+.scard .qlab{min-height:2em;display:flex;align-items:center;justify-content:center;font-size:.9rem;padding:2px;text-align:center}
+.scard.gold{border-color:var(--gold)}
+.scard.lock{align-items:center;justify-content:center;aspect-ratio:1;color:var(--muted);font:600 1.4rem var(--f-plaque);border-style:dashed}
+.keep{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:center}
+.typecard{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.typecard .tfr{font:500 clamp(1.5rem,6vw,2.1rem)/1.15 var(--f-fr);text-wrap:balance}
+.typecard .tzh{font-weight:600}
+.attrs{display:grid;grid-template-columns:auto minmax(0,1fr) 3.2em;gap:10px 12px;align-items:center}
+.attrs .an{display:flex;flex-direction:column;line-height:1.3}
+.attrs .an span{color:var(--muted);font-size:.8rem}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.attrs .av{text-align:right;font-variant-numeric:tabular-nums}
 .picbox{display:flex;flex-direction:column;gap:6px}
 #pic svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
 .hot{cursor:pointer;outline:none}
@@ -136,14 +172,21 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
   <header>
     <h1>巴黎文艺漫步<span>Flânerie à Paris</span></h1>
     <div class="tabs" role="tablist">
-      <button id="tab-jeu" role="tab" type="button">漫步</button>
+      <button id="tab-carte" role="tab" type="button">地图</button>
       <button id="tab-carnet" role="tab" type="button">手帐</button>
+      <button id="tab-profil" role="tab" type="button">我的巴黎</button>
     </div>
   </header>
   <p id="warn" class="warn" hidden>录音文件没有加载出来，这台设备上也没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
 
-  <main id="jeu" style="display:contents">
-    <ol class="route" id="route" aria-label="路线"></ol>
+  <main id="carte" class="view" hidden>
+    <div id="map"></div>
+    <p class="zh" id="mapsum"></p>
+    <ol class="chapters" id="chapters"></ol>
+  </main>
+
+  <main id="jeu" class="view" hidden>
+    <button class="back" id="back" type="button">← 回到地图</button>
     <div class="plaque-wrap"><div class="arr" id="arr"></div><div class="plaque" id="plaque"></div></div>
     <p class="place" id="place"></p>
     <div class="picbox">
@@ -155,7 +198,9 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
     <section id="step"></section>
   </main>
 
-  <main id="carnet" hidden></main>
+  <main id="carnet" class="view" hidden></main>
+
+  <main id="profil" class="view" hidden></main>
 
   <div class="voice" id="voicebox" hidden>
     <label for="voice">录音没加载出来，改用设备语音</label>
@@ -352,15 +397,17 @@ const $=s=>document.querySelector(s);
 const h=(t,a={},...c)=>{const e=document.createElement(t);
   for(const k in a){const v=a[k];if(v==null||v===false)continue;
     if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?'':v);}
-  c.flat().forEach(x=>{if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x))});return e};
+  c.flat(Infinity).forEach(x=>{if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x))});return e};
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 
 /* ---------- state ---------- */
-let st={done:[],cur:0,step:0,tab:'jeu',voice:null,found:{}};
+let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null};
 try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
 if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length+1))st.step=0;
+st.done.forEach(i=>{if(!st.res[i])st.res[i]={stars:2,old:true}});  /* stops finished before stars existed */
+if(!['carte','jeu','carnet','profil'].includes(st.tab)||(st.tab==='jeu'&&!st.run))st.tab='carte';
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
 let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
 
@@ -410,21 +457,74 @@ function spk(text,big){
 const frLine=(fr,zh)=>[h('div',{class:'line'},h('span',{class:'fr',lang:'fr'},fr),spk(fr)),zh&&h('p',{class:'zh'},zh)];
 const bubble=(who,fr,zh)=>h('div',{class:'bubble'},h('span',{class:'who',lang:'fr'},who),frLine(fr,zh));
 
-/* ---------- route & station ---------- */
-function renderRoute(){
-  const unlocked=Math.min(st.done.length,DATA.length-1);
-  $('#route').replaceChildren(...DATA.map((S,i)=>h('li',{class:(st.done.includes(i)?'done ':'')+(i===st.cur?'cur':'')},
-    h('button',{type:'button',disabled:i>unlocked,title:S.place,'aria-label':'第 '+(i+1)+' 站：'+S.place,
-      'aria-current':i===st.cur?'step':null,onclick:()=>{st.cur=i;st.step=0;save();renderStation(true)}},String(i+1)))));
+/* ---------- rewards ---------- */
+const LIT=[0,1,3,5],ART=[2,4];
+const SOUV=[3,1,4,3,3,2,3];   /* which object of each scene is kept as the souvenir */
+const starsFor=m=>m<=1?3:m<=4?2:1;
+const starEl=(n,big)=>h('span',{class:'stars'+(big?' bigstars':''),role:'img','aria-label':n+' 颗星（满分 3 颗）'},'★'.repeat(n),h('span',{class:'off'},'★'.repeat(3-n)));
+const totalStars=()=>st.done.reduce((s,i)=>s+(st.res[i]?st.res[i].stars:0),0);
+const newRun=i=>{st.run={i:i,miss:0,ft:0,n:0,ear:0,earN:0,qm:0}};
+
+/* one scene object drawn alone: its bounding box (or a given crop), padded and widened to 4:3 */
+const objMarkup=o=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" aria-hidden="true"><rect class="qbg"/><g>'+o[4]+'</g></svg>';
+function fitObj(svg,o){
+  const crop=o[5];let b;
+  try{b=crop?{x:crop[0],y:crop[1],width:crop[2],height:crop[3]}:svg.querySelector('g').getBBox()}catch(e){b={x:0,y:0,width:680,height:280}}
+  if(!b.width||!b.height)b={x:0,y:0,width:680,height:280};
+  let w=crop?b.width:b.width*1.3+16,hh=crop?b.height:b.height*1.3+16;
+  if(w/hh<4/3)w=hh*4/3;else hh=w*3/4;
+  const x=b.x+b.width/2-w/2,y=b.y+b.height/2-hh/2,bg=svg.querySelector('.qbg');
+  svg.setAttribute('viewBox',[x,y,w,hh].join(' '));
+  bg.setAttribute('x',x);bg.setAttribute('y',y);bg.setAttribute('width',w);bg.setAttribute('height',hh);
 }
+
+/* ---------- map: positions follow real longitude and latitude ---------- */
+const PINS=[[241,336,'Quai de Conti',262,316,'start'],[202,356,'Café de Flore',180,380,'end'],[164,300,"Musée d'Orsay",142,322,'end'],
+  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start']];
+function renderMap(){
+  const pins=PINS.map((p,i)=>{const r=st.res[i],done=st.done.includes(i);
+    return '<g class="pin'+(done?' done':'')+(r&&r.stars===3?' gold':'')+'" data-i="'+i+'" tabindex="0" role="button" aria-label="第 '+(i+1)+' 站：'+DATA[i].place+'">'+
+      '<circle class="hit" cx="'+p[0]+'" cy="'+p[1]+'" r="24"/><circle class="dot" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/>'+
+      '<text class="num" x="'+p[0]+'" y="'+p[1]+'">'+(i+1)+'</text><text class="lab" x="'+p[3]+'" y="'+p[4]+'" text-anchor="'+p[5]+'">'+p[2]+'</text></g>'}).join('');
+  $('#map').innerHTML='<svg viewBox="0 0 680 507" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="巴黎地图">'+
+    '<path class="road" d="M40 236Q200 120 400 190T640 360"/><path class="road" d="M70 400Q240 505 430 472"/><path class="road" d="M303 0V507"/><path class="road" d="M0 262Q300 250 680 300"/>'+
+    '<ellipse class="park" cx="252" cy="52" rx="50" ry="28"/><ellipse class="park" cx="577" cy="287" rx="44" ry="32"/><ellipse class="park" cx="512" cy="104" rx="28" ry="18"/>'+
+    '<rect class="park" x="203" y="408" width="54" height="46" rx="8"/><rect class="park" x="140" y="262" width="62" height="14" rx="4" transform="rotate(-14 171 269)"/><rect class="park" x="346" y="442" width="44" height="18" rx="4" transform="rotate(-32 368 451)"/>'+
+    '<path class="water" d="M482 507C440 470 420 455 408 441S330 370 291 347S220 305 185 291S80 265 0 262"/>'+
+    '<ellipse class="isle" cx="291" cy="347" rx="24" ry="6" transform="rotate(30 291 347)"/><ellipse class="isle" cx="349" cy="379" rx="16" ry="5" transform="rotate(36 349 379)"/>'+
+    '<text class="maptxt" x="34" y="246" transform="rotate(4 34 246)">LA SEINE</text><text class="maptxt" x="430" y="236">RIVE DROITE</text><text class="maptxt" x="60" y="462">RIVE GAUCHE</text>'+
+    '<path class="road" d="M644 54V22M636 32l8-10 8 10"/><text class="maptxt" x="639" y="70">N</text>'+pins+'</svg>';
+  $('#map').querySelectorAll('.pin').forEach(g=>{
+    g.addEventListener('click',()=>enter(+g.dataset.i));
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();enter(+g.dataset.i)}});});
+  const all=st.done.length===DATA.length;
+  $('#mapsum').replaceChildren('已去过 '+st.done.length+' / '+DATA.length+' 站 · 星星 '+totalStars()+' / '+DATA.length*3+'。点地图上的圆点或下面的地名进入，顺序随你；数字是建议的顺序。',
+    all&&' ',all&&h('button',{class:'reveal',type:'button',onclick:()=>setTab('profil')},'七站都走完了，看看你是哪一类巴黎人'));
+  $('#chapters').replaceChildren(...DATA.map((S,i)=>{const done=st.done.includes(i);
+    return h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
+      h('span',{class:'cnum'+(done?' done':'')},String(i+1)),
+      h('span',{class:'cname'},h('b',{},S.place),h('span',{lang:'fr'},S.frPlace+' · '+S.arr)),
+      done?starEl(st.res[i].stars):h('span',{class:'zh'},st.run&&st.run.i===i&&st.step>0?'进行中':'未去过')))}));
+}
+function enter(i){
+  const len=DATA[i].steps.length;
+  if(!(st.run&&st.run.i===i&&st.cur===i&&st.step<=len)){
+    st.cur=i;
+    if(st.done.includes(i)){st.step=len+1;st.run=null;st.last=null}
+    else{st.step=0;newRun(i);st.combo=0}
+  }
+  save();setTab('jeu');window.scrollTo(0,0);
+}
+
+/* ---------- chapter ---------- */
 function renderStation(auto){
   const S=DATA[st.cur];
-  renderRoute();
+  if(st.step<=S.steps.length&&!(st.run&&st.run.i===st.cur)){newRun(st.cur);st.step=0}
   $('#arr').textContent=S.arr;$('#plaque').textContent=S.plaque;
   $('#place').replaceChildren('第 '+(st.cur+1)+' 站 · ',h('b',{},S.place),' ',h('span',{class:'fr',lang:'fr',style:'font-size:1rem'},S.frPlace),' ',spk(S.frPlace));
   $('#scene').textContent=S.scene;
   renderPic();
-  if(st.step>S.steps.length)renderReward();else if(st.step===S.steps.length)renderQuiz();else renderStep(auto);
+  if(st.step>S.steps.length)renderReward(false);else if(st.step===S.steps.length)renderQuiz();else renderStep(auto);
 }
 
 /* the scene shows the words when clicked, so it is put away during the quiz */
@@ -446,27 +546,34 @@ function renderPic(){
   $('#word').replaceChildren();tally();
 }
 
+const comboEl=()=>st.combo>=2&&h('span',{class:'combo'},' · 连对 ×'+st.combo);
+
 function renderStep(auto){
   picVis();
-  const S=DATA[st.cur],p=S.steps[st.step],box=$('#step');
+  const S=DATA[st.cur],p=S.steps[st.step],box=$('#step'),run=st.run;
   const fb=h('div',{class:'fb','aria-live':'polite'});
-  const kids=[h('p',{class:'count'},'任务 '+(st.step+1)+' / '+S.steps.length)];
+  const kids=[h('p',{class:'count'},'任务 '+(st.step+1)+' / '+S.steps.length,comboEl())];
   if(p.npc)kids.push(bubble(S.who,p.npc[0],p.npc[1]));
+  let missed=false,revealed=false;
   const lock=()=>box.querySelectorAll('.opt,.tile,.check').forEach(b=>b.disabled=true);
   const win=(fr,zh,say)=>{lock();
-    fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),...(fr?frLine(fr,zh):[]),h('p',{class:'note'},p.note),
+    run.n++;if(p.t==='listen')run.earN++;
+    if(missed)st.combo=0;else{run.ft++;st.combo++;if(st.combo>st.best)st.best=st.combo;if(p.t==='listen'&&!revealed)run.ear++}
+    save();
+    fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !',!missed&&st.combo>=3&&h('span',{class:'combo',lang:'zh',style:'font:600 .9rem var(--f-ui)'},'　连对 ×'+st.combo)),
+      ...(fr?frLine(fr,zh):[]),h('p',{class:'note'},p.note),
       h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:next},st.step+1<S.steps.length?'继续':'去做小测试')));
     if(say)speak(fr);fb.querySelector('.primary').focus({preventScroll:true});};
-  const miss=msg=>fb.replaceChildren(h('p',{class:'no'},msg));
+  const miss=msg=>{missed=true;run.miss++;st.combo=0;save();fb.replaceChildren(h('p',{class:'no'},msg))};
 
   if(p.t==='listen'){
     const txt=h('p',{class:'fr',lang:'fr',hidden:true},p.fr);
     kids.push(h('div',{class:'bubble'},h('span',{class:'who',lang:'fr'},S.who),h('div',{class:'line'},spk(p.fr,true)),txt,
-      h('button',{class:'reveal',type:'button',onclick:e=>{txt.hidden=false;e.target.hidden=true}},'听不出来？显示文字')));
+      h('button',{class:'reveal',type:'button',onclick:e=>{revealed=true;txt.hidden=false;e.target.hidden=true}},'听不出来？显示文字')));
     kids.push(h('p',{class:'ctx'},p.q));
     const right=p.opts[0];
     kids.push(h('div',{class:'opts'},shuffle(p.opts).map(o=>h('button',{class:'opt',type:'button',onclick:e=>{
-      if(o===right){e.target.classList.add('right');win(p.fr,right,false)}
+      if(o===right){e.target.classList.add('right');txt.hidden=false;win(null,null,false);fb.insertBefore(h('p',{class:'zh'},right),fb.children[1])}
       else{e.target.classList.add('wrong');e.target.disabled=true;miss('不是这个意思。再听一遍，可以点慢速。')}}},o))));
   }
   if(p.t==='choose'){
@@ -507,75 +614,88 @@ function renderStep(auto){
   if(auto&&acted)speak(p.t==='listen'?p.fr:(p.npc?p.npc[0]:''));
 }
 
+const toStep=()=>$('#step').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 function next(){
-  const S=DATA[st.cur];st.step++;
-  if(st.step>=S.steps.length){save();renderQuiz();}
-  else{save();renderStep(true);}
-  $('#step').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  const S=DATA[st.cur];st.step++;save();
+  if(st.step>=S.steps.length)renderQuiz();else renderStep(true);
+  toStep();
 }
 
 function renderQuiz(){
   picVis();
-  const S=DATA[st.cur],sc=SCENES[st.cur],box=$('#step'),n=sc.hots.length;
+  const S=DATA[st.cur],sc=SCENES[st.cur],box=$('#step'),n=sc.hots.length,run=st.run;
   const fb=h('div',{class:'fb','aria-live':'polite'});
   const cards=h('div',{class:'quiz'}),chips=h('div',{class:'row'});
   const cardEl={},chipEl={};let selW=null,selP=null,left=n;
+  const finish=()=>{
+    const i=st.cur,prev=st.res[i],stars=starsFor(run.miss);
+    st.last={i:i,stars:stars,miss:run.miss};
+    if(!prev||prev.old||stars>=prev.stars)st.res[i]={stars:stars,ft:run.ft,n:run.n,ear:run.ear,earN:run.earN,qm:run.qm};
+    if(!st.done.includes(i))st.done.push(i);
+    st.step=S.steps.length+1;st.run=null;save();renderReward(true);toStep();
+  };
   const judge=()=>{
     if(selW==null||selP==null)return;
     const c=cardEl[selP],ch=chipEl[selW],o=sc.hots[selP];
     c.classList.remove('sel');ch.classList.remove('sel');
     if(selW===selP){
       c.classList.add('ok');c.disabled=true;c.querySelector('.qlab').textContent=o[0];ch.remove();left--;
+      st.combo++;if(st.combo>st.best)st.best=st.combo;save();
       if(left)fb.replaceChildren(...frLine(o[0],o[1]));
       else{fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),h('p',{class:'zh'},n+' 个词全部配对成功。'),
-        h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{
-          st.step=S.steps.length+1;if(!st.done.includes(st.cur))st.done.push(st.cur);save();renderRoute();renderReward();
-          box.scrollIntoView({block:'start'});}},'完成这一站')));
+        h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:finish},'完成这一站')));
         fb.querySelector('.primary').focus({preventScroll:true});}
     }else{
+      run.qm++;run.miss++;st.combo=0;save();
       c.classList.add('bad');setTimeout(()=>c.classList.remove('bad'),700);
       fb.replaceChildren(h('p',{class:'no'},'不是这一张，再试试。'));
     }
     selW=selP=null;
   };
   shuffle(sc.hots.map((o,k)=>k)).forEach(k=>{
-    const o=sc.hots[k];
     const c=h('button',{class:'qcard',type:'button','aria-label':'图片',onclick:()=>{
       Object.values(cardEl).forEach(x=>x.classList.remove('sel'));selP=k;c.classList.add('sel');judge();}});
-    c.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" aria-hidden="true"><rect class="qbg"/><g>'+o[4]+'</g></svg><span class="qlab fr" lang="fr"></span>';
+    c.innerHTML=objMarkup(sc.hots[k])+'<span class="qlab fr" lang="fr"></span>';
     cardEl[k]=c;cards.append(c);});
   shuffle(sc.hots.map((o,k)=>k)).forEach(k=>{
     const ch=h('button',{class:'tile fr',lang:'fr',type:'button',onclick:()=>{
       Object.values(chipEl).forEach(x=>x.classList.remove('sel'));selW=k;ch.classList.add('sel');speak(sc.hots[k][0]);judge();}},sc.hots[k][0]);
     chipEl[k]=ch;chips.append(ch);});
-  box.replaceChildren(h('p',{class:'count'},'小测试'),h('p',{class:'ctx'},'把词和图配成对：先点一个词，再点它对应的图。'),chips,cards,fb);
-  /* frame each object: its own bounding box (or a given crop), padded and widened to 4:3 */
-  Object.keys(cardEl).forEach(k=>{
-    const svg=cardEl[k].querySelector('svg'),crop=sc.hots[k][5];
-    let b;try{b=crop?{x:crop[0],y:crop[1],width:crop[2],height:crop[3]}:svg.querySelector('g').getBBox()}catch(e){b={x:0,y:0,width:680,height:280}}
-    let w=b.width*(crop?1:1.3)+ (crop?0:16),hh=b.height*(crop?1:1.3)+(crop?0:16);
-    if(w/hh<4/3)w=hh*4/3;else hh=w*3/4;
-    const x=b.x+b.width/2-w/2,y=b.y+b.height/2-hh/2,bg=svg.querySelector('.qbg');
-    svg.setAttribute('viewBox',[x,y,w,hh].join(' '));
-    bg.setAttribute('x',x);bg.setAttribute('y',y);bg.setAttribute('width',w);bg.setAttribute('height',hh);
-  });
+  box.replaceChildren(h('p',{class:'count'},'小测试',comboEl()),h('p',{class:'ctx'},'把词和图配成对：先点一个词，再点它对应的图。'),chips,cards,fb);
+  Object.keys(cardEl).forEach(k=>fitObj(cardEl[k].querySelector('svg'),sc.hots[k]));
 }
 
 function entryList(S){return h('ul',{class:'entries'},S.carnet.map(c=>h('li',{},frLine(c[0],c[1]))))}
 
-function renderReward(){
+function souvCard(i,withLabel){
+  const o=SCENES[i].hots[SOUV[i]],r=st.res[i];
+  const c=h('div',{class:'scard'+(r&&r.stars===3?' gold':'')});
+  c.innerHTML=objMarkup(o)+(withLabel?'<span class="qlab fr" lang="fr"></span>':'');
+  if(withLabel)c.querySelector('.qlab').textContent=o[0];
+  return c;
+}
+
+function renderReward(fresh){
   picVis();
-  const S=DATA[st.cur],last=st.cur===DATA.length-1,all=st.done.length===DATA.length;
+  const i=st.cur,S=DATA[i],r=st.res[i],all=st.done.length===DATA.length,o=SCENES[i].hots[SOUV[i]];
+  const last=fresh&&st.last&&st.last.i===i?st.last:null,shown=last?last.stars:r.stars;
+  const card=souvCard(i,false);
+  const verdict=last
+    ?(last.miss===0?'一次都没错。':'这一轮错了 '+last.miss+' 次。')+(last.stars<3?'错 1 次以内是三颗星。':'')+(last.stars<r.stars?'你在这一站的最好成绩还是 '+r.stars+' 颗星。':'')
+    :(r.old?'这一站是加入星星之前走完的，先记两颗星。再走一遍可以拿到真实成绩。':'这一站的最好成绩。');
   $('#step').replaceChildren(
     h('p',{class:'count'},'这一站完成'),
-    h('h2',{},last&&all?'Bravo ! 你走完了整条路线':'这几句话收进了你的手帐'),
-    last&&all&&h('p',{class:'scene'},'从河边的旧书摊到傍晚的卢森堡公园，你已经能用法语买书、点咖啡、问路、夸一幅画、谈一位作家的生平，还能说出今晚的打算。打开“手帐”可以随时回来听。'),
+    h('div',{},starEl(shown,true)),
+    h('p',{},shown===3&&last?h('span',{class:'fr',lang:'fr'},'Parfait ! '):null,verdict),
+    h('div',{class:'keep'},card,h('div',{},h('p',{class:'zh'},r.stars===3?'金边纪念品':'纪念品（三颗星可以换成金边）'),frLine(o[0],o[1]))),
+    h('h2',{},'这几句话收进了你的手帐'),
     entryList(S),
     h('p',{class:'note'},S.gram),
     h('div',{class:'row'},
-      !last&&h('button',{class:'primary',type:'button',onclick:()=>{st.cur++;st.step=0;save();renderStation(false);window.scrollTo(0,0)}},'下一站：'+DATA[st.cur+1].place),
-      h('button',{class:'tile',type:'button',onclick:()=>{st.step=0;save();renderStep(true)}},'再走一遍这一站'),
-      last&&h('button',{class:'primary',type:'button',onclick:()=>setTab('carnet')},'打开手帐')));
+      h('button',{class:'primary',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我是哪一类巴黎人':'回到地图，选下一站'),
+      h('button',{class:'tile',type:'button',onclick:()=>{st.step=0;newRun(i);st.combo=0;st.last=null;save();renderStation(true);toStep()}},r.stars<3?'再走一遍，争取三颗星':'再走一遍这一站'),
+      all&&h('button',{class:'tile',type:'button',onclick:()=>setTab('carte')},'回到地图')));
+  fitObj(card.querySelector('svg'),o);
 }
 
 function renderCarnet(){
@@ -588,16 +708,68 @@ function renderCarnet(){
         h('ul',{class:'entries'},SCENES[i].hots.map(o=>h('li',{},frLine(o[0],o[1]))))]:h('p',{class:'locked'},S.place+'：走完这一站后解锁'))));
 }
 
+/* ---------- profile: four measured traits, a rank from stars, a type from the strongest trait and the places ---------- */
+const SKILL={
+  precision:['准确','Précision','做任务时一次就答对的比例','Puriste','纯粹派','你几乎不出错。词序、阴阳性、冠词，都要弄对了才往下走，像一位字斟句酌的校对。'],
+  oreille:['听力','Oreille','不看文字、一次听懂的比例','Mélomane','好耳朵','你靠耳朵学法语。不看文字就能听懂路人的话，街头的法语对你来说像一段旋律。'],
+  memoire:['记词','Mémoire','小测试里图和词一次配对的比例','Encyclopédiste','百科全书派','见过的词你都记得住，图和词一配就准，像狄德罗编百科全书那样把巴黎一样一样收进脑子里。'],
+  curiosite:['好奇','Curiosité','去过的站里，图中点开过的东西的比例','Flâneur · Flâneuse','漫游者','你不急着赶路。每张图里的东西都要点一点、听一听，这正是波德莱尔笔下在巴黎街头闲逛的人。']};
+const AFF={
+  lit:['bibliophile','爱书人','旧书摊、咖啡馆、雨果故居和普鲁斯特墓这些文学的地方，你拿的星最多。'],
+  art:['esthète','爱美的人','奥赛和蒙马特这些看画的地方，你拿的星最多。'],
+  mix:['éclectique','兼收并蓄','文学的地方和看画的地方你走得一样好，没有偏科。']};
+const RANKS=[[21,'Légende','传奇'],[14,'Guide','向导'],[7,'Pensionnaire','常住客'],[0,'Touriste','游客']];
+function traits(){
+  let ft=0,n=0,ear=0,earN=0,q=0,qn=0,found=0,real=0;
+  st.done.forEach(i=>{const r=st.res[i];found+=(st.found[i]||[]).length;
+    if(r&&!r.old){real++;ft+=r.ft;n+=r.n;ear+=r.ear;earN+=r.earN;q+=5-Math.min(5,r.qm);qn+=5}});
+  const pc=(a,b)=>b?Math.round(100*a/b):null;
+  return {real:real,v:{precision:pc(ft,n),oreille:pc(ear,earN),memoire:pc(q,qn),curiosite:pc(found,st.done.length*5)}};
+}
+function playerType(tr){
+  if(tr.real<3)return null;
+  const v=tr.v,keys=['curiosite','oreille','memoire','precision'];
+  const avg=g=>{const a=g.filter(i=>st.done.includes(i));return a.length?a.reduce((s,i)=>s+st.res[i].stars,0)/a.length:null};
+  const l=avg(LIT),a=avg(ART);
+  const aff=AFF[l==null?'art':a==null?'lit':l-a>=0.34?'lit':a-l>=0.34?'art':'mix'];
+  if(keys.every(k=>v[k]!=null&&v[k]>=95))return {fr:'Virtuose '+aff[0],zh:'全能型 · '+aff[1],desc:['四项都在 95 分以上：耳朵、记性、准确和好奇心，你一样不缺。',aff[2]]};
+  let top=keys[0];keys.forEach(k=>{if((v[k]||0)>(v[top]||0))top=k});
+  const s=SKILL[top];
+  return {fr:s[3]+' '+aff[0],zh:s[4]+' · '+aff[1],desc:['你最强的一项是“'+s[0]+'”。'+s[5],aff[2]]};
+}
+function renderProfil(){
+  const tr=traits(),ty=playerType(tr),stars=totalStars(),rank=RANKS.find(r=>stars>=r[0]),all=st.done.length===DATA.length;
+  const foundAll=Object.keys(st.found).reduce((s,k)=>s+st.found[k].length,0);
+  const souv=h('div',{class:'souv'},DATA.map((S,i)=>st.done.includes(i)?souvCard(i,true):h('div',{class:'scard lock',title:S.place},'?')));
+  $('#profil').replaceChildren(
+    h('h2',{},'我的巴黎 · Mon Paris'),
+    h('div',{class:'typecard'},
+      h('p',{class:'count'},'等级：',h('span',{lang:'fr'},rank[1]),' '+rank[2]+' · 星星 '+stars+' / '+DATA.length*3),
+      ty?[h('p',{class:'zh'},all?'你的类型':'目前的类型（七站走完后定下来）'),h('p',{class:'tfr',lang:'fr'},ty.fr),h('p',{class:'tzh'},ty.zh),ty.desc.map(d=>h('p',{},d))]
+        :h('p',{},'再走完 '+(3-tr.real)+' 站，这里会根据你的表现和去过的地方，告诉你是哪一类巴黎人。'),
+      h('p',{class:'zh'},'等级看星星：7 颗升“常住客”，14 颗升“向导”，21 颗满星是“传奇”。')),
+    h('h3',{},'四项属性'),
+    h('div',{class:'attrs'},Object.keys(SKILL).map(k=>{const s=SKILL[k],x=tr.v[k];
+      return [h('div',{class:'an'},h('b',{},s[0]+' ',h('span',{lang:'fr',style:'font-size:.9rem'},s[1])),h('span',{},s[2])),
+        h('div',{class:'bar',role:'img','aria-label':s[0]+(x==null?' 暂无':' '+x+' 分')},h('i',{style:'width:'+(x||0)+'%'})),h('div',{class:'av'},x==null?'—':String(x))]})),
+    h('h3',{},'纪念品'),
+    souv,
+    h('p',{class:'zh'},'每走完一站得一件，拿到三颗星的那一站是金边。最长连对 '+st.best+' 次 · 图里点开过的东西 '+foundAll+' / '+DATA.length*5+'。'));
+  souv.querySelectorAll('.scard:not(.lock)').forEach(c=>{const i=[...souv.children].indexOf(c);fitObj(c.querySelector('svg'),SCENES[i].hots[SOUV[i]])});
+}
+
+/* ---------- views ---------- */
 function setTab(t){
   st.tab=t;save();
-  const jeu=t!=='carnet';
-  $('#jeu').hidden=!jeu;$('#jeu').style.display=jeu?'contents':'';
-  $('#carnet').hidden=jeu;$('#carnet').style.display=jeu?'':'flex';
-  $('#carnet').style.flexDirection='column';$('#carnet').style.gap='20px';
-  $('#tab-jeu').setAttribute('aria-selected',jeu);$('#tab-carnet').setAttribute('aria-selected',!jeu);
-  if(jeu)renderStation(false);else renderCarnet();
+  ['carte','jeu','carnet','profil'].forEach(v=>{$('#'+v).hidden=v!==t});
+  $('#tab-carte').setAttribute('aria-selected',t==='carte'||t==='jeu');
+  $('#tab-carnet').setAttribute('aria-selected',t==='carnet');
+  $('#tab-profil').setAttribute('aria-selected',t==='profil');
+  if(t==='carte')renderMap();else if(t==='jeu')renderStation(false);else if(t==='carnet')renderCarnet();else renderProfil();
 }
-$('#tab-jeu').addEventListener('click',()=>setTab('jeu'));
+$('#tab-carte').addEventListener('click',()=>setTab('carte'));
 $('#tab-carnet').addEventListener('click',()=>setTab('carnet'));
+$('#tab-profil').addEventListener('click',()=>setTab('profil'));
+$('#back').addEventListener('click',()=>setTab('carte'));
 setTab(st.tab);
 </script>
