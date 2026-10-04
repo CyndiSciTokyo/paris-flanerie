@@ -95,6 +95,8 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .bar i{display:block;height:100%;background:var(--accent)}
 .attrs .av{text-align:right;font-variant-numeric:tabular-nums}
 .picbox{display:flex;flex-direction:column;gap:6px}
+#room svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.ritem:hover,.ritem:focus-visible{filter:brightness(1.1)}
 #pic svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
 .hot{cursor:pointer;outline:none}
 .hot .mk{fill:#ffffff;stroke:#1b3f94;stroke-width:2.5}
@@ -173,12 +175,15 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
   <header>
     <h1>巴黎文艺漫步<span>Flânerie à Paris</span></h1>
     <div class="tabs" role="tablist">
+      <button id="tab-chambre" role="tab" type="button">房间</button>
       <button id="tab-carte" role="tab" type="button">地图</button>
       <button id="tab-carnet" role="tab" type="button">手帐</button>
       <button id="tab-profil" role="tab" type="button">我的巴黎</button>
     </div>
   </header>
   <p id="warn" class="warn" hidden>录音文件没有加载出来，这台设备上也没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
+
+  <main id="chambre" class="view" hidden></main>
 
   <main id="carte" class="view" hidden>
     <div id="map"></div>
@@ -393,6 +398,28 @@ const SCENES=[
  ]}
 ];
 
+/* ---------- the room, after Virginia Woolf's "A Room of One's Own": one piece per stop, one extra for three stars ---------- */
+const INTRO_FR='Une chambre à soi';
+const bks=(x,yb,n,s)=>{const col=[C.red,C.blue,C.yel,C.white,C.green,'#c98a3c'];let o='';for(let i=0;i<n;i++){const w=9+((i*5+s)%4),hh=28+((i*7+s*3)%11);o+='<rect x="'+x+'" y="'+(yb-hh)+'" width="'+w+'" height="'+hh+'" fill="'+col[(i+s)%6]+'"/>';x+=w+1}return o};
+const ROOM_BG=`<rect width="680" height="300" fill="#e9dfcf"/><path d="M0 0H210L0 150Z" fill="#d8cdb9"/><rect y="300" width="680" height="120" fill="#b08a5e"/><path d="M0 330H680M0 364H680M0 398H680M120 300v30M340 300v30M560 300v30M230 330v34M470 330v34M90 364v34M370 364v34M600 364v34" stroke="#96744c" stroke-width="2"/><rect y="294" width="680" height="8" fill="#cbbfa8"/><path d="M250 0v46" stroke="${C.dark}" stroke-width="2"/><circle cx="250" cy="54" r="9" fill="${C.yel}"/>`;
+const ROOM_WIN=`<rect x="299" y="44" width="142" height="172" fill="${C.white}"/><rect x="307" y="52" width="126" height="156" fill="${C.sky}"/><path d="M307 160l30-18 22 10 26-22 30 16 18-8v70H307z" fill="${C.zinc}"/><rect x="330" y="128" width="8" height="16" fill="${C.red}"/><rect x="398" y="118" width="8" height="16" fill="${C.red}"/><path d="M370 52v156M307 130h126" stroke="${C.white}" stroke-width="5"/><rect x="293" y="212" width="154" height="8" fill="${C.white}"/>`;
+const ROOM=[
+ {fr:"l'étagère",zh:'书架（阴性）',svg:`<rect x="40" y="140" width="130" height="160" fill="${C.wood}"/><g fill="#5f3d22"><rect x="48" y="148" width="114" height="42"/><rect x="48" y="198" width="114" height="42"/><rect x="48" y="248" width="114" height="44"/></g>`+bks(54,240,3,1),
+  up:{fr:'les livres',zh:'书（复数）',svg:bks(52,190,9,2)+bks(92,240,6,4)+bks(52,292,9,5)}},
+ {fr:'la table',zh:'桌子',svg:`<rect x="251" y="326" width="8" height="64" fill="${C.dark}"/><ellipse cx="255" cy="393" rx="24" ry="5" fill="${C.dark}"/><ellipse cx="255" cy="320" rx="52" ry="10" fill="${C.white}" stroke="${C.dark}" stroke-width="3"/>`,
+  up:{fr:'le café',zh:'咖啡',svg:`<ellipse cx="250" cy="318" rx="16" ry="3" fill="#d9d4c5"/><rect x="241" y="303" width="18" height="14" rx="3" fill="${C.white}" stroke="${C.dark}" stroke-width="2"/><circle cx="262" cy="309" r="4" fill="none" stroke="${C.dark}" stroke-width="2"/><path d="M246 298q-4-6 0-12M254 298q-4-6 0-12" fill="none" stroke="${C.zinc}" stroke-width="2" stroke-linecap="round"/>`}},
+ {fr:'le tableau',zh:'画',svg:`<rect x="455" y="70" width="84" height="66" fill="#5b3d24"/><rect x="462" y="77" width="70" height="52" fill="#1d2f5e"/><g fill="${C.yel}"><circle cx="474" cy="88" r="3"/><circle cx="492" cy="84" r="2.5"/><circle cx="508" cy="92" r="3.5"/><circle cx="522" cy="86" r="2.5"/></g><path d="M470 112v12M486 110v14M504 113v11M520 111v13" stroke="${C.yel}" stroke-width="3" opacity=".75"/>`,
+  up:{fr:'le cadre doré',zh:'金色画框',svg:`<rect x="455" y="70" width="84" height="66" fill="none" stroke="#c9a24a" stroke-width="7"/>`}},
+ {fr:'le bureau',zh:'书桌',svg:`<rect x="293" y="246" width="8" height="82" fill="${C.wood}"/><rect x="439" y="246" width="8" height="82" fill="${C.wood}"/><rect x="335" y="246" width="70" height="22" fill="#6e4526"/><circle cx="370" cy="257" r="3" fill="${C.yel}"/><rect x="285" y="236" width="170" height="10" fill="${C.wood}"/><rect x="352" y="224" width="14" height="12" rx="2" fill="${C.dark}"/><path d="M359 226q4-22 26-34q-4 22-26 34z" fill="${C.white}" stroke="${C.zinc}" stroke-width="1.5"/>`,
+  up:{fr:'la lampe',zh:'灯',svg:`<ellipse cx="425" cy="212" rx="34" ry="26" fill="${C.yel}" opacity=".25"/><ellipse cx="425" cy="235" rx="12" ry="3" fill="${C.dark}"/><rect x="423" y="206" width="4" height="28" fill="${C.dark}"/><path d="M409 208h32l-7-20h-18z" fill="${C.yel}"/>`}},
+ {fr:'le chevalet',zh:'画架',svg:`<path d="M595 176L560 402M595 176L630 402M595 176L601 388" stroke="${C.wood}" stroke-width="6" stroke-linecap="round"/><rect x="558" y="200" width="74" height="90" fill="${C.white}" stroke="${C.wood}" stroke-width="3"/><rect x="552" y="290" width="86" height="6" fill="${C.wood}"/>`,
+  up:{fr:'la peinture',zh:'画好的画',svg:`<rect x="560" y="202" width="70" height="86" fill="${C.sky}"/><path d="M560 262q35-22 70 0v26h-70z" fill="#cdd9c0"/><ellipse cx="595" cy="240" rx="8" ry="14" fill="${C.white}"/><ellipse cx="582" cy="246" rx="4" ry="8" fill="${C.white}"/><ellipse cx="608" cy="246" rx="4" ry="8" fill="${C.white}"/><rect x="578" y="246" width="34" height="14" fill="${C.white}"/>`}},
+ {fr:'le chat',zh:'猫',svg:`<g transform="translate(-10 152)">${SCENES[5].hots[3][4]}</g>`,
+  up:{fr:'le bouquet',zh:'花束',svg:`<path d="M318 192v-16M324 192v-22M330 192v-14" stroke="${C.green}" stroke-width="2.5"/><circle cx="318" cy="174" r="6" fill="${C.red}"/><circle cx="325" cy="167" r="6" fill="${C.yel}"/><circle cx="331" cy="176" r="5" fill="${C.white}"/><rect x="315" y="190" width="18" height="20" rx="3" fill="${C.blue}"/>`}},
+ {fr:'le fauteuil',zh:'扶手椅',svg:`<path d="M74 362V408M146 362V408M66 340H154" stroke="${C.green}" stroke-width="6" stroke-linecap="round"/><rect x="74" y="302" width="72" height="52" rx="8" fill="none" stroke="${C.green}" stroke-width="6"/><path d="M92 304v48M110 304v48M128 304v48" stroke="${C.green}" stroke-width="4"/><rect x="68" y="354" width="84" height="10" rx="3" fill="${C.green}"/>`,
+  up:{fr:'la plante',zh:'绿植',svg:`<path d="M168 372h28l-4 30h-20z" fill="${C.red}"/><ellipse cx="174" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(-20 174 356)"/><ellipse cx="190" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(20 190 356)"/><ellipse cx="182" cy="350" rx="7" ry="22" fill="#3d8a66"/>`}}
+];
+
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const h=(t,a={},...c)=>{const e=document.createElement(t);
@@ -408,7 +435,7 @@ try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isA
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
 if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length+1))st.step=0;
 st.done.forEach(i=>{if(!st.res[i])st.res[i]={stars:2,old:true}});  /* stops finished before stars existed */
-if(!['carte','jeu','carnet','profil'].includes(st.tab)||(st.tab==='jeu'&&!st.run))st.tab='carte';
+st.tab=(st.tab==='jeu'&&st.run)?'jeu':'chambre';
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
 let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
 
@@ -460,7 +487,6 @@ const bubble=(who,fr,zh)=>h('div',{class:'bubble'},h('span',{class:'who',lang:'f
 
 /* ---------- rewards ---------- */
 const LIT=[0,1,3,5],ART=[2,4];
-const SOUV=[3,1,4,3,3,2,3];   /* which object of each scene is kept as the souvenir */
 const starsFor=m=>m<=1?3:m<=4?2:1;
 const starEl=(n,big)=>h('span',{class:'stars'+(big?' bigstars':''),role:'img','aria-label':n+' 颗星（满分 3 颗）'},'★'.repeat(n),h('span',{class:'off'},'★'.repeat(3-n)));
 const totalStars=()=>st.done.reduce((s,i)=>s+(st.res[i]?st.res[i].stars:0),0);
@@ -668,19 +694,17 @@ function renderQuiz(){
 
 function entryList(S){return h('ul',{class:'entries'},S.carnet.map(c=>h('li',{},frLine(c[0],c[1]))))}
 
-function souvCard(i,withLabel){
-  const o=SCENES[i].hots[SOUV[i]],r=st.res[i];
-  const c=h('div',{class:'scard'+(r&&r.stars===3?' gold':'')});
-  c.innerHTML=objMarkup(o)+(withLabel?'<span class="qlab fr" lang="fr"></span>':'');
-  if(withLabel)c.querySelector('.qlab').textContent=o[0];
-  return c;
+function pieceCard(i){
+  const r=st.res[i],plus=r&&r.stars===3,o=[0,0,0,0,ROOM[i].svg+(plus?ROOM[i].up.svg:'')];
+  const c=h('div',{class:'scard'+(plus?' gold':'')});c.innerHTML=objMarkup(o);
+  return [c,o];
 }
 
 function renderReward(fresh){
   picVis();
-  const i=st.cur,S=DATA[i],r=st.res[i],all=st.done.length===DATA.length,o=SCENES[i].hots[SOUV[i]];
+  const i=st.cur,S=DATA[i],r=st.res[i],all=st.done.length===DATA.length,R=ROOM[i],plus=r.stars===3;
   const last=fresh&&st.last&&st.last.i===i?st.last:null,shown=last?last.stars:r.stars;
-  const card=souvCard(i,false);
+  const [card,o]=pieceCard(i);
   const verdict=last
     ?(last.miss===0?'一次都没错。':'这一轮错了 '+last.miss+' 次。')+(last.stars<3?'错 1 次以内是三颗星。':'')+(last.stars<r.stars?'你在这一站的最好成绩还是 '+r.stars+' 颗星。':'')
     :(r.old?'这一站是加入星星之前走完的，先记两颗星。再走一遍可以拿到真实成绩。':'这一站的最好成绩。');
@@ -688,14 +712,16 @@ function renderReward(fresh){
     h('p',{class:'count'},'这一站完成'),
     h('div',{},starEl(shown,true)),
     h('p',{},shown===3&&last?h('span',{class:'fr',lang:'fr'},'Parfait ! '):null,verdict),
-    h('div',{class:'keep'},card,h('div',{},h('p',{class:'zh'},r.stars===3?'金边纪念品':'纪念品（三颗星可以换成金边）'),frLine(o[0],o[1]))),
+    h('div',{class:'keep'},card,h('div',{},h('p',{class:'zh'},'带回你的房间'),frLine(R.fr,R.zh),
+      plus?[h('p',{class:'zh'},'三颗星，另外带回'),frLine(R.up.fr,R.up.zh)]:h('p',{class:'zh'},'拿到三颗星，还能带回：'+R.up.zh))),
     h('h2',{},'这几句话收进了你的手帐'),
     entryList(S),
     h('p',{class:'note'},S.gram),
     h('div',{class:'row'},
-      h('button',{class:'primary',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我是哪一类巴黎人':'回到地图，选下一站'),
+      h('button',{class:'primary',type:'button',onclick:()=>{setTab('chambre');window.scrollTo(0,0)}},'回房间看看'),
+      h('button',{class:'tile',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我是哪一类巴黎人':'回到地图，选下一站'),
       h('button',{class:'tile',type:'button',onclick:()=>{st.step=0;newRun(i);st.combo=0;st.last=null;save();renderStation(true);toStep()}},r.stars<3?'再走一遍，争取三颗星':'再走一遍这一站'),
-      all&&h('button',{class:'tile',type:'button',onclick:()=>setTab('carte')},'回到地图')));
+      ));
   fitObj(card.querySelector('svg'),o);
 }
 
@@ -741,7 +767,6 @@ function playerType(tr){
 function renderProfil(){
   const tr=traits(),ty=playerType(tr),stars=totalStars(),rank=RANKS.find(r=>stars>=r[0]),all=st.done.length===DATA.length;
   const foundAll=Object.keys(st.found).reduce((s,k)=>s+st.found[k].length,0);
-  const souv=h('div',{class:'souv'},DATA.map((S,i)=>st.done.includes(i)?souvCard(i,true):h('div',{class:'scard lock',title:S.place},'?')));
   $('#profil').replaceChildren(
     h('h2',{},'我的巴黎 · Mon Paris'),
     h('div',{class:'typecard'},
@@ -753,21 +778,49 @@ function renderProfil(){
     h('div',{class:'attrs'},Object.keys(SKILL).map(k=>{const s=SKILL[k],x=tr.v[k];
       return [h('div',{class:'an'},h('b',{},s[0]+' ',h('span',{lang:'fr',style:'font-size:.9rem'},s[1])),h('span',{},s[2])),
         h('div',{class:'bar',role:'img','aria-label':s[0]+(x==null?' 暂无':' '+x+' 分')},h('i',{style:'width:'+(x||0)+'%'})),h('div',{class:'av'},x==null?'—':String(x))]})),
-    h('h3',{},'纪念品'),
-    souv,
-    h('p',{class:'zh'},'每走完一站得一件，拿到三颗星的那一站是金边。最长连对 '+st.best+' 次 · 图里点开过的东西 '+foundAll+' / '+DATA.length*5+'。'));
-  souv.querySelectorAll('.scard:not(.lock)').forEach(c=>{const i=[...souv.children].indexOf(c);fitObj(c.querySelector('svg'),SCENES[i].hots[SOUV[i]])});
+    h('p',{class:'zh'},'最长连对 '+st.best+' 次 · 图里点开过的东西 '+foundAll+' / '+DATA.length*5+' · 房间里的东西 '+st.done.length+' / '+DATA.length+'。'),
+    h('div',{class:'row'},h('button',{class:'tile',type:'button',onclick:()=>setTab('chambre')},'去看我的房间')));
+}
+
+/* ---------- room ---------- */
+function renderRoom(){
+  const have=i=>st.done.includes(i),plus=i=>have(i)&&st.res[i]&&st.res[i].stars===3;
+  const n=st.done.length,u=DATA.filter((S,i)=>plus(i)).length,N=DATA.length;
+  const hot=(o,svg)=>'<g class="hot ritem" tabindex="0" role="button" aria-label="'+o.fr+'" data-fr="'+o.fr+'" data-zh="'+o.zh+'">'+svg+'</g>';
+  const room=h('div',{id:'room'}),word=h('div',{id:'roomword','aria-live':'polite'});
+  room.innerHTML='<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="你的房间">'+ROOM_BG+hot({fr:'la fenêtre',zh:'窗户'},ROOM_WIN)+
+    [0,2,3,4,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
+  room.querySelectorAll('.ritem').forEach(g=>{
+    const say=()=>{word.replaceChildren(...frLine(g.dataset.fr,g.dataset.zh));speak(g.dataset.fr)};
+    g.addEventListener('click',say);
+    g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();say()}});});
+  const intro=n===0?'弗吉尼亚·伍尔夫在《一间自己的房间》里写道：一个女人要写作，得有钱，还得有一间属于自己的房间。这是你在巴黎屋顶下的房间，现在只有一扇窗和一盏灯。到街上去走走，每走完一个地方，就带一件东西回来。'
+    :n<N?'你的房间里已经有 '+n+' 件带回来的东西。点一点它们，听听法语怎么说。还有 '+(N-n)+' 个地方没去。'
+    :'房间布置好了。书架、书桌、画架和猫都在，这是一间属于你自己的房间。'+(u<N?'还有 '+(N-u)+' 件可以靠三颗星再添一样东西。':'每一件都是最好的样子。');
+  $('#chambre').replaceChildren(
+    h('div',{class:'line'},h('h2',{class:'fr',lang:'fr',style:'font-size:1.6rem;font-weight:500'},INTRO_FR),spk(INTRO_FR)),
+    h('p',{class:'scene'},intro),
+    room,word,
+    h('p',{class:'zh'},'已带回 '+n+' / '+N+' 件 · 三颗星添的东西 '+u+' / '+N+'。点房间里的东西可以听它的法语名字。'),
+    h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{setTab('carte');window.scrollTo(0,0)}},n?'去地图，再带一件回来':'去地图，出门走走')),
+    h('ol',{class:'chapters'},DATA.map((S,i)=>h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
+      h('span',{class:'cnum'+(have(i)?' done':'')},String(i+1)),
+      h('span',{class:'cname'},have(i)?h('b',{lang:'fr'},ROOM[i].fr+'　',h('span',{lang:'zh'},ROOM[i].zh)):h('b',{},'？'),
+        h('span',{},have(i)?(plus(i)?'来自'+S.place+'，三颗星还带回了 '+ROOM[i].up.fr+'（'+ROOM[i].up.zh+'）':'来自'+S.place+'。拿到三颗星，还能带回'+ROOM[i].up.zh):'走完“'+S.place+'”带回来')),
+      have(i)?starEl(st.res[i].stars):h('span',{class:'zh'},'未去过'))))));
 }
 
 /* ---------- views ---------- */
 function setTab(t){
   st.tab=t;save();
-  ['carte','jeu','carnet','profil'].forEach(v=>{$('#'+v).hidden=v!==t});
+  ['chambre','carte','jeu','carnet','profil'].forEach(v=>{$('#'+v).hidden=v!==t});
+  $('#tab-chambre').setAttribute('aria-selected',t==='chambre');
   $('#tab-carte').setAttribute('aria-selected',t==='carte'||t==='jeu');
   $('#tab-carnet').setAttribute('aria-selected',t==='carnet');
   $('#tab-profil').setAttribute('aria-selected',t==='profil');
-  if(t==='carte')renderMap();else if(t==='jeu')renderStation(false);else if(t==='carnet')renderCarnet();else renderProfil();
+  if(t==='chambre')renderRoom();else if(t==='carte')renderMap();else if(t==='jeu')renderStation(false);else if(t==='carnet')renderCarnet();else renderProfil();
 }
+$('#tab-chambre').addEventListener('click',()=>setTab('chambre'));
 $('#tab-carte').addEventListener('click',()=>setTab('carte'));
 $('#tab-carnet').addEventListener('click',()=>setTab('carnet'));
 $('#tab-profil').addEventListener('click',()=>setTab('profil'));

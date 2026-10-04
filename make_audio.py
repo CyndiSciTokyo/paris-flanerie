@@ -22,6 +22,7 @@ DATA.forEach(S=>{add(S.frPlace,'u');
   S.steps.forEach(p=>{if(p.t==='choose')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
   S.carnet.forEach(c=>add(c[0],'u'))});
 SCENES.forEach(sc=>sc.hots.forEach(o=>add(o[0],'u')));
+add(INTRO_FR,'u');ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
 return JSON.stringify(out);
 '''
 
