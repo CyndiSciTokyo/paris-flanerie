@@ -67,6 +67,17 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .hot.found .mkdot{fill:#2f6b4f}
 .hot:hover .mk,.hot:focus-visible .mk,.hot.sel .mk{stroke-width:5}
 #word:empty{display:none}
+.quiz{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media (max-width:560px){.quiz{grid-template-columns:repeat(3,1fr)}}
+.qcard{display:flex;flex-direction:column;padding:0;overflow:hidden;background:var(--surface);border:2px solid var(--line);border-radius:10px;min-width:0}
+.qcard svg{display:block;width:100%;height:auto}
+.qcard .qbg{fill:#b9c6d6}
+.qcard .qlab{min-height:2.2em;display:flex;align-items:center;justify-content:center;font-size:1rem;padding:2px 4px;text-align:center}
+.qcard:hover:not(:disabled){border-color:var(--accent)}
+.qcard.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.qcard.ok{border-color:var(--ok);background:var(--ok-bg);cursor:default}
+.qcard.bad{border-color:var(--bad);background:var(--bad-bg)}
+.tile.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
 .fr{font-family:var(--f-fr);font-size:1.2rem;line-height:1.45}
 .zh{color:var(--muted);font-size:.9rem}
 .count{font:600 .8rem var(--f-plaque);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
@@ -281,7 +292,7 @@ const C={sky:'#cfdcec',stone:'#e6dcc6',zinc:'#7d8796',blue:'#1b3f94',green:'#2f6
 const SCENES=[
 {bg:`<rect width="680" height="280" fill="${C.sky}"/><rect y="92" width="680" height="50" fill="#b3bfcf"/><rect x="40" y="70" width="60" height="72" fill="#a4b1c3"/><rect x="470" y="60" width="90" height="82" fill="#a4b1c3"/><rect y="200" width="680" height="80" fill="${C.stone}"/>`,
  hots:[
-  ["la Seine","塞纳河",30,162,`<rect y="140" width="680" height="60" fill="${C.water}"/><path d="M450 160h60M520 180h70M30 185h50" stroke="${C.white}" stroke-width="3" stroke-linecap="round" opacity=".7"/>`],
+  ["la Seine","塞纳河",30,162,`<rect y="140" width="680" height="60" fill="${C.water}"/><path d="M450 160h60M520 180h70M30 185h50" stroke="${C.white}" stroke-width="3" stroke-linecap="round" opacity=".7"/>`,[425,135,190,70]],
   ["le pont","桥",240,124,`<path d="M60 116H420V178h-15a45 40 0 0 0-90 0h-30a45 40 0 0 0-90 0h-30a45 40 0 0 0-90 0h-15Z" fill="#d8ccb2"/><rect x="60" y="112" width="360" height="6" fill="#bfb293"/>`],
   ["la boîte","书箱",614,138,`<rect x="430" y="126" width="200" height="24" fill="#24543e"/><rect x="430" y="150" width="200" height="72" fill="${C.green}"/>`],
   ["le livre","书",457,186,`<rect x="445" y="165" width="22" height="45" fill="${C.red}"/><rect x="470" y="160" width="18" height="50" fill="${C.yel}"/><rect x="491" y="168" width="24" height="42" fill="${C.white}"/><rect x="518" y="162" width="20" height="48" fill="${C.blue}"/><rect x="541" y="166" width="26" height="44" fill="#c98a3c"/><rect x="570" y="160" width="20" height="50" fill="${C.red}"/><rect x="593" y="168" width="24" height="42" fill="${C.white}"/>`],
@@ -350,7 +361,7 @@ const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><
 let st={done:[],cur:0,step:0,tab:'jeu',voice:null,found:{}};
 try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
-if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length))st.step=0;
+if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length+1))st.step=0;
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
 let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
 
@@ -414,8 +425,11 @@ function renderStation(auto){
   $('#place').replaceChildren('第 '+(st.cur+1)+' 站 · ',h('b',{},S.place),' ',h('span',{class:'fr',lang:'fr',style:'font-size:1rem'},S.frPlace),' ',spk(S.frPlace));
   $('#scene').textContent=S.scene;
   renderPic();
-  if(st.step>=S.steps.length)renderReward();else renderStep(auto);
+  if(st.step>S.steps.length)renderReward();else if(st.step===S.steps.length)renderQuiz();else renderStep(auto);
 }
+
+/* the scene shows the words when clicked, so it is put away during the quiz */
+const picVis=()=>{document.querySelector('.picbox').hidden=st.step===DATA[st.cur].steps.length};
 
 function renderPic(){
   const i=st.cur,sc=SCENES[i],found=(st.found[i]=st.found[i]||[]);
@@ -434,6 +448,7 @@ function renderPic(){
 }
 
 function renderStep(auto){
+  picVis();
   const S=DATA[st.cur],p=S.steps[st.step],box=$('#step');
   const fb=h('div',{class:'fb','aria-live':'polite'});
   const kids=[h('p',{class:'count'},'任务 '+(st.step+1)+' / '+S.steps.length)];
@@ -441,7 +456,7 @@ function renderStep(auto){
   const lock=()=>box.querySelectorAll('.opt,.tile,.check').forEach(b=>b.disabled=true);
   const win=(fr,zh,say)=>{lock();
     fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),...(fr?frLine(fr,zh):[]),h('p',{class:'note'},p.note),
-      h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:next},st.step+1<S.steps.length?'继续':'完成这一站')));
+      h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:next},st.step+1<S.steps.length?'继续':'去做小测试')));
     if(say)speak(fr);fb.querySelector('.primary').focus({preventScroll:true});};
   const miss=msg=>fb.replaceChildren(h('p',{class:'no'},msg));
 
@@ -495,14 +510,62 @@ function renderStep(auto){
 
 function next(){
   const S=DATA[st.cur];st.step++;
-  if(st.step>=S.steps.length){if(!st.done.includes(st.cur))st.done.push(st.cur);save();renderRoute();renderReward();}
+  if(st.step>=S.steps.length){save();renderQuiz();}
   else{save();renderStep(true);}
   $('#step').scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+
+function renderQuiz(){
+  picVis();
+  const S=DATA[st.cur],sc=SCENES[st.cur],box=$('#step'),n=sc.hots.length;
+  const fb=h('div',{class:'fb','aria-live':'polite'});
+  const cards=h('div',{class:'quiz'}),chips=h('div',{class:'row'});
+  const cardEl={},chipEl={};let selW=null,selP=null,left=n;
+  const judge=()=>{
+    if(selW==null||selP==null)return;
+    const c=cardEl[selP],ch=chipEl[selW],o=sc.hots[selP];
+    c.classList.remove('sel');ch.classList.remove('sel');
+    if(selW===selP){
+      c.classList.add('ok');c.disabled=true;c.querySelector('.qlab').textContent=o[0];ch.remove();left--;
+      if(left)fb.replaceChildren(...frLine(o[0],o[1]));
+      else{fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),h('p',{class:'zh'},n+' 个词全部配对成功。'),
+        h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{
+          st.step=S.steps.length+1;if(!st.done.includes(st.cur))st.done.push(st.cur);save();renderRoute();renderReward();
+          box.scrollIntoView({block:'start'});}},'完成这一站')));
+        fb.querySelector('.primary').focus({preventScroll:true});}
+    }else{
+      c.classList.add('bad');setTimeout(()=>c.classList.remove('bad'),700);
+      fb.replaceChildren(h('p',{class:'no'},'不是这一张，再试试。'));
+    }
+    selW=selP=null;
+  };
+  shuffle(sc.hots.map((o,k)=>k)).forEach(k=>{
+    const o=sc.hots[k];
+    const c=h('button',{class:'qcard',type:'button','aria-label':'图片',onclick:()=>{
+      Object.values(cardEl).forEach(x=>x.classList.remove('sel'));selP=k;c.classList.add('sel');judge();}});
+    c.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 280" aria-hidden="true"><rect class="qbg"/><g>'+o[4]+'</g></svg><span class="qlab fr" lang="fr"></span>';
+    cardEl[k]=c;cards.append(c);});
+  shuffle(sc.hots.map((o,k)=>k)).forEach(k=>{
+    const ch=h('button',{class:'tile fr',lang:'fr',type:'button',onclick:()=>{
+      Object.values(chipEl).forEach(x=>x.classList.remove('sel'));selW=k;ch.classList.add('sel');speak(sc.hots[k][0]);judge();}},sc.hots[k][0]);
+    chipEl[k]=ch;chips.append(ch);});
+  box.replaceChildren(h('p',{class:'count'},'小测试'),h('p',{class:'ctx'},'把词和图配成对：先点一个词，再点它对应的图。'),chips,cards,fb);
+  /* frame each object: its own bounding box (or a given crop), padded and widened to 4:3 */
+  Object.keys(cardEl).forEach(k=>{
+    const svg=cardEl[k].querySelector('svg'),crop=sc.hots[k][5];
+    let b;try{b=crop?{x:crop[0],y:crop[1],width:crop[2],height:crop[3]}:svg.querySelector('g').getBBox()}catch(e){b={x:0,y:0,width:680,height:280}}
+    let w=b.width*(crop?1:1.3)+ (crop?0:16),hh=b.height*(crop?1:1.3)+(crop?0:16);
+    if(w/hh<4/3)w=hh*4/3;else hh=w*3/4;
+    const x=b.x+b.width/2-w/2,y=b.y+b.height/2-hh/2,bg=svg.querySelector('.qbg');
+    svg.setAttribute('viewBox',[x,y,w,hh].join(' '));
+    bg.setAttribute('x',x);bg.setAttribute('y',y);bg.setAttribute('width',w);bg.setAttribute('height',hh);
+  });
 }
 
 function entryList(S){return h('ul',{class:'entries'},S.carnet.map(c=>h('li',{},frLine(c[0],c[1]))))}
 
 function renderReward(){
+  picVis();
   const S=DATA[st.cur],last=st.cur===DATA.length-1,all=st.done.length===DATA.length;
   $('#step').replaceChildren(
     h('p',{class:'count'},'这一站完成'),
