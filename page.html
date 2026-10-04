@@ -153,6 +153,13 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .primary{background:var(--enamel);color:var(--enamel-ink);border:0;border-radius:8px;padding:10px 20px;font-weight:600}
 .primary:disabled{opacity:.45;cursor:default}
 
+.entries.vocab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+@media (max-width:560px){.entries.vocab{grid-template-columns:minmax(0,1fr)}}
+.recall{border-top:1px solid var(--line);padding-top:12px}
+.recall summary{cursor:pointer;color:var(--accent);font-size:.9rem}
+.recall[open] summary{margin-bottom:14px}
+.recall .lesson{display:flex;flex-direction:column;gap:14px}
+.lesson{display:flex;flex-direction:column;gap:14px}
 .fb{display:flex;flex-direction:column;gap:8px}
 .fb:empty{display:none}
 .fb .ok{color:var(--ok);font:500 1.15rem var(--f-fr)}
@@ -230,6 +237,8 @@ const DATA=[
   {t:"listen",fr:"Douze euros.",q:"这本书多少钱？",opts:["12 欧元","2 欧元","20 欧元"],
    note:"三个容易混的数字：deux（2）、douze（12）、vingt（20）。点慢速多听几遍 douze。"}
  ],
+ vocab:[["Bonjour", "您好"], ["s'il vous plaît", "请，劳驾"], ["chercher", "找"], ["je cherche…", "我在找……"], ["vous cherchez…", "您在找……"], ["quelque chose", "某样东西"], ["un livre", "一本书"], ["une édition", "一个版本"], ["beau, belle", "漂亮的（阳性，阴性）"], ["C'est…", "这是……"], ["combien", "多少"], ["où", "哪里"], ["qui", "谁"], ["un euro", "一欧元"], ["deux, douze, vingt", "2，12，20"]],
+ lesson:{title:"un 和 une",text:["法语的每个名词都有“性别”：阳性或阴性。说“一个”的时候，阳性名词前用 un，阴性名词前用 une。", "性别大多没有道理可讲，所以背单词时要连着 un 或 une 一起背。一个小窍门：以 -tion 结尾的词几乎都是阴性。", "另外，对陌生人说“您”用 vous，动词跟着变：je cherche（我找），vous cherchez（您找）。"],ex:[["un livre", "一本书（阳性）"], ["une édition", "一个版本（阴性）"], ["une boîte", "一个箱子（阴性）"], ["C'est un livre.", "这是一本书。"], ["C'est une belle édition.", "这是一个漂亮的版本。"]]},
  carnet:[["Je cherche un livre de Baudelaire.","我在找一本波德莱尔的书。"],["C'est combien, s'il vous plaît ?","请问多少钱？"],["C'est une belle édition.","这是一个很漂亮的版本。"],["Douze euros.","十二欧元。"]],
  gram:"名词分阳性和阴性，“一个”跟着变：阳性 un livre，阴性 une édition。"},
 
@@ -247,6 +256,8 @@ const DATA=[
   {t:"listen",fr:"Merci, bonne journée !",q:"服务生最后说了什么？",opts:["谢谢，祝您今天愉快！","谢谢，晚上好！","谢谢，明天见！"],
    note:"Bonne journée 是白天分别时说的“祝一天愉快”。你可以回一句 Merci, vous aussi（谢谢，您也是）。"}
  ],
+ vocab:[["Qu'est-ce que… ?", "……什么？"], ["désirer", "想要（店员常用）"], ["je voudrais…", "我想要……（客气）"], ["un café crème", "一杯奶油咖啡"], ["un touriste, une touriste", "游客"], ["ici", "这里"], ["pour", "为了"], ["la littérature", "文学"], ["l'addition", "账单"], ["la carte", "菜单"], ["Merci", "谢谢"], ["Bonne journée !", "祝您今天愉快！"]],
+ lesson:{title:"“是”怎么说，怎样客气地要东西",text:["“是、在”这个动词叫 être，它跟着“谁”变形，这四个最常用：je suis（我是），tu es（你是），il est、elle est（他是、她是），vous êtes（您是）。", "要东西的时候，说 je voudrais（我想要），不要说 je veux（我要）。前者是客气的说法，在咖啡馆、商店、售票处都用它。"],ex:[["Je suis ici.", "我在这里。"], ["Vous êtes touriste ?", "您是游客吗？"], ["Il est serveur.", "他是服务生。"], ["Elle est écrivaine.", "她是作家。"], ["Je voudrais un café.", "我想要一杯咖啡。"]]},
  carnet:[["Je voudrais un café crème, s'il vous plaît.","我想要一杯奶油咖啡，劳驾。"],["Je suis ici pour la littérature.","我是为了文学来这里的。"],["L'addition, s'il vous plaît.","请结账。"],["Bonne journée !","祝您今天愉快！"]],
  gram:"想要东西时说 je voudrais，不说 je veux。“是”跟人称变：je suis、tu es、il est、vous êtes。"},
 
@@ -264,6 +275,8 @@ const DATA=[
   {t:"choose",npc:["Vous aimez Van Gogh ?","您喜欢梵高吗？"],ctx:"旁边一位看画的人问你。你很喜欢，怎么回答？",opts:[["Oui, j'adore !","是的，我特别喜欢！"],["Oui, je suis Van Gogh.","是的，我就是梵高。"],["Non merci, pas de café.","不用了谢谢，不要咖啡。"]],
    note:"喜欢的程度从低到高：j'aime bien（还不错）、j'aime beaucoup（很喜欢）、j'adore（特别喜欢）。"}
  ],
+ vocab:[["un billet", "一张票"], ["le musée", "博物馆"], ["Où est… ?", "……在哪里？（一个）"], ["Où sont… ?", "……在哪里？（多个）"], ["un étage", "一层楼"], ["au cinquième étage", "在第五层"], ["à droite", "在右边"], ["à gauche", "在左边"], ["aimer", "喜欢"], ["j'aime beaucoup…", "我很喜欢……"], ["j'adore", "我特别喜欢"], ["la couleur", "颜色"], ["les impressionnistes", "印象派画家"]],
+ lesson:{title:"le、la、les",text:["un 和 une 是“一个”，le、la、les 则是“这个、那些”，指大家都知道的那一个。阳性用 le，阴性用 la，复数不分阴阳都用 les。", "说喜欢什么东西，名词前一定要带上 le、la 或 les，比如 J'aime la peinture（我喜欢绘画）。", "问“在哪里”：问一个东西用 Où est，问好几个东西用 Où sont。"],ex:[["le musée", "博物馆（阳性）"], ["la couleur", "颜色（阴性）"], ["les couleurs", "颜色（复数）"], ["Où est le musée ?", "博物馆在哪里？"], ["Où sont les tableaux ?", "那些画在哪里？"], ["J'aime la peinture.", "我喜欢绘画。"]]},
  carnet:[["Un billet pour le musée, s'il vous plaît.","一张博物馆的票，劳驾。"],["Où sont les impressionnistes ?","印象派在哪里？"],["Au cinquième étage, à droite.","在第五层，右手边。"],["J'aime beaucoup les couleurs.","我很喜欢这些颜色。"],["J'adore !","我特别喜欢！"]],
  gram:"“这个／这些”有三种：阳性 le，阴性 la，复数 les。问在哪里：单数 où est，复数 où sont。"},
 
@@ -281,6 +294,8 @@ const DATA=[
   {t:"choose",ctx:"向她道谢并告别。",opts:[["Merci beaucoup, bonne journée !","非常感谢，祝您愉快！"],["De rien.","不客气。（这是对方回答你的话）"],["Pardon.","对不起／借过。"]],
    note:"别人说 Merci，你回 De rien（不客气）或更客气的 Je vous en prie。"}
  ],
+ vocab:[["Excusez-moi", "打扰一下"], ["la maison", "房子，故居"], ["aller", "去"], ["Allez tout droit.", "请一直走。"], ["Tournez à gauche.", "请左转。"], ["Tournez à droite.", "请右转。"], ["puis", "然后"], ["au deuxième étage", "在第二层"], ["l'entrée", "入口，门票"], ["gratuit, gratuite", "免费的（阳性，阴性）"], ["Merci beaucoup", "非常感谢"], ["De rien", "不客气"], ["Pardon", "对不起，借过"]],
+ lesson:{title:"au、à la、aux",text:["“去某个地方”“在某个地方”用 à。后面跟 la 的时候不变：à la maison。", "但是 à 碰到 le，必须合成一个词 au；碰到 les，合成 aux。法语里没有 à le 和 à les 这两种说法。", "aller（去）这个动词的变形：je vais（我去），vous allez（您去）。指路时说的 Allez 就是它。"],ex:[["Je vais au musée.", "我去博物馆。"], ["Je vais au café.", "我去咖啡馆。"], ["Je vais à la librairie.", "我去书店。"], ["Je vais aux Champs-Élysées.", "我去香榭丽舍大街。"]]},
  carnet:[["Excusez-moi, où est la maison de Victor Hugo ?","打扰一下，雨果故居在哪里？"],["Allez tout droit, puis tournez à gauche.","一直走，然后左转。"],["Je vais au musée.","我去博物馆。"],["L'entrée est gratuite.","免费入场。"],["Merci beaucoup ! — De rien.","非常感谢！——不客气。"]],
  gram:"à + le 合成 au（au musée），à + la 不变（à la maison），à + les 合成 aux。"},
 
@@ -298,6 +313,8 @@ const DATA=[
   {t:"build",ctx:"最后说：我喜欢这幅画，它太棒了。",tokens:["J'aime","ce","tableau,","il","est","magnifique."],extra:["elle"],
    zh:"我喜欢这幅画，它太棒了。",note:"阳性的东西用 il 指代，阴性的用 elle，法语里没有单独的“它”。ce 是“这个”（阳性），阴性是 cette。"}
  ],
+ vocab:[["un portrait", "一幅肖像"], ["dix minutes", "十分钟"], ["seulement", "只，仅仅"], ["regarder", "看"], ["je regarde", "我在看"], ["le tableau", "画"], ["la lumière", "光线"], ["très", "很"], ["beau, belle", "美的（阳性，阴性）"], ["magnifique", "极好的，壮观的"], ["ce, cette", "这个（阳性，阴性）"]],
+ lesson:{title:"形容词要跟着名词变",text:["形容词描述的名词是阳性还是阴性，它自己也要跟着变。多数形容词的阴性只是在词尾加一个 e：grand 变成 grande。", "少数常用词变得多一些，要单独记：beau 的阴性是 belle。本来就以 e 结尾的词不用变，比如 magnifique。", "指代东西时也分性别：阳性的东西用 il，阴性的东西用 elle，法语没有单独的“它”。“这个”同理：阳性 ce，阴性 cette。"],ex:[["Le tableau est beau.", "这幅画很美。"], ["La lumière est belle.", "光线很美。"], ["un grand musée", "一座大博物馆"], ["une grande maison", "一座大房子"], ["Ce tableau, il est magnifique.", "这幅画，它太棒了。"], ["Cette lumière, elle est magnifique.", "这光线，它太棒了。"]]},
  carnet:[["Je regarde seulement, merci.","我只是看看，谢谢。"],["Le tableau est très beau.","这幅画很美。"],["La lumière est belle.","光线很美。"],["J'aime ce tableau, il est magnifique.","我喜欢这幅画，它太棒了。"]],
  gram:"形容词跟着名词的阴阳性变：un beau tableau，une belle lumière。指代东西也分 il 和 elle。"},
 
@@ -315,6 +332,8 @@ const DATA=[
   {t:"choose",npc:["Vous avez lu Proust ?","您读过普鲁斯特吗？"],ctx:"一位来献花的读者问你。老实回答：还没有，不过我会试试。",opts:[["Pas encore, mais je vais essayer !","还没有，不过我会试试！"],["Oui, je suis Proust.","是的，我就是普鲁斯特。"],["Non, j'ai faim.","不，我饿了。"]],
    note:"Pas encore 是“还没有”。je vais essayer 是“我要去试试”，下一站专门练这个说法。"}
  ],
+ vocab:[["la tombe", "墓"], ["un plan", "一张地图"], ["Prenez un plan.", "请拿一张地图。"], ["quatre-vingts", "八十"], ["quatre-vingt-cinq", "八十五"], ["écrire", "写"], ["lire", "读"], ["né, née", "出生（阳性，阴性）"], ["pas encore", "还没有"], ["mais", "但是"], ["essayer", "试一试"]],
+ lesson:{title:"说过去的事",text:["说“做过了、做了”，法语用两个词：先放 avoir（有）的变形，再放动词的“过去形式”。avoir 的变形：j'ai，il a，vous avez。", "动词的过去形式要一个个记：écrire（写）是 écrit，lire（读）是 lu。", "少数表示来、去、出生、去世的动词不用 avoir，改用 être：il est né（他出生了），il est mort（他去世了）。"],ex:[["Il a écrit un livre.", "他写了一本书。"], ["J'ai lu Proust.", "我读过普鲁斯特。"], ["Vous avez lu Proust ?", "您读过普鲁斯特吗？"], ["Il est né à Paris.", "他出生在巴黎。"], ["Il est mort en 1922.", "他于 1922 年去世。"]]},
  carnet:[["Je cherche la tombe de Marcel Proust.","我在找马塞尔·普鲁斯特的墓。"],["Proust a écrit À la recherche du temps perdu.","普鲁斯特写了《追忆似水年华》。"],["Il est né à Paris en 1871.","他 1871 年生于巴黎。"],["Vous avez lu Proust ? — Pas encore.","您读过普鲁斯特吗？——还没有。"]],
  gram:"过去的事 = avoir + 动词的过去形式（il a écrit）。来、去、生、死这类动词改用 être（il est né）。"},
 
@@ -332,6 +351,8 @@ const DATA=[
   {t:"choose",ctx:"天色暗了，向她道别。",opts:[["Bonne soirée, à bientôt !","祝您晚上愉快，回头见！"],["Bonjour, enchanté !","您好，幸会！"],["Bon appétit !","祝您好胃口！"]],
    note:"白天分别说 Bonne journée，傍晚以后说 Bonne soirée。à bientôt 是“回头见”。"}
  ],
+ vocab:[["Il fait beau.", "天气很好。"], ["aujourd'hui", "今天"], ["n'est-ce pas ?", "对吧？"], ["lire", "读"], ["un poème", "一首诗"], ["ce soir", "今晚"], ["le théâtre", "剧院"], ["la pièce", "一出戏"], ["commencer", "开始"], ["à vingt heures", "在晚上八点"], ["Bonne soirée !", "祝您晚上愉快！"], ["À bientôt !", "回头见！"]],
+ lesson:{title:"说马上要做的事",text:["说“我要去做某事、我马上做某事”，用 aller（去）的变形，后面直接跟动词原形，和中文的“我去读书”很像。", "aller 的变形：je vais，tu vas，il va、elle va，vous allez。", "说天气用 il fait：il fait beau（天气好），il fait froid（冷），il fait chaud（热）。"],ex:[["Je vais lire.", "我要读书了。"], ["Il va écrire.", "他要写东西了。"], ["Vous allez voir.", "您会看到的。"], ["Je vais au théâtre.", "我去剧院。（aller 的本意）"], ["Il fait froid.", "天气冷。"], ["Il fait chaud.", "天气热。"]]},
  carnet:[["Il fait beau aujourd'hui.","今天天气很好。"],["Je vais lire un poème de Verlaine.","我要读一首魏尔伦的诗。"],["Ce soir, je vais au théâtre.","今晚我去剧院。"],["La pièce commence à vingt heures.","戏晚上八点开始。"],["Bonne soirée, à bientôt !","祝您晚上愉快，回头见！"]],
  gram:"马上要做的事 = aller + 动词原形：je vais lire，il va écrire，vous allez voir。"}
 ];
@@ -432,7 +453,7 @@ const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><
 let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null};
 try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
-if(!(st.step>=0&&st.step<=DATA[st.cur].steps.length+1))st.step=0;
+if(!(st.step>=-1&&st.step<=DATA[st.cur].steps.length+1))st.step=-1;
 st.done.forEach(i=>{if(!st.res[i])st.res[i]={stars:2,old:true}});  /* stops finished before stars existed */
 st.tab=(st.tab==='jeu'&&st.run)?'jeu':'chambre';
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
@@ -530,14 +551,14 @@ function renderMap(){
     return h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
       h('span',{class:'cnum'+(done?' done':'')},String(i+1)),
       h('span',{class:'cname'},h('b',{},S.place),h('span',{lang:'fr'},S.frPlace+' · '+S.arr)),
-      done?starEl(st.res[i].stars):h('span',{class:'zh'},st.run&&st.run.i===i&&st.step>0?'进行中':'未去过')))}));
+      done?starEl(st.res[i].stars):h('span',{class:'zh'},st.run&&st.run.i===i&&st.step>=0?'进行中':'未去过')))}));
 }
 function enter(i){
   const len=DATA[i].steps.length;
   if(!(st.run&&st.run.i===i&&st.cur===i&&st.step<=len)){
     st.cur=i;
     if(st.done.includes(i)){st.step=len+1;st.run=null;st.last=null}
-    else{st.step=0;newRun(i);st.combo=0}
+    else{st.step=-1;newRun(i);st.combo=0}
   }
   save();setTab('jeu');window.scrollTo(0,0);
 }
@@ -545,12 +566,12 @@ function enter(i){
 /* ---------- chapter ---------- */
 function renderStation(auto){
   const S=DATA[st.cur];
-  if(st.step<=S.steps.length&&!(st.run&&st.run.i===st.cur)){newRun(st.cur);st.step=0}
+  if(st.step<=S.steps.length&&!(st.run&&st.run.i===st.cur)){newRun(st.cur);st.step=-1}
   $('#arr').textContent=S.arr;$('#plaque').textContent=S.plaque;
   $('#place').replaceChildren('第 '+(st.cur+1)+' 站 · ',h('b',{},S.place),' ',h('span',{class:'fr',lang:'fr',style:'font-size:1rem'},S.frPlace),' ',spk(S.frPlace));
   $('#scene').textContent=S.scene;
   renderPic();
-  if(st.step>S.steps.length)renderReward(false);else if(st.step===S.steps.length)renderQuiz();else renderStep(auto);
+  if(st.step<0)renderLesson();else if(st.step>S.steps.length)renderReward(false);else if(st.step===S.steps.length)renderQuiz();else renderStep(auto);
 }
 
 /* the scene shows the words when clicked, so it is put away during the quiz */
@@ -570,6 +591,22 @@ function renderPic(){
     g.addEventListener('click',()=>pick(g));
     g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(g)}});});
   $('#word').replaceChildren();tally();
+}
+
+/* every stop opens with its word list and grammar; the same lesson can be reopened from any task */
+const lessonBody=S=>h('div',{class:'lesson'},
+  h('h2',{},'这一站要用到的词'),
+  h('ul',{class:'entries vocab'},S.vocab.map(v=>h('li',{},frLine(v[0],v[1])))),
+  h('h2',{},'语法：'+S.lesson.title),
+  S.lesson.text.map(x=>h('p',{class:'scene'},x)),
+  h('ul',{class:'entries'},S.lesson.ex.map(v=>h('li',{},frLine(v[0],v[1])))));
+function renderLesson(){
+  picVis();
+  const S=DATA[st.cur];
+  $('#step').replaceChildren(h('p',{class:'count'},'先学一学'),
+    h('p',{class:'scene'},'做任务之前，先把这一站要用的词和语法过一遍。每个词都点开听一听，跟着读；上面图里带圆点的东西也可以点。'),
+    lessonBody(S),
+    h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{st.step=0;save();renderStep(true);toStep()}},'学好了，开始任务')));
 }
 
 const comboEl=()=>st.combo>=2&&h('span',{class:'combo'},' · 连对 ×'+st.combo);
@@ -635,7 +672,7 @@ function renderStep(auto){
     kids.push(slot,pool,h('div',{class:'row'},check,
       h('span',{class:'spk'},h('button',{type:'button',onclick:()=>speak(target)},'听答案'),h('button',{type:'button',onclick:()=>speak(target,true)},'慢速'))));
   }
-  kids.push(fb);
+  kids.push(fb,h('details',{class:'recall'},h('summary',{},'忘了？回看这一站的词和语法'),lessonBody(S)));
   box.replaceChildren(...kids);
   if(auto&&acted)speak(p.t==='listen'?p.fr:(p.npc?p.npc[0]:''));
 }
@@ -719,7 +756,7 @@ function renderReward(fresh){
     h('div',{class:'row'},
       h('button',{class:'primary',type:'button',onclick:()=>{setTab('chambre');window.scrollTo(0,0)}},'回房间看看'),
       h('button',{class:'tile',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我是哪一类巴黎人':'回到地图，选下一站'),
-      h('button',{class:'tile',type:'button',onclick:()=>{st.step=0;newRun(i);st.combo=0;st.last=null;save();renderStation(true);toStep()}},r.stars<3?'再走一遍，争取三颗星':'再走一遍这一站'),
+      h('button',{class:'tile',type:'button',onclick:()=>{st.step=-1;newRun(i);st.combo=0;st.last=null;save();renderStation(true);toStep()}},r.stars<3?'再走一遍，争取三颗星':'再走一遍这一站'),
       ));
   fitObj(card.querySelector('svg'),o);
 }
@@ -730,7 +767,8 @@ function renderCarnet(){
     h('h2',{},'我的手帐 · Mon carnet'),
     h('p',{class:'zh'},n?'已收集 '+n+' 句。每句都可以点喇叭听，点“慢速”跟读。':'还没有句子。每走完一站，那一站的句子和语法会收到这里。'),
     ...DATA.map((S,i)=>h('section',{class:'stop'},h('h3',{lang:'fr'},(i+1)+' · '+S.frPlace),
-      st.done.includes(i)?[entryList(S),h('p',{class:'note'},S.gram),h('p',{class:'zh'},'图里的词'),
+      st.done.includes(i)?[entryList(S),h('p',{class:'note'},S.gram),h('p',{class:'zh'},'这一站的词'),
+        h('ul',{class:'entries vocab'},S.vocab.map(v=>h('li',{},frLine(v[0],v[1])))),h('p',{class:'zh'},'图里的词'),
         h('ul',{class:'entries'},SCENES[i].hots.map(o=>h('li',{},frLine(o[0],o[1]))))]:h('p',{class:'locked'},S.place+'：走完这一站后解锁'))));
 }
 

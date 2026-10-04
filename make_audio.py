@@ -20,7 +20,7 @@ DATA.forEach(S=>{const g=/^Le /.test(S.who)?'m':'f';
   S.steps.forEach(p=>{if(p.t==='listen')add(p.fr,g);if(p.npc)add(p.npc[0],g)})});
 DATA.forEach(S=>{add(S.frPlace,'u');
   S.steps.forEach(p=>{if(p.t==='choose')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
-  S.carnet.forEach(c=>add(c[0],'u'))});
+  S.carnet.forEach(c=>add(c[0],'u'));S.vocab.forEach(v=>add(v[0],'u'));S.lesson.ex.forEach(v=>add(v[0],'u'))});
 SCENES.forEach(sc=>sc.hots.forEach(o=>add(o[0],'u')));
 add(INTRO_FR,'u');ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
 return JSON.stringify(out);
@@ -50,7 +50,7 @@ async def main():
         keep.add(path.name)
         if path.exists() and not force:
             continue
-        await edge_tts.Communicate(it['t'].replace('—', '.'), VOICES[it['v']], rate=RATE).save(str(path))
+        await edge_tts.Communicate(it['t'].replace('—', '.').replace('…', ''), VOICES[it['v']], rate=RATE).save(str(path))
         print('+', path.name, it['v'], it['t'])
     for old in OUT.glob('*.mp3'):
         if old.name not in keep:
