@@ -374,10 +374,68 @@ const DATA=[
  lesson:{title:"用 le、la、les 代替东西，以及 je peux",text:["刚提到过的东西，不必再说一遍名字，用 le（阳性）、la（阴性）、les（复数）代替，放在动词前面：Je la prends（我要了它）。", "后面的动词如果以元音开头，le 和 la 都缩成 l'，比如 Je peux l'essayer ?", "je peux 是“我可以”，后面跟动词原形，用来客气地问能不能做某事。“您可以”是 vous pouvez。"],ex:[["Je prends la veste.", "我要这件夹克。"], ["Je la prends.", "我要了。（指夹克）"], ["Je prends le chapeau.", "我要这顶帽子。"], ["Je le prends.", "我要了。（指帽子）"], ["Je les prends.", "这些我都要了。"], ["Je peux l'essayer ?", "我可以试试它吗？"]]},
  carnet:[["Tout est d'occasion ici.","这里的东西都是二手的。"],["J'aime cette veste en cuir.","我喜欢这件皮夹克。"],["Je peux l'essayer ?","我可以试试它吗？"],["La cabine est au fond, à gauche.","试衣间在最里面，左手边。"],["Elle est un peu grande, mais je la prends.","它有点大，不过我要了。"]],
  gram:"刚提到的东西用 le、la、les 代替，放在动词前：Je la prends。元音前缩成 l'：Je peux l'essayer ?"}
+,{plaque:"Boulevard du Montparnasse",arr:"14e Arr.",place:"圆顶咖啡馆，遇见萨特",frPlace:"La Coupole",who:"Jean-Paul",voice:"m",
+ scene:"蒙帕纳斯大道上的圆顶咖啡馆 1927 年开张，萨特和波伏瓦都是常客。这是一场想象中的相遇：角落里一位戴圆眼镜、叼着烟斗的先生放下笔，请你坐下。他想知道，你觉得自己自由吗。任务：和他谈谈自由与选择。",
+ steps:[
+  {t:"listen",fr:"Asseyez-vous ! Dites-moi : vous êtes libre ?",q:"他问了你什么？",opts:["请坐！告诉我：您是自由的吗？","请坐！告诉我：您幸福吗？","请站起来！您是谁？"],
+   note:"Asseyez-vous 是“请坐”，Dites-moi 是“告诉我”。libre 平时也有“有空”的意思，哲学家问的是“自由”。"},
+  {t:"build",ctx:"回答他：是的，我认为我是自由的。",tokens:["Oui,","je","pense","que","je","suis","libre."],extra:["pas"],
+   zh:"是的，我认为我是自由的。",note:"je pense que… 是“我认为……”，后面接一个完整的句子。表达自己的看法时最常用。"},
+  {t:"fill",npc:["Alors, vous choisissez votre vie.","那么，您的人生是您自己选的。"],ctx:"你有点犹豫，说：这并不容易。",before:"Ce n'est ",after:" facile.",opts:["pas","rien","ne"],
+   full:"Ce n'est pas facile.",zh:"这不容易。",note:"否定是 ne 和 pas 把动词夹在中间。est 以元音开头，所以 ne 缩成了 n'。"},
+  {t:"listen",fr:"L'existence précède l'essence.",q:"这是萨特最有名的一句话，意思是？",opts:["存在先于本质","本质先于存在","存在就是痛苦"],
+   note:"萨特的意思是：人没有预先定好的“本质”，是先活在世上，再用自己的选择把自己造出来。précéder 是“在……之前”。"},
+  {t:"choose",ctx:"告别前，对他说：我选择我的人生。",opts:[["Je choisis ma vie.","我选择我的人生。"],["Je cherche ma vie.","我在找我的人生。"],["Je choisis un café.","我选一杯咖啡。"]],
+   note:"choisir（选择）的变形：je choisis，vous choisissez。ma vie 是“我的人生”，vie 是阴性词，所以用 ma。"},
+  {t:"avis",q:"Et vous ? 对你来说，自由是什么？",opts:[["La liberté, c'est choisir.","自由就是选择。","S"],["La liberté, c'est agir avec les autres.","自由就是和别人一起行动。","B"],["La liberté, c'est vivre maintenant.","自由就是活在当下。","C"]]}
+ ],
+ vocab:[["la liberté", "自由"], ["libre", "自由的"], ["l'existence", "存在（阴性）"], ["exister", "存在"], ["choisir", "选择"], ["je choisis", "我选择"], ["un choix", "一个选择"], ["la vie", "人生，生活"], ["le sens", "意义"], ["penser", "想，认为"], ["je pense que…", "我认为……"], ["ne… pas", "不"], ["facile", "容易的"], ["Asseyez-vous !", "请坐！"]],
+ lesson:{title:"否定：ne… pas",text:["把一句话变成否定，用 ne 和 pas 把动词夹在中间：Je suis libre（我是自由的）变成 Je ne suis pas libre（我不自由）。", "动词以元音开头时，ne 缩成 n'，比如 Je n'ai pas le choix（我没有选择）。", "口语里法国人常把 ne 吞掉，只说 pas，但写的时候两个都要有。"],ex:[["Je suis libre.", "我是自由的。"], ["Je ne suis pas libre.", "我不自由。"], ["Je ne sais pas.", "我不知道。"], ["Je n'ai pas le choix.", "我没有选择。"], ["Ce n'est pas facile.", "这不容易。"]]},
+ carnet:[["Je pense que je suis libre.","我认为我是自由的。"],["Ce n'est pas facile.","这不容易。"],["L'existence précède l'essence.","存在先于本质。（萨特）"],["Je choisis ma vie.","我选择我的人生。"]],
+ gram:"否定用 ne… pas 夹住动词：Je ne suis pas libre。元音前 ne 缩成 n'。"}
+,{plaque:"Rue Victor-Schœlcher",arr:"14e Arr.",place:"波伏瓦的书房",frPlace:"Chez Simone de Beauvoir",who:"Simone",voice:"f",
+ scene:"波伏瓦从 1955 年起住在这条街上，窗外就是蒙帕纳斯公墓。又是一场想象中的拜访：书房里堆满了书和照片，一位裹着头巾的女士请你在沙发上坐下。她想知道，你想成为什么样的人。任务：和她谈谈“成为”。",
+ steps:[
+  {t:"listen",fr:"Entrez ! Vous voulez un café ?",q:"她说了什么？",opts:["请进！您想喝杯咖啡吗？","请进！您想看本书吗？","请回吧！我在写作。"],
+   note:"Entrez 是“请进”。vous voulez 是 vouloir（想要）对“您”说的形式。"},
+  {t:"listen",fr:"On ne naît pas femme : on le devient.",q:"这是《第二性》里最有名的一句，意思是？",opts:["女人不是天生的，而是后天成为的","女人天生就是女人","人不是生来就自由的"],
+   note:"波伏瓦的意思是：“女人”不是天生注定的样子，而是在社会里一步步被塑造、也自己去成为的。on 是“人”，le 代替前面的 femme。"},
+  {t:"fill",npc:["Et vous, qu'est-ce que vous voulez devenir ?","那您呢，您想成为什么样的人？"],ctx:"回答：我想成为一个自由的人。",before:"Je ",after:" devenir libre.",opts:["veux","veut","voulez"],
+   full:"Je veux devenir libre.",zh:"我想成为一个自由的人。",note:"je 后面用 veux。vouloir 后面的动词保持原形：devenir。"},
+  {t:"build",ctx:"接着说：人是和别人一起变得自由的。",tokens:["On","devient","libre","avec","les","autres."],extra:["deviens"],
+   zh:"人是和别人一起变得自由的。",note:"on 后面的动词用“他、她”的形式，所以是 devient，不是 deviens。"},
+  {t:"choose",ctx:"告别时，谢谢她的咖啡和这番话。",opts:[["Merci pour le café et pour vos mots.","谢谢您的咖啡和您的话。"],["Merci pour le livre.","谢谢您的书。"],["Je ne veux pas de café.","我不要咖啡。"]],
+   note:"merci pour 后面跟名词，是“谢谢您的……”。vos 是“您的”（后面的东西是复数）。"},
+  {t:"avis",q:"Et vous ? 你想成为什么样的人？",opts:[["Je veux devenir ce que je choisis.","我想成为我自己选的样子。","S"],["Je veux devenir libre avec les autres.","我想和别人一起变得自由。","B"],["Je veux aimer la vie, aujourd'hui.","我想从今天起就爱生活。","C"]]}
+ ],
+ vocab:[["devenir", "成为，变成"], ["je deviens", "我变成"], ["on", "人，人们，我们"], ["une femme", "女人"], ["un homme", "男人"], ["naître", "出生"], ["vouloir", "想要"], ["je veux", "我想要"], ["vous voulez", "您想要"], ["écrire", "写作"], ["les autres", "别人"], ["avec", "和……一起"], ["ensemble", "一起"], ["Entrez !", "请进！"], ["merci pour…", "谢谢您的……"]],
+ lesson:{title:"on，以及 vouloir 加动词",text:["on 是法语里最常用的小词之一，可以指“人、人们”，口语里也指“我们”。它后面的动词永远用“他、她”的那个形式：on est，on a，on devient。", "说“想做某事”，用 vouloir 加动词原形：je veux écrire（我想写作）。变形：je veux，tu veux，il veut，vous voulez。", "上一站学的否定在这里也用得上：On ne naît pas…（人不是生来就……）。"],ex:[["On est libre.", "人是自由的。也可以是：我们是自由的。"], ["On devient soi-même.", "人成为自己。"], ["Je veux écrire.", "我想写作。"], ["Vous voulez un café ?", "您想喝杯咖啡吗？"], ["Je veux devenir libre.", "我想成为一个自由的人。"]]},
+ carnet:[["On ne naît pas femme : on le devient.","女人不是天生的，而是后天成为的。（波伏瓦）"],["Je veux devenir libre.","我想成为一个自由的人。"],["On devient libre avec les autres.","人是和别人一起变得自由的。"],["Merci pour le café et pour vos mots.","谢谢您的咖啡和您的话。"]],
+ gram:"on 后面的动词用“他、她”的形式：on devient。想做某事：je veux 加动词原形。"}
+,{plaque:"Boulevard Edgar-Quinet",arr:"14e Arr.",place:"蒙帕纳斯公墓，遇见加缪",frPlace:"Le cimetière du Montparnasse",who:"Albert",voice:"m",
+ scene:"萨特和波伏瓦合葬在这座公墓，墓石上总留着读者的地铁票和玫瑰。最后一场想象中的相遇：一位竖着风衣领子的先生站在墓前，他来看两位老朋友，虽然他们吵翻过。他说，世界是荒诞的，可这并不妨碍人幸福。任务：和他谈谈荒诞与幸福。",
+ steps:[
+  {t:"listen",fr:"Le monde est absurde, mais il fait beau aujourd'hui.",q:"他说了什么？",opts:["世界是荒诞的，可是今天天气很好。","世界是美好的，可是今天下雨。","世界是荒诞的，所以我今天不出门。"],
+   note:"absurde 是“荒诞的”，mais 是“但是”。il fait beau（天气好）在卢森堡公园那一站学过。"},
+  {t:"choose",ctx:"你问他：那么，为什么还要活着？",opts:[["Alors, pourquoi vivre ?","那么，为什么活着？"],["Alors, où vivre ?","那么，住在哪里？"],["Alors, qui est absurde ?","那么，谁是荒诞的？"]],
+   note:"pourquoi 是“为什么”，où 是“哪里”，qui 是“谁”。alors 是“那么”。"},
+  {t:"listen",fr:"Parce qu'il y a le soleil, la mer et les amis.",q:"他怎么回答？",opts:["因为有太阳、大海和朋友。","因为有工作、金钱和名声。","因为没有别的选择。"],
+   note:"parce que 是“因为”，后面是元音开头的 il，所以缩成 parce qu'。il y a 是“有”。"},
+  {t:"fill",ctx:"他提到西西弗，那个永远推石头上山的人。补全他的名句。",before:"Il ",after:" imaginer Sisyphe heureux.",opts:["faut","fait","est"],
+   full:"Il faut imaginer Sisyphe heureux.",zh:"应当想象西西弗是幸福的。",note:"这是《西西弗神话》的最后一句。加缪认为，明知徒劳仍然去推石头，本身就是对荒诞的反抗，人的幸福也在这里。"},
+  {t:"build",ctx:"告别时说：不管怎样，我爱生活。",tokens:["Malgré tout,","j'aime","la","vie."],extra:["le"],
+   zh:"不管怎样，我爱生活。",note:"malgré tout 是“不管怎样、尽管如此”。还记得吗，说喜欢什么，名词前要带 le、la 或 les。"},
+  {t:"avis",q:"Et vous ? 人生的意义从哪里来？",opts:[["Je donne un sens à ma vie.","我自己给人生一个意义。","S"],["Le sens vient des autres et de nos actes.","意义来自别人，也来自我们的行动。","B"],["La vie n'a pas de sens, mais elle est belle.","人生没有意义，但它是美的。","C"]]}
+ ],
+ vocab:[["absurde", "荒诞的"], ["le monde", "世界"], ["le bonheur", "幸福"], ["heureux, heureuse", "幸福的（阳性，阴性）"], ["le soleil", "太阳"], ["la mer", "大海"], ["un ami, une amie", "朋友（阳性，阴性）"], ["il y a…", "有……"], ["il faut…", "必须……，应该……"], ["imaginer", "想象"], ["pourquoi", "为什么"], ["parce que", "因为"], ["vivre", "活，生活"], ["mais", "但是"], ["malgré tout", "不管怎样"]],
+ lesson:{title:"il faut，pourquoi 和 parce que",text:["il faut 是“必须、应该”，后面直接跟动词原形，而且永远是 il faut，不随人称变：Il faut vivre（得活下去）。", "问“为什么”用 pourquoi，回答“因为”用 parce que。后面的词以元音开头时，que 缩成 qu'，比如 parce qu'il fait beau。", "il y a 是“有”，后面跟什么都行：il y a le soleil（有太阳）。"],ex:[["Il faut vivre.", "得活下去。"], ["Il faut aimer.", "应该去爱。"], ["Pourquoi vivre ?", "为什么活着？"], ["Parce que le monde est beau.", "因为世界是美的。"], ["Il y a le soleil.", "有太阳。"], ["Il ne faut pas désespérer.", "不应该绝望。"]]},
+ carnet:[["Le monde est absurde, mais il fait beau aujourd'hui.","世界是荒诞的，可是今天天气很好。"],["Alors, pourquoi vivre ?","那么，为什么活着？"],["Parce qu'il y a le soleil, la mer et les amis.","因为有太阳、大海和朋友。"],["Il faut imaginer Sisyphe heureux.","应当想象西西弗是幸福的。（加缪）"],["Malgré tout, j'aime la vie.","不管怎样，我爱生活。"]],
+ gram:"il faut 加动词原形是“必须、应该”。pourquoi 问为什么，parce que 回答因为。"}
 ];
 
 /* ---------- illustrated scenes: [fr, zh, markerX, markerY, shapes] ---------- */
 const C={sky:'#cfdcec',stone:'#e6dcc6',zinc:'#7d8796',blue:'#1b3f94',green:'#2f6b4f',dark:'#26303f',yel:'#f1c453',red:'#b8483b',white:'#f7f5ef',water:'#7fa3c7',skin:'#e9c9a8',wood:'#8a5a34'};
+const bks=(x,yb,n,s)=>{const col=[C.red,C.blue,C.yel,C.white,C.green,'#c98a3c'];let o='';for(let i=0;i<n;i++){const w=9+((i*5+s)%4),hh=28+((i*7+s*3)%11);o+='<rect x="'+x+'" y="'+(yb-hh)+'" width="'+w+'" height="'+hh+'" fill="'+col[(i+s)%6]+'"/>';x+=w+1}return o};
 const SCENES=[
 {bg:`<rect width="680" height="280" fill="${C.sky}"/><rect y="92" width="680" height="50" fill="#b3bfcf"/><rect x="40" y="70" width="60" height="72" fill="#a4b1c3"/><rect x="470" y="60" width="90" height="82" fill="#a4b1c3"/><rect y="200" width="680" height="80" fill="${C.stone}"/>`,
  hots:[
@@ -443,11 +501,37 @@ const SCENES=[
   ["le sac","包",544,104,`<path d="M498 114a12 15 0 0 1 24 0" fill="none" stroke="${C.wood}" stroke-width="4"/><rect x="486" y="112" width="48" height="38" rx="6" fill="#c98a3c"/><circle cx="510" cy="126" r="4" fill="${C.yel}"/>`],
   ["le miroir","镜子",612,76,`<path d="M592 252l20-44 20 44" fill="none" stroke="#c9a24a" stroke-width="5"/><ellipse cx="612" cy="150" rx="32" ry="62" fill="#c9a24a"/><ellipse cx="612" cy="150" rx="25" ry="55" fill="#dfe8f2"/><path d="M600 118l14-16M604 136l8-9" stroke="${C.white}" stroke-width="3" stroke-linecap="round"/>`]
  ]}
+,{bg:`<rect width="680" height="280" fill="#ead9bd"/><rect x="60" width="46" height="130" fill="${C.green}"/><rect x="574" width="46" height="130" fill="${C.green}"/><rect x="52" width="62" height="10" fill="#c9a24a"/><rect x="566" width="62" height="10" fill="#c9a24a"/><rect y="118" width="680" height="54" rx="8" fill="#8c2f2a"/><rect y="168" width="680" height="44" fill="#a23a33"/><rect y="236" width="680" height="44" fill="#b9a58a"/>`,
+ mid:{0:`<ellipse cx="340" cy="216" rx="176" ry="22" fill="${C.white}" stroke="${C.dark}" stroke-width="3"/><rect x="334" y="236" width="12" height="44" fill="${C.dark}"/>`},
+ hots:[
+  ["le philosophe","哲学家",296,150,`<rect x="300" y="118" width="80" height="100" rx="16" fill="${C.dark}"/><circle cx="340" cy="96" r="20" fill="${C.skin}"/><path d="M321 90a19 19 0 0 1 38 0q-19-12-38 0z" fill="#4a3a2a"/>`],
+  ["les lunettes","眼镜（复数）",372,82,`<circle cx="331" cy="97" r="7" fill="#dfe8f2" stroke="${C.dark}" stroke-width="2.5"/><circle cx="350" cy="97" r="7" fill="#dfe8f2" stroke="${C.dark}" stroke-width="2.5"/><path d="M338 97h5" stroke="${C.dark}" stroke-width="2.5"/>`],
+  ["la pipe","烟斗",400,116,`<path d="M346 109l26 5" stroke="${C.wood}" stroke-width="4" stroke-linecap="round"/><rect x="370" y="106" width="12" height="14" rx="3" fill="${C.wood}"/><path d="M376 100q-5-8 0-16" fill="none" stroke="${C.zinc}" stroke-width="2" stroke-linecap="round"/>`],
+  ["le carnet","笔记本",214,200,`<path d="M226 204h44v16h-44zM270 204h44v16h-44z" fill="${C.white}" stroke="${C.dark}" stroke-width="2"/><path d="M233 209h30M233 214h24M277 209h30M277 214h20" stroke="${C.zinc}" stroke-width="1.5"/>`],
+  ["le stylo","钢笔",490,200,`<path d="M424 216l44-10" stroke="${C.blue}" stroke-width="6" stroke-linecap="round"/><path d="M468 206l10-2" stroke="#c9a24a" stroke-width="4" stroke-linecap="round"/>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="#e6ddd0"/><rect y="236" width="680" height="44" fill="#b9a58a"/><rect x="570" y="30" width="90" height="130" fill="${C.white}"/><rect x="578" y="38" width="74" height="114" fill="${C.sky}"/><path d="M615 38v114M578 95h74" stroke="${C.white}" stroke-width="4"/>`,
+ mid:{2:`<rect x="362" y="122" width="60" height="96" rx="16" fill="#3a4658"/><circle cx="392" cy="100" r="18" fill="${C.skin}"/>`,3:`<rect x="262" y="230" width="190" height="9" fill="${C.wood}"/><path d="M274 239v30M440 239v30" stroke="${C.wood}" stroke-width="6"/>`},
+ hots:[
+  ["la bibliothèque","书柜",208,52,`<rect x="30" y="40" width="170" height="196" fill="${C.wood}"/><g fill="#5f3d22"><rect x="38" y="48" width="154" height="52"/><rect x="38" y="108" width="154" height="52"/><rect x="38" y="168" width="154" height="58"/></g>`+bks(42,100,12,1)+bks(42,160,12,3)+bks(42,226,12,5)],
+  ["la photo","照片",326,32,`<g fill="${C.zinc}" stroke="${C.dark}" stroke-width="4"><rect x="246" y="44" width="40" height="50"/><rect x="300" y="52" width="52" height="38"/><rect x="366" y="42" width="38" height="44"/></g><g fill="${C.white}" opacity=".7"><circle cx="266" cy="62" r="8"/><circle cx="318" cy="68" r="7"/><circle cx="336" cy="68" r="7"/><circle cx="385" cy="60" r="8"/></g>`],
+  ["le canapé","沙发",530,134,`<rect x="236" y="120" width="310" height="70" rx="16" fill="#d9a83a"/><rect x="236" y="168" width="310" height="58" rx="12" fill="${C.yel}"/><rect x="226" y="150" width="30" height="76" rx="12" fill="#d9a83a"/><rect x="526" y="150" width="30" height="76" rx="12" fill="#d9a83a"/>`],
+  ["le turban","头巾",428,84,`<path d="M372 98a20 20 0 0 1 40 0q-20-12-40 0z" fill="${C.red}"/><circle cx="392" cy="82" r="6" fill="${C.red}"/>`],
+  ["le manuscrit","手稿",294,214,`<rect x="306" y="221" width="64" height="8" fill="#d9d4c5"/><rect x="310" y="214" width="64" height="8" fill="${C.white}" stroke="${C.zinc}" stroke-width="1"/><path d="M316 218h40" stroke="${C.zinc}" stroke-width="1.5"/><path d="M384 226l24-8" stroke="${C.dark}" stroke-width="3" stroke-linecap="round"/>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="#c8cfbf"/>`,
+ mid:{0:`<rect y="130" width="680" height="150" fill="#c8cfbf"/><circle cx="600" cy="96" r="52" fill="#3d6b55"/><rect x="594" y="130" width="12" height="50" fill="${C.wood}"/><circle cx="90" cy="110" r="40" fill="#4a7a62"/><rect x="85" y="140" width="10" height="40" fill="${C.wood}"/><path d="M0 256H680" stroke="#b9b2a2" stroke-width="26"/>`},
+ hots:[
+  ["le ciel","天空",250,30,`<rect width="680" height="132" fill="${C.sky}"/><circle cx="330" cy="50" r="22" fill="${C.yel}"/><path d="M420 70h70a14 14 0 0 0 0-28a20 20 0 0 0-38-6a16 16 0 0 0-32 34z" fill="${C.white}"/>`],
+  ["la pierre","石头，墓石",176,156,`<rect x="170" y="216" width="230" height="14" fill="${C.zinc}"/><rect x="184" y="160" width="202" height="58" fill="${C.stone}" stroke="#bfb293" stroke-width="3"/><path d="M204 178h110M204 192h130" stroke="#9a8f78" stroke-width="4"/>`],
+  ["le ticket","地铁票",278,204,`<g fill="${C.white}" stroke="${C.zinc}" stroke-width="1"><rect x="214" y="204" width="24" height="10" transform="rotate(-10 226 209)"/><rect x="238" y="206" width="24" height="10" transform="rotate(8 250 211)"/></g><path d="M216 211l20-4M240 209l20 3" stroke="#8a5aa0" stroke-width="2"/>`],
+  ["la rose","玫瑰",380,196,`<path d="M320 212l34-6" stroke="${C.green}" stroke-width="3" stroke-linecap="round"/><circle cx="358" cy="204" r="8" fill="${C.red}"/><circle cx="358" cy="204" r="3.5" fill="#8c2f2a"/>`],
+  ["l'imperméable","风衣（阳性）",534,160,`<rect x="456" y="122" width="62" height="124" rx="10" fill="#c9b48a"/><path d="M470 122l17 22 17-22v-10h-34z" fill="#b39c70"/><path d="M487 144v102" stroke="#b39c70" stroke-width="3"/><rect x="456" y="184" width="62" height="8" fill="#a88f62"/><circle cx="487" cy="100" r="17" fill="${C.skin}"/><path d="M471 95a16 16 0 0 1 32 0q-16-10-32 0z" fill="${C.dark}"/>`]
+ ]}
 ];
 
 /* ---------- the room, after Virginia Woolf's "A Room of One's Own": one piece per stop, one extra for three stars ---------- */
 const INTRO_FR='Une chambre à soi';
-const bks=(x,yb,n,s)=>{const col=[C.red,C.blue,C.yel,C.white,C.green,'#c98a3c'];let o='';for(let i=0;i<n;i++){const w=9+((i*5+s)%4),hh=28+((i*7+s*3)%11);o+='<rect x="'+x+'" y="'+(yb-hh)+'" width="'+w+'" height="'+hh+'" fill="'+col[(i+s)%6]+'"/>';x+=w+1}return o};
 const ROOM_BG=`<rect width="680" height="300" fill="#e9dfcf"/><path d="M0 0H210L0 150Z" fill="#d8cdb9"/><rect y="300" width="680" height="120" fill="#b08a5e"/><path d="M0 330H680M0 364H680M0 398H680M120 300v30M340 300v30M560 300v30M230 330v34M470 330v34M90 364v34M370 364v34M600 364v34" stroke="#96744c" stroke-width="2"/><rect y="294" width="680" height="8" fill="#cbbfa8"/><path d="M250 0v46" stroke="${C.dark}" stroke-width="2"/><circle cx="250" cy="54" r="9" fill="${C.yel}"/>`;
 const ROOM_WIN=`<rect x="299" y="44" width="142" height="172" fill="${C.white}"/><rect x="307" y="52" width="126" height="156" fill="${C.sky}"/><path d="M307 160l30-18 22 10 26-22 30 16 18-8v70H307z" fill="${C.zinc}"/><rect x="330" y="128" width="8" height="16" fill="${C.red}"/><rect x="398" y="118" width="8" height="16" fill="${C.red}"/><path d="M370 52v156M307 130h126" stroke="${C.white}" stroke-width="5"/><rect x="293" y="212" width="154" height="8" fill="${C.white}"/>`;
 const ROOM=[
@@ -467,6 +551,12 @@ const ROOM=[
   up:{fr:'la plante',zh:'绿植',svg:`<path d="M168 372h28l-4 30h-20z" fill="${C.red}"/><ellipse cx="174" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(-20 174 356)"/><ellipse cx="190" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(20 190 356)"/><ellipse cx="182" cy="350" rx="7" ry="22" fill="#3d8a66"/>`}}
  ,{fr:'le miroir',zh:'镜子',svg:`<ellipse cx="250" cy="165" rx="27" ry="42" fill="#c9a24a"/><ellipse cx="250" cy="165" rx="21" ry="36" fill="#dfe8f2"/><path d="M241 142l11-12M244 156l6-7" stroke="${C.white}" stroke-width="3" stroke-linecap="round"/>`,
   up:{fr:'le chapeau',zh:'帽子',svg:`<circle cx="200" cy="112" r="3" fill="${C.dark}"/><ellipse cx="200" cy="132" rx="22" ry="5" fill="#3a4658"/><path d="M187 132v-12a13 9 0 0 1 26 0v12z" fill="#3a4658"/><rect x="187" y="124" width="26" height="4" fill="${C.red}"/>`}}
+ ,{fr:"l'affiche",zh:'海报（阴性）',svg:`<rect x="560" y="46" width="68" height="100" fill="${C.white}" stroke="${C.dark}" stroke-width="3"/><rect x="568" y="54" width="52" height="46" fill="#8c2f2a"/><circle cx="594" cy="77" r="13" fill="${C.yel}"/><path d="M570 114h48M570 126h34" stroke="${C.dark}" stroke-width="5"/>`,
+  up:{fr:"l'horloge",zh:'钟（阴性）',svg:`<circle cx="654" cy="72" r="17" fill="${C.white}" stroke="${C.dark}" stroke-width="4"/><path d="M654 72V61M654 72l8 5" stroke="${C.dark}" stroke-width="3" stroke-linecap="round"/>`}}
+ ,{fr:'le tapis',zh:'地毯',svg:`<ellipse cx="380" cy="374" rx="98" ry="25" fill="#8c2f2a"/><ellipse cx="380" cy="374" rx="80" ry="18" fill="none" stroke="${C.yel}" stroke-width="3"/><ellipse cx="380" cy="374" rx="52" ry="10" fill="none" stroke="#c98a3c" stroke-width="2"/>`,
+  up:{fr:'le coussin',zh:'靠垫',svg:`<rect x="300" y="350" width="40" height="26" rx="9" fill="${C.yel}"/><path d="M308 363h24" stroke="#c98a3c" stroke-width="2"/>`}}
+ ,{fr:'la carte postale',zh:'明信片',svg:`<rect x="177" y="213" width="40" height="30" fill="${C.white}" stroke="#cbbfa8" stroke-width="2"/><rect x="181" y="217" width="32" height="13" fill="${C.sky}"/><rect x="181" y="230" width="32" height="9" fill="${C.blue}"/><circle cx="205" cy="224" r="4" fill="${C.yel}"/>`,
+  up:{fr:'le soleil',zh:'太阳',svg:`<circle cx="332" cy="78" r="14" fill="${C.yel}"/><path d="M332 56v-6M332 100v6M310 78h-6M354 78h6M316 62l-4-4M348 62l4-4" stroke="${C.yel}" stroke-width="3" stroke-linecap="round"/>`}}
 ];
 
 /* ---------- helpers ---------- */
@@ -479,7 +569,7 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 
 /* ---------- state ---------- */
-let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null};
+let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null,avis:{}};
 try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
 if(!(st.step>=-1&&st.step<=DATA[st.cur].steps.length+1))st.step=-1;
@@ -554,27 +644,28 @@ function fitObj(svg,o){
 }
 
 /* ---------- map: positions follow real longitude and latitude ---------- */
-const PINS=[[241,336,'Quai de Conti',262,316,'start'],[202,356,'Café de Flore',180,380,'end'],[164,300,"Musée d'Orsay",142,322,'end'],
-  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start'],[337,318,'Le Marais',337,296,'middle']];
+const PINS=[[241,336,'Quai de Conti',246,311,'middle'],[202,356,'Café de Flore',180,380,'end'],[164,300,"Musée d'Orsay",142,322,'end'],
+  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start'],[337,318,'Le Marais',337,296,'middle'],
+  [170,462,'La Coupole',148,458,'end'],[204,530,'Chez Simone',226,536,'start'],[150,505,'Le cimetière',126,512,'end']];
 function renderMap(){
   const pins=PINS.map((p,i)=>{const r=st.res[i],done=st.done.includes(i);
     return '<g class="pin'+(done?' done':'')+(r&&r.stars===3?' gold':'')+'" data-i="'+i+'" tabindex="0" role="button" aria-label="第 '+(i+1)+' 站：'+DATA[i].place+'">'+
       '<circle class="hit" cx="'+p[0]+'" cy="'+p[1]+'" r="24"/><circle class="dot" cx="'+p[0]+'" cy="'+p[1]+'" r="16"/>'+
       '<text class="num" x="'+p[0]+'" y="'+p[1]+'">'+(i+1)+'</text><text class="lab" x="'+p[3]+'" y="'+p[4]+'" text-anchor="'+p[5]+'">'+p[2]+'</text></g>'}).join('');
-  $('#map').innerHTML='<svg viewBox="0 0 680 507" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="巴黎地图">'+
-    '<path class="road" d="M40 236Q200 120 400 190T640 360"/><path class="road" d="M70 400Q240 505 430 472"/><path class="road" d="M303 0V507"/><path class="road" d="M0 262Q300 250 680 300"/>'+
+  $('#map').innerHTML='<svg viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="巴黎地图">'+
+    '<path class="road" d="M40 236Q200 120 400 190T640 360"/><path class="road" d="M70 400Q240 505 430 472"/><path class="road" d="M303 0V560"/><path class="road" d="M40 470Q170 440 300 520"/><path class="road" d="M0 262Q300 250 680 300"/>'+
     '<ellipse class="park" cx="252" cy="52" rx="50" ry="28"/><ellipse class="park" cx="577" cy="287" rx="44" ry="32"/><ellipse class="park" cx="512" cy="104" rx="28" ry="18"/>'+
     '<rect class="park" x="203" y="408" width="54" height="46" rx="8"/><rect class="park" x="140" y="262" width="62" height="14" rx="4" transform="rotate(-14 171 269)"/><rect class="park" x="346" y="442" width="44" height="18" rx="4" transform="rotate(-32 368 451)"/>'+
-    '<path class="water" d="M482 507C440 470 420 455 408 441S330 370 291 347S220 305 185 291S80 265 0 262"/>'+
+    '<path class="water" d="M524 560Q500 530 482 507C440 470 420 455 408 441S330 370 291 347S220 305 185 291S80 265 0 262"/>'+
     '<ellipse class="isle" cx="291" cy="347" rx="24" ry="6" transform="rotate(30 291 347)"/><ellipse class="isle" cx="349" cy="379" rx="16" ry="5" transform="rotate(36 349 379)"/>'+
-    '<text class="maptxt" x="34" y="246" transform="rotate(4 34 246)">LA SEINE</text><text class="maptxt" x="430" y="236">RIVE DROITE</text><text class="maptxt" x="60" y="462">RIVE GAUCHE</text>'+
+    '<text class="maptxt" x="34" y="246" transform="rotate(4 34 246)">LA SEINE</text><text class="maptxt" x="430" y="236">RIVE DROITE</text><text class="maptxt" x="330" y="538">RIVE GAUCHE</text><ellipse class="park" cx="150" cy="505" rx="34" ry="20"/>'+
     '<path class="road" d="M644 54V22M636 32l8-10 8 10"/><text class="maptxt" x="639" y="70">N</text>'+pins+'</svg>';
   $('#map').querySelectorAll('.pin').forEach(g=>{
     g.addEventListener('click',()=>enter(+g.dataset.i));
     g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();enter(+g.dataset.i)}});});
   const all=st.done.length===DATA.length;
-  $('#mapsum').replaceChildren('已去过 '+st.done.length+' / '+DATA.length+' 站 · 星星 '+totalStars()+' / '+DATA.length*3+'。点地图上的圆点或下面的地名进入，顺序随你；数字是建议的顺序。',
-    all&&' ',all&&h('button',{class:'reveal',type:'button',onclick:()=>setTab('profil')},'所有地方都走完了，看看你适合住在哪个街区'));
+  $('#mapsum').replaceChildren('已去过 '+st.done.length+' / '+DATA.length+' 个地方 · 星星 '+totalStars()+' / '+DATA.length*3+'。点地图上的圆点或下面的地名进入，顺序随你；数字是建议的顺序。');
+  if(all)$('#mapsum').append(' ',h('button',{class:'reveal',type:'button',onclick:()=>setTab('profil')},'所有地方都走完了，看看你适合住在哪个街区'));
   $('#chapters').replaceChildren(...DATA.map((S,i)=>{const done=st.done.includes(i);
     return h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
       h('span',{class:'cnum'+(done?' done':'')},String(i+1)),
@@ -609,7 +700,7 @@ function renderPic(){
   const i=st.cur,sc=SCENES[i],found=(st.found[i]=st.found[i]||[]);
   $('#pic').innerHTML='<svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg">'+sc.bg+sc.hots.map((o,k)=>
     '<g class="hot'+(found.includes(k)?' found':'')+'" data-k="'+k+'" tabindex="0" role="button" aria-label="'+o[0]+'">'+o[4]+
-    '<circle class="mk" cx="'+o[2]+'" cy="'+o[3]+'" r="9"/><circle class="mkdot" cx="'+o[2]+'" cy="'+o[3]+'" r="3.5"/></g>').join('')+'</svg>';
+    '<circle class="mk" cx="'+o[2]+'" cy="'+o[3]+'" r="9"/><circle class="mkdot" cx="'+o[2]+'" cy="'+o[3]+'" r="3.5"/></g>'+(sc.mid&&sc.mid[k]||'')).join('')+'</svg>';
   const tally=()=>{$('#pichint').textContent='点图里带圆点的东西，听它的法语名字。已发现 '+found.length+' / '+sc.hots.length};
   const pick=g=>{const k=+g.dataset.k,o=sc.hots[k];
     if(!found.includes(k)){found.push(k);save()}
@@ -643,7 +734,7 @@ function renderStep(auto){
   picVis();
   const S=DATA[st.cur],p=S.steps[st.step],box=$('#step'),run=st.run;
   const fb=h('div',{class:'fb','aria-live':'polite'});
-  const kids=[h('p',{class:'count'},'任务 '+(st.step+1)+' / '+S.steps.length,comboEl())];
+  const kids=[h('p',{class:'count'},p.t==='avis'?'最后一问':'任务 '+(st.step+1)+' / '+S.steps.filter(x=>x.t!=='avis').length,comboEl())];
   if(p.npc)kids.push(bubble(S.who,p.npc[0],p.npc[1]));
   let missed=false,revealed=false;
   const lock=()=>box.querySelectorAll('.opt,.tile,.check').forEach(b=>b.disabled=true);
@@ -683,6 +774,15 @@ function renderStep(auto){
     kids.push(h('div',{class:'opts pills'},shuffle(p.opts).map(o=>h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
       if(o===right){e.target.classList.add('right');blank.textContent=o;win(p.full,p.zh,true)}
       else{e.target.classList.add('wrong');e.target.disabled=true;miss('不是 '+o+'。再看看提示里这个词的阴阳性或人称。')}}},o))));
+  }
+  if(p.t==='avis'){   /* an opinion: every answer is accepted and remembered for the profile */
+    kids.push(h('p',{class:'ctx'},p.q),h('p',{class:'zh'},'这一题没有对错，选最接近你想法的一句。每句都可以先点喇叭听一听。'));
+    kids.push(h('div',{class:'opts'},shuffle(p.opts).map(o=>h('div',{class:'optrow'},
+      h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
+        e.target.classList.add('right');lock();st.avis[st.cur]=o[2];save();
+        fb.replaceChildren(...frLine(o[0],o[1]),h('p',{class:'note'},'记下了。这个想法和'+THINK[o[2]][1]+'比较接近：'+THINK[o[2]][2]),
+          h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:next},'去做小测试')));
+        speak(o[0]);fb.querySelector('.primary').focus({preventScroll:true});}},o[0]),spk(o[0])))));
   }
   if(p.t==='build'){
     kids.push(h('p',{class:'ctx'},p.ctx));
@@ -816,8 +916,20 @@ const QUART=[
    desc:'奥赛博物馆和罗丹美术馆都在这一带，街道安静、讲究。这里适合愿意在一幅画前站很久的人。'},
   {fr:'Montmartre',zh:'蒙马特',arr:'第 18 区',stops:[4],title:['Bohème','波西米亚艺术家'],
    desc:'山坡、台阶、画架和小酒馆。毕加索年轻时就住在这里，这里适合想自己动手画点什么的人。'},
+  {fr:'Montparnasse',zh:'蒙帕纳斯',arr:'第 14 区',stops:[8,9,10],title:['Existentialiste','存在主义者'],
+   desc:'大咖啡馆一家挨着一家，萨特和波伏瓦在这里写作、争论，最后也长眠在这里的公墓。这里适合爱追问“人为什么活着”的人。'},
   {fr:'Ménilmontant',zh:'梅尼蒙当',arr:'第 20 区',stops:[5],title:['Rêveur · Rêveuse','沉思的漫步者'],
    desc:'巴黎东边的坡地，挨着拉雪兹神父公墓，安静，生活气息浓。这里适合喜欢一个人慢慢走、慢慢想的人。'}];
+/* the three voices of the Montparnasse stops; the opinion questions are tallied against them */
+const THINK={
+  S:['Sartre','萨特','人先存在，再用自己的选择造出自己；自由很重，因为没有借口可找。'],
+  B:['Beauvoir','波伏瓦','人是“成为”的，而且只有和别人一起、在行动里，自由才是真的。'],
+  C:['Camus','加缪','世界没有现成的答案，但阳光、大海和朋友，已经足够让人对生活说“是”。']};
+function thinker(){
+  const c={S:0,B:0,C:0};let n=0;Object.keys(st.avis||{}).forEach(k=>{if(c[st.avis[k]]!=null){c[st.avis[k]]++;n++}});
+  if(!n)return null;
+  const m=Math.max(c.S,c.B,c.C);return {n:n,top:['S','B','C'].filter(k=>c[k]===m)};
+}
 const quartOf=i=>QUART.find(q=>q.stops.includes(i));
 function traits(){
   let ft=0,n=0,ear=0,earN=0,q=0,qn=0,found=0,real=0;
@@ -843,7 +955,7 @@ function topSkill(tr){
 function renderProfil(){
   const tr=traits(),N=DATA.length,stars=totalStars(),max=N*3,all=st.done.length===N;
   const rank=stars>=max?['Légende','传奇']:stars>=max*2/3?['Guide','向导']:stars>=max/3?['Pensionnaire','常住客']:['Touriste','游客'];
-  const qs=quartScores(),best=qs[0].q,ready=st.done.length>=3,sk=topSkill(tr);
+  const th=thinker(),qs=quartScores(),best=qs[0].q,ready=st.done.length>=3,sk=topSkill(tr);
   const foundAll=Object.keys(st.found).reduce((s,k)=>s+st.found[k].length,0);
   const items=q=>q.stops.filter(i=>st.done.includes(i)).flatMap(i=>[ROOM[i].fr].concat(st.res[i].stars===3?[ROOM[i].up.fr]:[]));
   $('#profil').replaceChildren(
@@ -857,6 +969,9 @@ function renderProfil(){
           h('p',{class:'zh'},'依据：你从这个街区带回了 ',h('span',{lang:'fr'},items(best).join('、')),'；在这里拿的星、答对的比例和图里点开的东西，合起来比别的街区高。'),
           sk&&h('p',{},'你的学法：',h('b',{lang:'fr'},sk[0]),'　'+sk[1]+'。'+sk[2])]
         :h('p',{},'再走完 '+(3-st.done.length)+' 个地方，这里会根据你带回的东西，告诉你适合住在巴黎的哪个街区。'),
+      th&&h('p',{},'谈到人生的意义（你回答了 '+th.n+' 个问题）：',th.top.length===1
+        ?['你更接近 ',h('b',{lang:'fr'},THINK[th.top[0]][0]),' '+THINK[th.top[0]][1]+'。'+THINK[th.top[0]][2]]
+        :'你在'+th.top.map(k=>THINK[k][1]).join('、')+'之间，没有只站在哪一边。'),
       h('p',{class:'zh'},'等级看星星：'+Math.ceil(max/3)+' 颗升“常住客”，'+Math.ceil(max*2/3)+' 颗升“向导”，'+max+' 颗满星是“传奇”。')),
     h('h3',{},'各街区和你的契合度'),
     h('div',{class:'attrs'},qs.map(x=>{const q=x.q,d=q.stops.filter(i=>st.done.includes(i)).length;
@@ -878,7 +993,7 @@ function renderRoom(){
   const hot=(o,svg)=>'<g class="hot ritem" tabindex="0" role="button" aria-label="'+o.fr+'" data-fr="'+o.fr+'" data-zh="'+o.zh+'">'+svg+'</g>';
   const room=h('div',{id:'room'}),word=h('div',{id:'roomword','aria-live':'polite'});
   room.innerHTML='<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="你的房间">'+ROOM_BG+hot({fr:'la fenêtre',zh:'窗户'},ROOM_WIN)+
-    [0,7,2,3,4,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
+    [0,7,10,8,2,3,4,9,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
   room.querySelectorAll('.ritem').forEach(g=>{
     const say=()=>{word.replaceChildren(...frLine(g.dataset.fr,g.dataset.zh));speak(g.dataset.fr)};
     g.addEventListener('click',say);

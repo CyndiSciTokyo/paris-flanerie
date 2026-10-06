@@ -16,10 +16,10 @@ RATE = '-8%'
 
 COLLECT = r'''
 const out=[];const add=(t,v)=>{if(t&&!out.some(o=>o.t===t))out.push({t:t,v:v})};
-DATA.forEach(S=>{const g=/^Le /.test(S.who)?'m':'f';
+DATA.forEach(S=>{const g=S.voice||(/^Le /.test(S.who)?'m':'f');
   S.steps.forEach(p=>{if(p.t==='listen')add(p.fr,g);if(p.npc)add(p.npc[0],g)})});
 DATA.forEach(S=>{add(S.frPlace,'u');
-  S.steps.forEach(p=>{if(p.t==='choose')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
+  S.steps.forEach(p=>{if(p.t==='choose'||p.t==='avis')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
   S.carnet.forEach(c=>add(c[0],'u'));S.vocab.forEach(v=>add(v[0],'u'));S.lesson.ex.forEach(v=>add(v[0],'u'))});
 SCENES.forEach(sc=>sc.hots.forEach(o=>add(o[0],'u')));
 add(INTRO_FR,'u');ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
