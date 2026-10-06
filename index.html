@@ -356,6 +356,24 @@ const DATA=[
  lesson:{title:"说马上要做的事",text:["说“我要去做某事、我马上做某事”，用 aller（去）的变形，后面直接跟动词原形，和中文的“我去读书”很像。", "aller 的变形：je vais，tu vas，il va、elle va，vous allez。", "说天气用 il fait：il fait beau（天气好），il fait froid（冷），il fait chaud（热）。"],ex:[["Je vais lire.", "我要读书了。"], ["Il va écrire.", "他要写东西了。"], ["Vous allez voir.", "您会看到的。"], ["Je vais au théâtre.", "我去剧院。（aller 的本意）"], ["Il fait froid.", "天气冷。"], ["Il fait chaud.", "天气热。"]]},
  carnet:[["Il fait beau aujourd'hui.","今天天气很好。"],["Je vais lire un poème de Verlaine.","我要读一首魏尔伦的诗。"],["Ce soir, je vais au théâtre.","今晚我去剧院。"],["La pièce commence à vingt heures.","戏晚上八点开始。"],["Bonne soirée, à bientôt !","祝您晚上愉快，回头见！"]],
  gram:"马上要做的事 = aller + 动词原形：je vais lire，il va écrire，vous allez voir。"}
+,{plaque:"Rue de la Verrerie",arr:"4e Arr.",place:"玛黑区的中古店",frPlace:"Une friperie du Marais",who:"La vendeuse",
+ scene:"玛黑区的老街上，中古服装店一家挨着一家。法国人把淘旧货叫 chiner，这是很多巴黎人周末的消遣。你推开一扇挂着铃铛的门，衣架上挤满了几十年前的夹克和裙子。任务：看中一件皮夹克，试穿，然后买下来。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Tout est d'occasion ici, regardez !",q:"店员说了什么？",opts:["您好！这里的东西都是二手的，随便看！","您好！这里的东西都是新到的，随便看！","您好！我们马上关门了！"],
+   note:"d'occasion 是“二手的”。tout 是“全部”。regardez 是 regarder（看）对“您”说的形式。"},
+  {t:"build",ctx:"你看中了一件：我喜欢这件皮夹克。",tokens:["J'aime","cette","veste","en","cuir."],extra:["ce"],
+   zh:"我喜欢这件皮夹克。",note:"veste 是阴性词，所以“这件”用 cette。说材质用 en：en cuir（皮的），en laine（羊毛的）。"},
+  {t:"choose",ctx:"你想试穿这件夹克，怎么问？",opts:[["Je peux l'essayer ?","我可以试试它吗？"],["Je peux la manger ?","我可以吃它吗？"],["Je peux payer ?","我可以付钱了吗？"]],
+   note:"l' 在这里代替 la veste。因为 essayer 以元音开头，la 缩成了 l'。"},
+  {t:"listen",fr:"Bien sûr ! La cabine est au fond, à gauche.",q:"店员怎么回答？",opts:["当然！试衣间在最里面，左手边。","当然！试衣间在楼上，右手边。","抱歉，试衣间坏了。"],
+   note:"au fond 是“在最里面”。à gauche（左边）在奥赛那一站学过。"},
+  {t:"fill",ctx:"夹克有点大，但你决定买下。veste 是阴性词。",before:"Elle est un peu grande, mais je ",after:" prends.",opts:["la","le","les"],
+   full:"Elle est un peu grande, mais je la prends.",zh:"它有点大，不过我要了。",note:"用 la 代替 la veste，放在动词 prends 前面。买东西时说一句 Je le prends 或 Je la prends 就是“我要了”。"}
+ ],
+ vocab:[["une friperie", "中古服装店"], ["d'occasion", "二手的"], ["chiner", "淘旧货"], ["une veste", "一件夹克"], ["une robe", "一条连衣裙"], ["un chapeau", "一顶帽子"], ["un sac", "一个包"], ["le cuir", "皮革"], ["en cuir", "皮的"], ["essayer", "试，试穿"], ["la cabine", "试衣间"], ["au fond", "在最里面"], ["un peu", "有一点"], ["grand, grande", "大的（阳性，阴性）"], ["petit, petite", "小的（阳性，阴性）"], ["prendre", "拿，买下"], ["je peux…", "我可以……"], ["Bien sûr !", "当然！"]],
+ lesson:{title:"用 le、la、les 代替东西，以及 je peux",text:["刚提到过的东西，不必再说一遍名字，用 le（阳性）、la（阴性）、les（复数）代替，放在动词前面：Je la prends（我要了它）。", "后面的动词如果以元音开头，le 和 la 都缩成 l'，比如 Je peux l'essayer ?", "je peux 是“我可以”，后面跟动词原形，用来客气地问能不能做某事。“您可以”是 vous pouvez。"],ex:[["Je prends la veste.", "我要这件夹克。"], ["Je la prends.", "我要了。（指夹克）"], ["Je prends le chapeau.", "我要这顶帽子。"], ["Je le prends.", "我要了。（指帽子）"], ["Je les prends.", "这些我都要了。"], ["Je peux l'essayer ?", "我可以试试它吗？"]]},
+ carnet:[["Tout est d'occasion ici.","这里的东西都是二手的。"],["J'aime cette veste en cuir.","我喜欢这件皮夹克。"],["Je peux l'essayer ?","我可以试试它吗？"],["La cabine est au fond, à gauche.","试衣间在最里面，左手边。"],["Elle est un peu grande, mais je la prends.","它有点大，不过我要了。"]],
+ gram:"刚提到的东西用 le、la、les 代替，放在动词前：Je la prends。元音前缩成 l'：Je peux l'essayer ?"}
 ];
 
 /* ---------- illustrated scenes: [fr, zh, markerX, markerY, shapes] ---------- */
@@ -417,6 +435,14 @@ const SCENES=[
   ["le bateau","小船",330,178,`<path d="M295 216V170" stroke="${C.dark}" stroke-width="3"/><path d="M297 174v38h28z" fill="${C.white}"/><path d="M268 216h54l-9 13h-36z" fill="${C.red}"/>`],
   ["la statue","雕像",586,150,`<rect x="540" y="192" width="40" height="60" fill="#bfb293"/><ellipse cx="560" cy="158" rx="13" ry="34" fill="${C.white}"/><circle cx="560" cy="116" r="9" fill="${C.white}"/>`]
  ]}
+,{bg:`<rect width="680" height="280" fill="#eadfce"/><rect y="250" width="680" height="30" fill="#b9a58a"/><path d="M50 250V64H340V250" fill="none" stroke="${C.dark}" stroke-width="5"/><rect x="380" y="150" width="180" height="8" fill="${C.wood}"/><path d="M395 158v92M545 158v92" stroke="${C.wood}" stroke-width="5"/>`,
+ hots:[
+  ["la veste","夹克",170,110,`<path d="M125 64v18" stroke="${C.dark}" stroke-width="3"/><path d="M100 84h50l14 16-12 10v68h-54v-68l-12-10z" fill="#7a4a2a"/><path d="M125 84v94M112 84l13 22 13-22" fill="none" stroke="#5b3620" stroke-width="3"/>`],
+  ["la robe","连衣裙",284,150,`<path d="M235 64v18" stroke="${C.dark}" stroke-width="3"/><path d="M220 84h30l6 36 18 82h-78l18-82z" fill="${C.red}"/><g fill="${C.white}"><circle cx="228" cy="140" r="3"/><circle cx="246" cy="156" r="3"/><circle cx="222" cy="176" r="3"/><circle cx="252" cy="186" r="3"/><circle cx="236" cy="110" r="3"/></g>`],
+  ["le chapeau","帽子",420,106,`<ellipse cx="420" cy="146" rx="36" ry="7" fill="#3a4658"/><path d="M398 146v-20a22 14 0 0 1 44 0v20z" fill="#3a4658"/><rect x="398" y="134" width="44" height="6" fill="${C.red}"/>`],
+  ["le sac","包",544,104,`<path d="M498 114a12 15 0 0 1 24 0" fill="none" stroke="${C.wood}" stroke-width="4"/><rect x="486" y="112" width="48" height="38" rx="6" fill="#c98a3c"/><circle cx="510" cy="126" r="4" fill="${C.yel}"/>`],
+  ["le miroir","镜子",612,76,`<path d="M592 252l20-44 20 44" fill="none" stroke="#c9a24a" stroke-width="5"/><ellipse cx="612" cy="150" rx="32" ry="62" fill="#c9a24a"/><ellipse cx="612" cy="150" rx="25" ry="55" fill="#dfe8f2"/><path d="M600 118l14-16M604 136l8-9" stroke="${C.white}" stroke-width="3" stroke-linecap="round"/>`]
+ ]}
 ];
 
 /* ---------- the room, after Virginia Woolf's "A Room of One's Own": one piece per stop, one extra for three stars ---------- */
@@ -439,6 +465,8 @@ const ROOM=[
   up:{fr:'le bouquet',zh:'花束',svg:`<path d="M318 192v-16M324 192v-22M330 192v-14" stroke="${C.green}" stroke-width="2.5"/><circle cx="318" cy="174" r="6" fill="${C.red}"/><circle cx="325" cy="167" r="6" fill="${C.yel}"/><circle cx="331" cy="176" r="5" fill="${C.white}"/><rect x="315" y="190" width="18" height="20" rx="3" fill="${C.blue}"/>`}},
  {fr:'le fauteuil',zh:'扶手椅',svg:`<path d="M74 362V408M146 362V408M66 340H154" stroke="${C.green}" stroke-width="6" stroke-linecap="round"/><rect x="74" y="302" width="72" height="52" rx="8" fill="none" stroke="${C.green}" stroke-width="6"/><path d="M92 304v48M110 304v48M128 304v48" stroke="${C.green}" stroke-width="4"/><rect x="68" y="354" width="84" height="10" rx="3" fill="${C.green}"/>`,
   up:{fr:'la plante',zh:'绿植',svg:`<path d="M168 372h28l-4 30h-20z" fill="${C.red}"/><ellipse cx="174" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(-20 174 356)"/><ellipse cx="190" cy="356" rx="7" ry="18" fill="${C.green}" transform="rotate(20 190 356)"/><ellipse cx="182" cy="350" rx="7" ry="22" fill="#3d8a66"/>`}}
+ ,{fr:'le miroir',zh:'镜子',svg:`<ellipse cx="250" cy="165" rx="27" ry="42" fill="#c9a24a"/><ellipse cx="250" cy="165" rx="21" ry="36" fill="#dfe8f2"/><path d="M241 142l11-12M244 156l6-7" stroke="${C.white}" stroke-width="3" stroke-linecap="round"/>`,
+  up:{fr:'le chapeau',zh:'帽子',svg:`<circle cx="200" cy="112" r="3" fill="${C.dark}"/><ellipse cx="200" cy="132" rx="22" ry="5" fill="#3a4658"/><path d="M187 132v-12a13 9 0 0 1 26 0v12z" fill="#3a4658"/><rect x="187" y="124" width="26" height="4" fill="${C.red}"/>`}}
 ];
 
 /* ---------- helpers ---------- */
@@ -507,7 +535,6 @@ const frLine=(fr,zh)=>[h('div',{class:'line'},h('span',{class:'fr',lang:'fr'},fr
 const bubble=(who,fr,zh)=>h('div',{class:'bubble'},h('span',{class:'who',lang:'fr'},who),frLine(fr,zh));
 
 /* ---------- rewards ---------- */
-const LIT=[0,1,3,5],ART=[2,4];
 const starsFor=m=>m<=1?3:m<=4?2:1;
 const starEl=(n,big)=>h('span',{class:'stars'+(big?' bigstars':''),role:'img','aria-label':n+' 颗星（满分 3 颗）'},'★'.repeat(n),h('span',{class:'off'},'★'.repeat(3-n)));
 const totalStars=()=>st.done.reduce((s,i)=>s+(st.res[i]?st.res[i].stars:0),0);
@@ -528,7 +555,7 @@ function fitObj(svg,o){
 
 /* ---------- map: positions follow real longitude and latitude ---------- */
 const PINS=[[241,336,'Quai de Conti',262,316,'start'],[202,356,'Café de Flore',180,380,'end'],[164,300,"Musée d'Orsay",142,322,'end'],
-  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start']];
+  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start'],[337,318,'Le Marais',337,296,'middle']];
 function renderMap(){
   const pins=PINS.map((p,i)=>{const r=st.res[i],done=st.done.includes(i);
     return '<g class="pin'+(done?' done':'')+(r&&r.stars===3?' gold':'')+'" data-i="'+i+'" tabindex="0" role="button" aria-label="第 '+(i+1)+' 站：'+DATA[i].place+'">'+
@@ -547,11 +574,11 @@ function renderMap(){
     g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();enter(+g.dataset.i)}});});
   const all=st.done.length===DATA.length;
   $('#mapsum').replaceChildren('已去过 '+st.done.length+' / '+DATA.length+' 站 · 星星 '+totalStars()+' / '+DATA.length*3+'。点地图上的圆点或下面的地名进入，顺序随你；数字是建议的顺序。',
-    all&&' ',all&&h('button',{class:'reveal',type:'button',onclick:()=>setTab('profil')},'七站都走完了，看看你是哪一类巴黎人'));
+    all&&' ',all&&h('button',{class:'reveal',type:'button',onclick:()=>setTab('profil')},'所有地方都走完了，看看你适合住在哪个街区'));
   $('#chapters').replaceChildren(...DATA.map((S,i)=>{const done=st.done.includes(i);
     return h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
       h('span',{class:'cnum'+(done?' done':'')},String(i+1)),
-      h('span',{class:'cname'},h('b',{},S.place),h('span',{lang:'fr'},S.frPlace+' · '+S.arr)),
+      h('span',{class:'cname'},h('b',{},S.place),h('span',{},S.frPlace+' · '+quartOf(i).zh)),
       done?starEl(st.res[i].stars):h('span',{class:'zh'},st.run&&st.run.i===i&&st.step>=0?'进行中':'未去过')))}));
 }
 function enter(i){
@@ -756,7 +783,7 @@ function renderReward(fresh){
     h('p',{class:'note'},S.gram),
     h('div',{class:'row'},
       h('button',{class:'primary',type:'button',onclick:()=>{setTab('chambre');window.scrollTo(0,0)}},'回房间看看'),
-      h('button',{class:'tile',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我是哪一类巴黎人':'回到地图，选下一站'),
+      h('button',{class:'tile',type:'button',onclick:()=>setTab(all?'profil':'carte')},all?'看看我适合住在哪个街区':'回到地图，选下一站'),
       h('button',{class:'tile',type:'button',onclick:()=>{st.step=-1;newRun(i);st.combo=0;st.last=null;save();renderStation(true);toStep()}},r.stars<3?'再走一遍，争取三颗星':'再走一遍这一站'),
       ));
   fitObj(card.querySelector('svg'),o);
@@ -773,17 +800,25 @@ function renderCarnet(){
         h('ul',{class:'entries'},SCENES[i].hots.map(o=>h('li',{},frLine(o[0],o[1]))))]:h('p',{class:'locked'},S.place+'：走完这一站后解锁'))));
 }
 
-/* ---------- profile: four measured traits, a rank from stars, a type from the strongest trait and the places ---------- */
+/* ---------- profile: four measured traits, a rank from stars, and the quartier whose stops went best ---------- */
 const SKILL={
   precision:['准确','Précision','做任务时一次就答对的比例','Puriste','纯粹派','你几乎不出错。词序、阴阳性、冠词，都要弄对了才往下走，像一位字斟句酌的校对。'],
   oreille:['听力','Oreille','不看文字、一次听懂的比例','Mélomane','好耳朵','你靠耳朵学法语。不看文字就能听懂路人的话，街头的法语对你来说像一段旋律。'],
   memoire:['记词','Mémoire','小测试里图和词一次配对的比例','Encyclopédiste','百科全书派','见过的词你都记得住，图和词一配就准，像狄德罗编百科全书那样把巴黎一样一样收进脑子里。'],
-  curiosite:['好奇','Curiosité','去过的站里，图中点开过的东西的比例','Flâneur · Flâneuse','漫游者','你不急着赶路。每张图里的东西都要点一点、听一听，这正是波德莱尔笔下在巴黎街头闲逛的人。']};
-const AFF={
-  lit:['bibliophile','爱书人','旧书摊、咖啡馆、雨果故居和普鲁斯特墓这些文学的地方，你拿的星最多。'],
-  art:['esthète','爱美的人','奥赛和蒙马特这些看画的地方，你拿的星最多。'],
-  mix:['éclectique','兼收并蓄','文学的地方和看画的地方你走得一样好，没有偏科。']};
-const RANKS=[[21,'Légende','传奇'],[14,'Guide','向导'],[7,'Pensionnaire','常住客'],[0,'Touriste','游客']];
+  curiosite:['好奇','Curiosité','去过的地方里，图中点开过的东西的比例','Flâneur · Flâneuse','漫游者','你不急着赶路。每张图里的东西都要点一点、听一听，这正是波德莱尔笔下在巴黎街头闲逛的人。']};
+/* each quartier: the stops inside it, the title it gives, and who it suits */
+const QUART=[
+  {fr:'Saint-Germain-des-Prés',zh:'圣日耳曼德佩',arr:'第 6 区',stops:[0,1,6],title:['Bibliophile','爱书人'],
+   desc:'旧书摊、文学咖啡馆和卢森堡公园都在几步路之内，出版社和书店也最集中。这里适合手里总拿着一本书的人。'},
+  {fr:'Le Marais',zh:'玛黑区',arr:'第 3、4 区',stops:[3,7],title:['Chineur · Chineuse','中古爱好者'],
+   desc:'老宅子、孚日广场的拱廊，还有一条街接一条街的中古店。chiner 就是“淘旧货”，这里适合喜欢旧东西和它们背后故事的人。'},
+  {fr:'Le quartier d\'Orsay',zh:'奥赛一带',arr:'第 7 区',stops:[2],title:['Esthète','爱美的人'],
+   desc:'奥赛博物馆和罗丹美术馆都在这一带，街道安静、讲究。这里适合愿意在一幅画前站很久的人。'},
+  {fr:'Montmartre',zh:'蒙马特',arr:'第 18 区',stops:[4],title:['Bohème','波西米亚艺术家'],
+   desc:'山坡、台阶、画架和小酒馆。毕加索年轻时就住在这里，这里适合想自己动手画点什么的人。'},
+  {fr:'Ménilmontant',zh:'梅尼蒙当',arr:'第 20 区',stops:[5],title:['Rêveur · Rêveuse','沉思的漫步者'],
+   desc:'巴黎东边的坡地，挨着拉雪兹神父公墓，安静，生活气息浓。这里适合喜欢一个人慢慢走、慢慢想的人。'}];
+const quartOf=i=>QUART.find(q=>q.stops.includes(i));
 function traits(){
   let ft=0,n=0,ear=0,earN=0,q=0,qn=0,found=0,real=0;
   st.done.forEach(i=>{const r=st.res[i];found+=(st.found[i]||[]).length;
@@ -791,32 +826,48 @@ function traits(){
   const pc=(a,b)=>b?Math.round(100*a/b):null;
   return {real:real,v:{precision:pc(ft,n),oreille:pc(ear,earN),memoire:pc(q,qn),curiosite:pc(found,st.done.length*5)}};
 }
-function playerType(tr){
-  if(tr.real<3)return null;
+/* how well one stop went, 0 to 1: half from what was brought home (stars), the rest from accuracy and from looking around */
+function stopScore(i){
+  if(!st.done.includes(i))return 0;
+  const r=st.res[i],acc=r.old||!r.n?0.67:r.ft/r.n;
+  return 0.5*r.stars/3+0.3*acc+0.2*(st.found[i]||[]).length/5;
+}
+const quartScores=()=>QUART.map(q=>({q:q,v:Math.round(100*q.stops.reduce((s,i)=>s+stopScore(i),0)/q.stops.length)})).sort((a,b)=>b.v-a.v);
+function topSkill(tr){
   const v=tr.v,keys=['curiosite','oreille','memoire','precision'];
-  const avg=g=>{const a=g.filter(i=>st.done.includes(i));return a.length?a.reduce((s,i)=>s+st.res[i].stars,0)/a.length:null};
-  const l=avg(LIT),a=avg(ART);
-  const aff=AFF[l==null?'art':a==null?'lit':l-a>=0.34?'lit':a-l>=0.34?'art':'mix'];
-  if(keys.every(k=>v[k]!=null&&v[k]>=95))return {fr:'Virtuose '+aff[0],zh:'全能型 · '+aff[1],desc:['四项都在 95 分以上：耳朵、记性、准确和好奇心，你一样不缺。',aff[2]]};
-  let top=keys[0];keys.forEach(k=>{if((v[k]||0)>(v[top]||0))top=k});
-  const s=SKILL[top];
-  return {fr:s[3]+' '+aff[0],zh:s[4]+' · '+aff[1],desc:['你最强的一项是“'+s[0]+'”。'+s[5],aff[2]]};
+  if(keys.every(k=>v[k]!=null&&v[k]>=95))return ['Virtuose','全能型','四项都在 95 分以上：耳朵、记性、准确和好奇心，你一样不缺。'];
+  let top=null;keys.forEach(k=>{if(v[k]!=null&&(top==null||v[k]>v[top]))top=k});
+  if(!top)return null;
+  const s=SKILL[top];return [s[3],s[4],'你最强的一项是“'+s[0]+'”。'+s[5]];
 }
 function renderProfil(){
-  const tr=traits(),ty=playerType(tr),stars=totalStars(),rank=RANKS.find(r=>stars>=r[0]),all=st.done.length===DATA.length;
+  const tr=traits(),N=DATA.length,stars=totalStars(),max=N*3,all=st.done.length===N;
+  const rank=stars>=max?['Légende','传奇']:stars>=max*2/3?['Guide','向导']:stars>=max/3?['Pensionnaire','常住客']:['Touriste','游客'];
+  const qs=quartScores(),best=qs[0].q,ready=st.done.length>=3,sk=topSkill(tr);
   const foundAll=Object.keys(st.found).reduce((s,k)=>s+st.found[k].length,0);
+  const items=q=>q.stops.filter(i=>st.done.includes(i)).flatMap(i=>[ROOM[i].fr].concat(st.res[i].stars===3?[ROOM[i].up.fr]:[]));
   $('#profil').replaceChildren(
     h('h2',{},'我的巴黎 · Mon Paris'),
     h('div',{class:'typecard'},
-      h('p',{class:'count'},'等级：',h('span',{lang:'fr'},rank[1]),' '+rank[2]+' · 星星 '+stars+' / '+DATA.length*3),
-      ty?[h('p',{class:'zh'},all?'你的类型':'目前的类型（七站走完后定下来）'),h('p',{class:'tfr',lang:'fr'},ty.fr),h('p',{class:'tzh'},ty.zh),ty.desc.map(d=>h('p',{},d))]
-        :h('p',{},'再走完 '+(3-tr.real)+' 站，这里会根据你的表现和去过的地方，告诉你是哪一类巴黎人。'),
-      h('p',{class:'zh'},'等级看星星：7 颗升“常住客”，14 颗升“向导”，21 颗满星是“传奇”。')),
+      h('p',{class:'count'},'等级：',h('span',{lang:'fr'},rank[0]),' '+rank[1]+' · 星星 '+stars+' / '+max),
+      ready?[h('p',{class:'zh'},all?'你适合住在':'目前看，你适合住在（所有地方走完后定下来）'),
+          h('p',{class:'tfr',lang:'fr'},best.fr),h('p',{class:'tzh'},best.zh+'（巴黎'+best.arr+'）'),
+          h('p',{},'称号：',h('b',{lang:'fr'},best.title[0]),'　'+best.title[1]),
+          h('p',{},best.desc),
+          h('p',{class:'zh'},'依据：你从这个街区带回了 ',h('span',{lang:'fr'},items(best).join('、')),'；在这里拿的星、答对的比例和图里点开的东西，合起来比别的街区高。'),
+          sk&&h('p',{},'你的学法：',h('b',{lang:'fr'},sk[0]),'　'+sk[1]+'。'+sk[2])]
+        :h('p',{},'再走完 '+(3-st.done.length)+' 个地方，这里会根据你带回的东西，告诉你适合住在巴黎的哪个街区。'),
+      h('p',{class:'zh'},'等级看星星：'+Math.ceil(max/3)+' 颗升“常住客”，'+Math.ceil(max*2/3)+' 颗升“向导”，'+max+' 颗满星是“传奇”。')),
+    h('h3',{},'各街区和你的契合度'),
+    h('div',{class:'attrs'},qs.map(x=>{const q=x.q,d=q.stops.filter(i=>st.done.includes(i)).length;
+      return [h('div',{class:'an'},h('b',{},q.zh+' ',h('span',{lang:'fr',style:'font-size:.9rem'},q.title[0])),h('span',{},'去过 '+d+' / '+q.stops.length+' 个地方 · '+q.title[1])),
+        h('div',{class:'bar',role:'img','aria-label':q.zh+' '+x.v+' 分'},h('i',{style:'width:'+x.v+'%'})),h('div',{class:'av'},String(x.v))]})),
+    h('p',{class:'zh'},'每个街区的分数，一半看你在那里带回了多少东西（星星），其余看答对的比例和图里点开了多少东西；没去过的地方算零分。'),
     h('h3',{},'四项属性'),
     h('div',{class:'attrs'},Object.keys(SKILL).map(k=>{const s=SKILL[k],x=tr.v[k];
       return [h('div',{class:'an'},h('b',{},s[0]+' ',h('span',{lang:'fr',style:'font-size:.9rem'},s[1])),h('span',{},s[2])),
         h('div',{class:'bar',role:'img','aria-label':s[0]+(x==null?' 暂无':' '+x+' 分')},h('i',{style:'width:'+(x||0)+'%'})),h('div',{class:'av'},x==null?'—':String(x))]})),
-    h('p',{class:'zh'},'最长连对 '+st.best+' 次 · 图里点开过的东西 '+foundAll+' / '+DATA.length*5+' · 房间里的东西 '+st.done.length+' / '+DATA.length+'。'),
+    h('p',{class:'zh'},'最长连对 '+st.best+' 次 · 图里点开过的东西 '+foundAll+' / '+N*5+' · 房间里的东西 '+st.done.length+' / '+N+'。'),
     h('div',{class:'row'},h('button',{class:'tile',type:'button',onclick:()=>setTab('chambre')},'去看我的房间')));
 }
 
@@ -827,7 +878,7 @@ function renderRoom(){
   const hot=(o,svg)=>'<g class="hot ritem" tabindex="0" role="button" aria-label="'+o.fr+'" data-fr="'+o.fr+'" data-zh="'+o.zh+'">'+svg+'</g>';
   const room=h('div',{id:'room'}),word=h('div',{id:'roomword','aria-live':'polite'});
   room.innerHTML='<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="你的房间">'+ROOM_BG+hot({fr:'la fenêtre',zh:'窗户'},ROOM_WIN)+
-    [0,2,3,4,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
+    [0,7,2,3,4,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
   room.querySelectorAll('.ritem').forEach(g=>{
     const say=()=>{word.replaceChildren(...frLine(g.dataset.fr,g.dataset.zh));speak(g.dataset.fr)};
     g.addEventListener('click',say);
