@@ -430,6 +430,96 @@ const DATA=[
  lesson:{title:"il faut，pourquoi 和 parce que",text:["il faut 是“必须、应该”，后面直接跟动词原形，而且永远是 il faut，不随人称变：Il faut vivre（得活下去）。", "问“为什么”用 pourquoi，回答“因为”用 parce que。后面的词以元音开头时，que 缩成 qu'，比如 parce qu'il fait beau。", "il y a 是“有”，后面跟什么都行：il y a le soleil（有太阳）。"],ex:[["Il faut vivre.", "得活下去。"], ["Il faut aimer.", "应该去爱。"], ["Pourquoi vivre ?", "为什么活着？"], ["Parce que le monde est beau.", "因为世界是美的。"], ["Il y a le soleil.", "有太阳。"], ["Il ne faut pas désespérer.", "不应该绝望。"]]},
  carnet:[["Le monde est absurde, mais il fait beau aujourd'hui.","世界是荒诞的，可是今天天气很好。"],["Alors, pourquoi vivre ?","那么，为什么活着？"],["Parce qu'il y a le soleil, la mer et les amis.","因为有太阳、大海和朋友。"],["Il faut imaginer Sisyphe heureux.","应当想象西西弗是幸福的。（加缪）"],["Malgré tout, j'aime la vie.","不管怎样，我爱生活。"]],
  gram:"il faut 加动词原形是“必须、应该”。pourquoi 问为什么，parce que 回答因为。"}
+,{plaque:"Quai de Jemmapes",arr:"10e Arr.",place:"运河边的电影院",frPlace:"Le cinéma du canal",who:"La caissière",
+ scene:"圣马丁运河边有一座叫“北方旅馆”的老房子，1938 年的同名电影让它出了名；《天使爱美丽》里，女主角也是在这条运河上打水漂。河边一家小影院今晚放老片。任务：问清场次，买两张票，选好座位。",
+ steps:[
+  {t:"choose",ctx:"你想知道电影几点开始。",opts:[["Le film commence à quelle heure ?","电影几点开始？"],["Le film commence où ?","电影在哪里开始？"],["Quel film commence ?","哪部电影开始？"]],
+   note:"à quelle heure 是“在几点”。口语里常把它放在句尾，像中文一样。"},
+  {t:"listen",fr:"La séance commence à vingt heures trente.",q:"售票员怎么回答？",opts:["这一场晚上八点半开始","这一场晚上八点开始","这一场下午三点半开始"],
+   note:"vingt heures trente 是 20 点 30 分。séance 是“一场”，电影、演出都用它。"},
+  {t:"build",ctx:"买票：我想要两张今晚的票。",tokens:["Je","voudrais","deux","places","pour","ce soir."],extra:["un"],
+   zh:"我想要两张今晚的票。",note:"电影院里的票叫 une place，字面是“一个座位”。pour ce soir 是“今晚的”。"},
+  {t:"listen",fr:"Vous préférez devant ou au milieu ?",q:"她问你什么？",opts:["您想坐前面还是中间？","您想坐后面还是旁边？","您想看今天的还是明天的？"],
+   note:"devant 前面，derrière 后面，au milieu 中间。ou 是“或者”，和 où（哪里）读音一样，写法差一个符号。"},
+  {t:"fill",npc:["Au milieu, très bien. Voilà vos places.","中间，好的。这是您的票。"],ctx:"你顺便问：今晚放的是哪部电影？film 是阳性词。",before:"C'est ",after:" film, ce soir ?",opts:["quel","quelle","qui"],
+   full:"C'est quel film, ce soir ?",zh:"今晚是哪部电影？",note:"film 是阳性，用 quel。如果问“哪一场”，séance 是阴性，就写成 quelle séance。"}
+ ],
+ vocab:[["un film", "一部电影"], ["le cinéma", "电影院"], ["une séance", "一场"], ["une place", "一个座位，一张票"], ["à quelle heure", "在几点"], ["commencer", "开始"], ["ce soir", "今晚"], ["devant", "前面"], ["derrière", "后面"], ["au milieu", "中间"], ["préférer", "更喜欢，更想要"], ["ou", "或者"], ["un acteur, une actrice", "演员（阳性，阴性）"], ["en version originale", "原声版"], ["les sous-titres", "字幕"]],
+ lesson:{title:"quel 和 quelle，以及问时间",text:["问“哪一个、什么”用 quel。它像形容词一样跟着名词变：阳性 quel film（哪部电影），阴性 quelle séance（哪一场）。两个读音一样，只是写法不同。", "问几点说 À quelle heure ?，回答用 à 加时间：à vingt heures（晚上八点），à vingt heures trente（八点半）。", "法国的电影院、剧院和车站都用二十四小时制，下午和晚上的钟点要加十二。"],ex:[["Quel film ?", "哪部电影？"], ["Quelle séance ?", "哪一场？"], ["À quelle heure ?", "几点？"], ["À dix-huit heures.", "晚上六点。"], ["À vingt heures trente.", "晚上八点半。"]]},
+ carnet:[["Le film commence à quelle heure ?", "电影几点开始？"], ["La séance commence à vingt heures trente.", "这一场晚上八点半开始。"], ["Je voudrais deux places pour ce soir.", "我想要两张今晚的票。"], ["C'est quel film, ce soir ?", "今晚是哪部电影？"]],
+ gram:"问哪一个：阳性 quel，阴性 quelle。问几点：À quelle heure ?"}
+,{plaque:"Quai de Valmy",arr:"10e Arr.",place:"运河边的唱片店",frPlace:"Chez le disquaire",who:"Le disquaire",
+ scene:"运河的另一岸是瓦尔米河岸，咖啡馆和小店一家挨着一家。一家唱片店的门开着，里面飘出老香颂。店主正在给一张黑胶唱片擦灰。任务：说说你平时听什么，试听一张，再比一比价钱。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Qu'est-ce que vous écoutez, d'habitude ?",q:"店主问你什么？",opts:["您好！您平时听什么？","您好！您平时读什么？","您好！您今天想买什么？"],
+   note:"écouter 是“听”。d'habitude 是“平时、通常”。"},
+  {t:"build",ctx:"回答：我听爵士和法语香颂。",tokens:["J'écoute","du","jazz","et","de la","chanson","française."],extra:["le"],
+   zh:"我听爵士和法语香颂。",note:"说听“某一类”音乐，前面加 du（阳性）或 de la（阴性），意思是“一些”。这个用法在阿里格市场那一站会细讲。"},
+  {t:"listen",fr:"Vous connaissez Barbara ? Écoutez ce disque.",q:"店主说了什么？",opts:["您知道芭芭拉吗？听听这张唱片。","您认识我的朋友芭芭拉吗？","您想见芭芭拉吗？她在里面。"],
+   note:"Barbara 是二十世纪法国最有名的香颂女歌手之一。connaître 是“知道、认识”（人或作品）。"},
+  {t:"choose",ctx:"你没听过她，但很想听一听。",opts:[["Je ne connais pas, mais je veux bien écouter.","我不知道她，不过我很想听听。"],["Je ne connais pas, et je ne veux pas écouter.","我不知道她，也不想听。"],["Je connais très bien, merci.","我很熟，谢谢。"]],
+   note:"je veux bien 是“我很乐意”，别人提议什么，用它来答应，比单说 oui 更自然。"},
+  {t:"fill",ctx:"你拿起两张唱片比价钱：这一张比另一张便宜。",before:"Ce disque est ",after:" cher que l'autre.",opts:["moins","plus","très"],
+   full:"Ce disque est moins cher que l'autre.",zh:"这张唱片比另一张便宜。",note:"moins cher 字面是“不那么贵”，法语就这样说“便宜一些”。l'autre 是“另一个”。"}
+ ],
+ vocab:[["un disque", "一张唱片"], ["un vinyle", "一张黑胶"], ["la musique", "音乐"], ["une chanson", "一首歌"], ["un chanteur, une chanteuse", "歌手（阳性，阴性）"], ["écouter", "听"], ["j'écoute", "我听"], ["le jazz", "爵士"], ["la chanson française", "法语香颂"], ["d'habitude", "平时，通常"], ["connaître", "知道，认识"], ["je ne connais pas", "我不知道"], ["plus", "更"], ["moins", "不那么"], ["cher, chère", "贵的（阳性，阴性）"], ["l'autre", "另一个"]],
+ lesson:{title:"比较：plus 和 moins",text:["比较两样东西，在形容词前加 plus（更）或 moins（不那么），后面用 que 引出比较的对象：Ce disque est plus cher que ce livre（这张唱片比这本书贵）。", "“和……一样”用 aussi… que：aussi beau que（和……一样美）。", "说“更喜欢”有一个现成的动词 préférer：je préfère le jazz（我更喜欢爵士）。"],ex:[["Ce disque est plus cher.", "这张唱片更贵。"], ["Ce disque est moins cher.", "这张唱片便宜一些。"], ["Le jazz est plus calme que le rock.", "爵士比摇滚安静。"], ["Je préfère la chanson française.", "我更喜欢法语香颂。"], ["C'est aussi beau qu'un poème.", "这和一首诗一样美。"]]},
+ carnet:[["Qu'est-ce que vous écoutez, d'habitude ?", "您平时听什么？"], ["J'écoute du jazz et de la chanson française.", "我听爵士和法语香颂。"], ["Je ne connais pas, mais je veux bien écouter.", "我不知道，不过我很想听听。"], ["Ce disque est moins cher que l'autre.", "这张唱片比另一张便宜。"]],
+ gram:"比较用 plus… que（更）和 moins… que（不那么）。更喜欢：je préfère。"}
+,{plaque:"Place de l'Opéra",arr:"9e Arr.",place:"加尼叶歌剧院",frPlace:"L'Opéra Garnier",who:"L'ouvreuse",
+ scene:"加尼叶歌剧院 1875 年落成。金色大厅和大理石楼梯底下，真的有一个蓄水池，《歌剧魅影》的故事就是从这里来的。观众厅的天顶画是夏加尔 1964 年画的。今晚演《卡门》。任务：找到座位，问清幕间休息，再夸一夸演出。",
+ steps:[
+  {t:"build",ctx:"问引座员：打扰一下，我的座位在哪里？",tokens:["Excusez-moi,","où","est","ma","place ?"],extra:["mon"],
+   zh:"打扰一下，我的座位在哪里？",note:"place 是阴性词，所以“我的”用 ma。看的是东西的性别，不是你自己的性别。"},
+  {t:"listen",fr:"Votre place est au balcon, au premier rang.",q:"引座员怎么说？",opts:["您的座位在楼座第一排","您的座位在楼下第三排","您的座位已经有人了"],
+   note:"votre 是“您的”。le balcon 是楼座，un rang 是一排，premier 是“第一”。"},
+  {t:"choose",ctx:"你想知道幕间休息有多久。",opts:[["L'entracte dure combien de temps ?","幕间休息多长时间？"],["L'entracte est où ?","幕间休息在哪里？"],["L'entracte coûte combien ?","幕间休息多少钱？"]],
+   note:"durer 是“持续”。combien de temps 是“多长时间”。combien 单用是“多少（钱）”。"},
+  {t:"listen",fr:"Vingt minutes. Le spectacle dure trois heures.",q:"她怎么回答？",opts:["二十分钟。演出一共三个小时。","十分钟。演出一共两个小时。","二十分钟。演出三点开始。"],
+   note:"trois heures 可以是“三个小时”，也可以是“三点钟”。前面有 à 才是钟点：à trois heures。"},
+  {t:"fill",ctx:"散场时，你对邻座说：我太喜欢了，这是我第一次看歌剧！opéra 是阳性词。",before:"J'ai adoré le spectacle. C'est ",after:" premier opéra !",opts:["mon","ma","mes"],
+   full:"J'ai adoré le spectacle. C'est mon premier opéra !",zh:"我太喜欢这场演出了。这是我第一次看歌剧！",note:"opéra 是阳性，用 mon。j'ai adoré 是过去式，“我（刚才）非常喜欢”，在拉雪兹神父公墓那一站学过这种说法。"}
+ ],
+ vocab:[["l'opéra", "歌剧，歌剧院（阳性）"], ["un spectacle", "一场演出"], ["la salle", "大厅"], ["un rang", "一排"], ["le balcon", "楼座"], ["l'entracte", "幕间休息（阳性）"], ["durer", "持续"], ["combien de temps", "多长时间"], ["une heure", "一小时，一点钟"], ["la voix", "嗓音"], ["chanter", "唱"], ["premier, première", "第一（阳性，阴性）"], ["deuxième", "第二"], ["troisième", "第三"], ["j'ai adoré", "我非常喜欢（过去）"]],
+ lesson:{title:"mon、ma、mes 和 votre、vos",text:["“我的”跟着后面的东西变：阳性 mon billet（我的票），阴性 ma place（我的座位），复数 mes amis（我的朋友们）。它看的是东西的性别，不是说话人的性别。", "“您的”简单一些：单数 votre place，复数 vos places。", "“第几”是在数字后面加 -ième：deuxième（第二）、troisième（第三）。“第一”特殊，是 premier，阴性 première。"],ex:[["mon billet", "我的票"], ["ma place", "我的座位"], ["mes amis", "我的朋友们"], ["votre place", "您的座位"], ["vos places", "您的座位（多个）"], ["au troisième rang", "在第三排"]]},
+ carnet:[["Excusez-moi, où est ma place ?", "打扰一下，我的座位在哪里？"], ["Votre place est au balcon, au premier rang.", "您的座位在楼座第一排。"], ["L'entracte dure combien de temps ?", "幕间休息多长时间？"], ["J'ai adoré le spectacle. C'est mon premier opéra !", "我太喜欢这场演出了。这是我第一次看歌剧！"]],
+ gram:"我的：mon（阳性）、ma（阴性）、mes（复数）。您的：votre、vos。"}
+,{plaque:"Place d'Aligre",arr:"12e Arr.",place:"阿里格市场",frPlace:"Le marché d'Aligre",who:"Le marchand",
+ scene:"阿里格市场是巴黎最热闹也最便宜的露天集市之一，除了周一，每天上午都开。摊主们扯着嗓子报价，水果堆成小山，旁边的室内市场卖奶酪和熟肉。任务：买水果、奶酪和面包，凑一顿野餐。",
+ steps:[
+  {t:"listen",fr:"Allez, allez ! Elles sont belles, mes fraises !",q:"摊主在喊什么？",opts:["来来来！我的草莓多漂亮！","来来来！我的苹果真便宜！","走开走开！我要收摊了！"],
+   note:"fraise（草莓）是阴性词，所以用 elles 和 belles。mes 是“我的”（复数）。"},
+  {t:"build",ctx:"你要：请给我一公斤苹果。",tokens:["Je","voudrais","un kilo","de","pommes,","s'il vous plaît."],extra:["des"],
+   zh:"请给我一公斤苹果。",note:"说了具体的量（一公斤），后面只用 de，不说 des。"},
+  {t:"listen",fr:"Et avec ça ?",q:"摊主问你什么？",opts:["还要别的吗？","这个怎么吃？","您和谁一起来的？"],
+   note:"字面是“和这个一起呢？”，是法国所有摊主和面包店店员的口头禅。"},
+  {t:"fill",ctx:"再要一些奶酪和一根法棍。fromage 是阳性词。",before:"Je voudrais aussi ",after:" fromage et une baguette.",opts:["du","de la","des"],
+   full:"Je voudrais aussi du fromage et une baguette.",zh:"我还想要一些奶酪和一根法棍。",note:"奶酪没说具体多少，用“一些”：阳性 du。法棍是一根一根数的，所以用 une。"},
+  {t:"choose",ctx:"东西买齐了，问一共多少钱。",opts:[["C'est tout, merci. Ça fait combien ?","就这些，谢谢。一共多少钱？"],["C'est tout, merci. C'est où ?","就这些，谢谢。在哪里？"],["Ce n'est pas tout. Ça fait combien ?","还没完。一共多少钱？"]],
+   note:"C'est tout 是“就这些”。Ça fait combien ? 是问“加起来多少钱”，买了不止一样东西时用它。"}
+ ],
+ vocab:[["le marché", "集市"], ["un fruit", "水果"], ["une pomme", "一个苹果"], ["une fraise", "一颗草莓"], ["une tomate", "一个番茄"], ["le fromage", "奶酪"], ["le pain", "面包"], ["une baguette", "一根法棍"], ["le beurre", "黄油"], ["un kilo de…", "一公斤……"], ["un morceau de…", "一块……"], ["aussi", "也，还"], ["Et avec ça ?", "还要别的吗？"], ["C'est tout.", "就这些。"], ["Ça fait combien ?", "一共多少钱？"]],
+ lesson:{title:"du、de la、des：说“一些”",text:["东西数不清，或者不说具体数量的时候，法语要加一个表示“一些”的小词：阳性 du（du pain，一些面包），阴性 de la（de la confiture，一些果酱），复数 des（des fraises，一些草莓）。中文里通常不说出来。", "一旦说了具体的量，就只用 de，不管阴阳单复数：un kilo de pommes（一公斤苹果），un morceau de fromage（一块奶酪）。", "否定的时候也变成 de：Je ne veux pas de pain（我不要面包）。"],ex:[["Je voudrais du pain.", "我想要一些面包。"], ["Je voudrais de la confiture.", "我想要一些果酱。"], ["Je voudrais des fraises.", "我想要一些草莓。"], ["Un kilo de pommes, s'il vous plaît.", "请给我一公斤苹果。"], ["Un morceau de fromage.", "一块奶酪。"], ["Je ne veux pas de pain.", "我不要面包。"]]},
+ carnet:[["Elles sont belles, mes fraises !", "我的草莓多漂亮！"], ["Je voudrais un kilo de pommes, s'il vous plaît.", "请给我一公斤苹果。"], ["Et avec ça ?", "还要别的吗？"], ["Je voudrais aussi du fromage et une baguette.", "我还想要一些奶酪和一根法棍。"], ["C'est tout, merci. Ça fait combien ?", "就这些，谢谢。一共多少钱？"]],
+ gram:"一些：du（阳性）、de la（阴性）、des（复数）。说了具体的量就只用 de：un kilo de pommes。"}
+,{plaque:"Rue de la Roquette",arr:"11e Arr.",place:"巴士底的小酒馆",frPlace:"Au bistrot",who:"Le serveur",
+ scene:"从巴士底广场往东走，老街上的小酒馆中午都有套餐：前菜加主菜，或者主菜加甜点，价钱写在门口的黑板上。法国人把这顿午饭看得很认真。任务：看懂黑板，点一份套餐，最后夸一夸菜。",
+ steps:[
+  {t:"listen",fr:"Bonjour ! Vous avez choisi ?",q:"服务生问你什么？",opts:["您好！您选好了吗？","您好！您吃完了吗？","您好！您是一个人吗？"],
+   note:"vous avez choisi 是过去式，“您选好了”。choisir（选择）在蒙帕纳斯和萨特谈话时学过。"},
+  {t:"build",ctx:"点前菜：前菜我要洋葱汤。",tokens:["Comme","entrée,","je","vais","prendre","la soupe","à l'oignon."],extra:["au"],
+   zh:"前菜我要洋葱汤。",note:"je vais prendre 是点菜最自然的说法。comme entrée 是“作为前菜”。"},
+  {t:"fill",ctx:"再点甜点：甜点要苹果挞。pommes 是复数。",before:"Comme dessert, la tarte ",after:" pommes.",opts:["aux","au","à la"],
+   full:"Comme dessert, la tarte aux pommes.",zh:"甜点要苹果挞。",note:"菜名里的 à 表示“用什么做的、配什么”。à 加 les 合成 aux，所以是 aux pommes。"},
+  {t:"listen",fr:"Et comme boisson ? Du vin, de l'eau ?",q:"服务生接着问什么？",opts:["喝的呢？葡萄酒，还是水？","吃的呢？面包，还是奶酪？","甜点呢？蛋糕，还是冰淇淋？"],
+   note:"la boisson 是饮料。du vin、de l'eau 是“一些酒、一些水”。想要免费的自来水，就说 une carafe d'eau。"},
+  {t:"choose",ctx:"吃完了，服务生来收盘子。夸一夸这顿饭。",opts:[["C'était délicieux, merci !","太好吃了，谢谢！"],["C'était dangereux, merci !","太危险了，谢谢！"],["C'est délicat, merci.","这很微妙，谢谢。"]],
+   note:"c'était 是 c'est 的过去式，“刚才那个是……”。délicieux 是“好吃的”。"}
+ ],
+ vocab:[["le menu", "套餐"], ["l'entrée", "前菜（阴性）"], ["le plat", "主菜"], ["le dessert", "甜点"], ["la soupe à l'oignon", "洋葱汤"], ["le steak-frites", "牛排配薯条"], ["le poisson", "鱼"], ["la viande", "肉"], ["la tarte aux pommes", "苹果挞"], ["la boisson", "饮料"], ["le vin", "葡萄酒"], ["l'eau", "水（阴性）"], ["une carafe d'eau", "一壶水（免费的自来水）"], ["je vais prendre…", "我要来一份……"], ["comme", "作为"], ["délicieux, délicieuse", "好吃的（阳性，阴性）"]],
+ lesson:{title:"点菜：je vais prendre，以及菜名里的 à",text:["点菜时最自然的说法是 je vais prendre（我要来一份），后面跟菜名。这就是卢森堡公园那一站学的“马上要做的事”。", "说前菜要什么、主菜要什么，用 comme：comme entrée（作为前菜），comme plat（作为主菜），comme dessert（作为甜点）。", "菜名里的 au、à la、aux 表示“配什么、什么口味的”：la soupe à l'oignon（洋葱汤），la tarte aux pommes（苹果挞），le café au lait（牛奶咖啡）。"],ex:[["Je vais prendre le menu.", "我要一份套餐。"], ["Comme entrée, la soupe à l'oignon.", "前菜要洋葱汤。"], ["Comme plat, le steak-frites.", "主菜要牛排配薯条。"], ["Comme dessert, la tarte aux pommes.", "甜点要苹果挞。"], ["Un café au lait, s'il vous plaît.", "请来一杯牛奶咖啡。"]]},
+ carnet:[["Vous avez choisi ?", "您选好了吗？"], ["Comme entrée, je vais prendre la soupe à l'oignon.", "前菜我要洋葱汤。"], ["Comme dessert, la tarte aux pommes.", "甜点要苹果挞。"], ["Une carafe d'eau, s'il vous plaît.", "请来一壶水。"], ["C'était délicieux, merci !", "太好吃了，谢谢！"]],
+ gram:"点菜说 je vais prendre。菜名里的 au、à la、aux 表示配料或口味：la tarte aux pommes。"}
 ];
 
 /* ---------- illustrated scenes: [fr, zh, markerX, markerY, shapes] ---------- */
@@ -527,6 +617,48 @@ const SCENES=[
   ["la rose","玫瑰",380,196,`<path d="M320 212l34-6" stroke="${C.green}" stroke-width="3" stroke-linecap="round"/><circle cx="358" cy="204" r="8" fill="${C.red}"/><circle cx="358" cy="204" r="3.5" fill="#8c2f2a"/>`],
   ["l'imperméable","风衣（阳性）",534,160,`<rect x="456" y="122" width="62" height="124" rx="10" fill="#c9b48a"/><path d="M470 122l17 22 17-22v-10h-34z" fill="#b39c70"/><path d="M487 144v102" stroke="#b39c70" stroke-width="3"/><rect x="456" y="184" width="62" height="8" fill="#a88f62"/><circle cx="487" cy="100" r="17" fill="${C.skin}"/><path d="M471 95a16 16 0 0 1 32 0q-16-10-32 0z" fill="${C.dark}"/>`]
  ]}
+,{bg:`<rect width="680" height="280" fill="#2b2330"/>`,
+ hots:[
+  ["le rideau","幕布",88,60,`<rect x="56" y="24" width="64" height="164" fill="#8c2f2a"/><rect x="560" y="24" width="64" height="164" fill="#8c2f2a"/><path d="M72 24v164M88 24v164M104 24v164M576 24v164M592 24v164M608 24v164" stroke="#6e2420" stroke-width="3"/>`],
+  ["l'écran","银幕（阳性）",524,48,`<rect x="124" y="32" width="432" height="148" fill="#e9edf2"/><circle cx="450" cy="72" r="16" fill="${C.yel}"/><rect x="124" y="150" width="432" height="30" fill="${C.water}"/><path d="M220 150a70 46 0 0 1 140 0" fill="none" stroke="${C.zinc}" stroke-width="8"/>`],
+  ["le projecteur","放映机",652,222,`<path d="M604 214L150 50L540 176Z" fill="#fff" opacity=".1" pointer-events="none"/><rect x="600" y="204" width="40" height="24" rx="4" fill="${C.zinc}"/><circle cx="600" cy="216" r="6" fill="${C.yel}"/><circle cx="612" cy="198" r="9" fill="${C.zinc}"/><circle cx="632" cy="198" r="9" fill="${C.zinc}"/>`],
+  ["le siège","座位",60,220,`<g fill="#a23a33">${[0,1,2,3,4,5,6,7].map(i=>'<rect x="'+(30+i*70)+'" y="230" width="60" height="60" rx="10"/>').join('')}</g>`],
+  ["le pop-corn","爆米花",376,198,`<path d="M330 206h34l-5 34h-24z" fill="${C.white}"/><path d="M338 206l3 34M347 206v34M356 206l-3 34" stroke="${C.red}" stroke-width="4"/><g fill="${C.yel}"><circle cx="336" cy="202" r="6"/><circle cx="347" cy="198" r="7"/><circle cx="358" cy="202" r="6"/></g>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="#e3d6c2"/><rect y="236" width="680" height="44" fill="#b9a58a"/><rect x="200" y="190" width="330" height="50" fill="${C.wood}"/><rect x="190" y="182" width="350" height="10" fill="#6e4526"/><rect x="560" y="176" width="100" height="64" fill="#6e4526"/><g><rect x="566" y="158" width="14" height="24" fill="${C.red}"/><rect x="582" y="154" width="14" height="28" fill="${C.blue}"/><rect x="598" y="160" width="14" height="22" fill="${C.yel}"/><rect x="614" y="156" width="14" height="26" fill="${C.green}"/><rect x="630" y="160" width="14" height="22" fill="${C.white}"/></g>`,
+ hots:[
+  ["la guitare","吉他",152,60,`<rect x="96" y="30" width="10" height="96" fill="#6e4526"/><rect x="92" y="22" width="18" height="14" fill="${C.dark}"/><ellipse cx="101" cy="142" rx="30" ry="26" fill="#c98a3c"/><ellipse cx="101" cy="178" rx="38" ry="30" fill="#c98a3c"/><circle cx="101" cy="156" r="10" fill="${C.dark}"/><path d="M99 36v132M103 36v132" stroke="#e9dfcf" stroke-width="1"/>`],
+  ["la platine","唱机",424,150,`<rect x="250" y="152" width="160" height="32" rx="4" fill="${C.dark}"/><ellipse cx="316" cy="158" rx="54" ry="14" fill="${C.zinc}"/><path d="M392 150l-22 12" stroke="${C.white}" stroke-width="4" stroke-linecap="round"/><circle cx="394" cy="150" r="5" fill="${C.white}"/>`],
+  ["le disque","唱片",258,140,`<ellipse cx="316" cy="156" rx="44" ry="11" fill="#15171c"/><ellipse cx="316" cy="156" rx="12" ry="3" fill="${C.red}"/>`],
+  ["le casque","耳机",514,150,`<path d="M452 176a24 26 0 0 1 48 0" fill="none" stroke="${C.dark}" stroke-width="5"/><rect x="444" y="166" width="14" height="18" rx="5" fill="${C.red}"/><rect x="494" y="166" width="14" height="18" rx="5" fill="${C.red}"/>`],
+  ["la pochette","唱片封套",516,44,`<rect x="250" y="40" width="70" height="70" fill="${C.blue}"/><circle cx="285" cy="75" r="20" fill="${C.yel}"/><rect x="340" y="40" width="70" height="70" fill="${C.red}"/><path d="M350 96l50-44" stroke="${C.white}" stroke-width="6"/><rect x="430" y="40" width="70" height="70" fill="${C.green}"/><circle cx="465" cy="75" r="22" fill="none" stroke="${C.white}" stroke-width="5"/>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="#5a1f1f"/><rect width="680" height="14" fill="#c9a24a"/>`,
+ mid:{1:`<rect x="150" y="214" width="380" height="12" fill="#c9a24a"/>`},
+ hots:[
+  ["la scène","舞台",238,102,`<rect x="180" y="84" width="320" height="130" fill="#f1e3c0"/><rect x="180" y="84" width="36" height="130" fill="#8c2f2a"/><rect x="464" y="84" width="36" height="130" fill="#8c2f2a"/><rect x="180" y="196" width="320" height="18" fill="${C.wood}"/><rect x="172" y="76" width="336" height="10" fill="#c9a24a"/>`],
+  ["la chanteuse","女歌手",378,126,`<path d="M340 126l-22 72h44z" fill="${C.red}"/><circle cx="340" cy="112" r="11" fill="${C.skin}"/><path d="M329 109a11 11 0 0 1 22 0q-11-6-22 0z" fill="${C.dark}"/><path d="M346 136l22-16" stroke="${C.skin}" stroke-width="5" stroke-linecap="round"/>`],
+  ["le balcon","楼座，包厢",80,84,`<g fill="#c9a24a"><rect x="20" y="92" width="120" height="44" rx="8"/><rect x="20" y="152" width="120" height="44" rx="8"/><rect x="540" y="92" width="120" height="44" rx="8"/><rect x="540" y="152" width="120" height="44" rx="8"/></g><g fill="#3a1414"><rect x="30" y="100" width="100" height="20"/><rect x="30" y="160" width="100" height="20"/><rect x="550" y="100" width="100" height="20"/><rect x="550" y="160" width="100" height="20"/></g>`],
+  ["le lustre","吊灯",396,38,`<path d="M340 14v16" stroke="#c9a24a" stroke-width="3"/><ellipse cx="340" cy="40" rx="44" ry="10" fill="#c9a24a"/><g fill="${C.yel}"><circle cx="302" cy="30" r="5"/><circle cx="321" cy="27" r="5"/><circle cx="340" cy="26" r="5"/><circle cx="359" cy="27" r="5"/><circle cx="378" cy="30" r="5"/></g><path d="M310 50v10M330 50v14M350 50v14M370 50v10" stroke="${C.yel}" stroke-width="2"/>`],
+  ["le violon","小提琴",196,244,`<ellipse cx="110" cy="254" rx="16" ry="12" fill="#a8642c"/><ellipse cx="132" cy="244" rx="12" ry="9" fill="#a8642c"/><path d="M138 240l40-22" stroke="#5b3620" stroke-width="5" stroke-linecap="round"/><path d="M96 266l92-40" stroke="#e9dfcf" stroke-width="2"/>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="${C.sky}"/>${[0,1,2,3,4,5,6,7,8,9].map(i=>'<rect x="'+i*68+'" width="68" height="46" fill="'+(i%2?C.white:C.red)+'"/>').join('')}<rect y="176" width="680" height="70" fill="${C.wood}"/><rect y="246" width="680" height="34" fill="#b9b2a2"/>`,
+ hots:[
+  ["la pomme","苹果",36,112,`<g fill="${C.red}"><circle cx="92" cy="106" r="16"/><circle cx="125" cy="102" r="16"/><circle cx="158" cy="106" r="16"/><circle cx="75" cy="130" r="16"/><circle cx="108" cy="128" r="16"/><circle cx="141" cy="130" r="16"/><circle cx="174" cy="128" r="16"/></g><rect x="50" y="140" width="150" height="40" fill="#c98a3c"/><path d="M50 160h150" stroke="#a8642c" stroke-width="2"/>`],
+  ["la fraise","草莓",358,128,`<g fill="${C.red}"><circle cx="262" cy="124" r="9"/><circle cx="284" cy="122" r="9"/><circle cx="306" cy="124" r="9"/><circle cx="250" cy="140" r="9"/><circle cx="270" cy="138" r="9"/><circle cx="290" cy="140" r="9"/><circle cx="310" cy="138" r="9"/><circle cx="328" cy="142" r="9"/></g><g fill="${C.green}"><circle cx="262" cy="116" r="3"/><circle cx="284" cy="114" r="3"/><circle cx="306" cy="116" r="3"/></g><rect x="236" y="148" width="106" height="32" fill="${C.white}" stroke="${C.zinc}" stroke-width="2"/>`],
+  ["le fromage","奶酪",476,124,`<ellipse cx="420" cy="164" rx="44" ry="14" fill="#e0bd52"/><rect x="376" y="146" width="88" height="18" fill="#e0bd52"/><ellipse cx="420" cy="146" rx="44" ry="14" fill="#f3dc86"/><path d="M420 146l42-6M420 146l30 12" stroke="#c9a24a" stroke-width="2"/>`],
+  ["la baguette","法棍",588,74,`<g stroke="#d9a45a" stroke-width="13" stroke-linecap="round"><path d="M520 160L504 72M540 160L540 60M560 160L578 76"/></g><g stroke="#a8642c" stroke-width="2"><path d="M506 96l8-4M509 116l8-4M535 86h10M535 108h10M572 98l8 4M568 118l8 4"/></g><path d="M494 180h92l-8-46h-76z" fill="#a8642c"/>`],
+  ["la balance","秤",666,108,`<rect x="612" y="160" width="56" height="20" rx="4" fill="${C.zinc}"/><rect x="636" y="126" width="8" height="36" fill="${C.zinc}"/><ellipse cx="640" cy="124" rx="32" ry="7" fill="#dfe8f2" stroke="${C.zinc}" stroke-width="3"/><circle cx="640" cy="170" r="7" fill="${C.white}"/>`]
+ ]}
+,{bg:`<rect width="680" height="280" fill="#efe6d2"/><rect y="150" width="680" height="130" fill="#d9c9a8"/><rect y="146" width="680" height="10" fill="${C.wood}"/>`,
+ mid:{0:`<rect x="170" y="190" width="480" height="90" fill="${C.white}"/>${[0,1,2,3].map(r=>[...Array(24).keys()].filter(c=>(r+c)%2).map(c=>'<rect x="'+(170+c*20)+'" y="'+(190+r*22.5)+'" width="20" height="22.5" fill="#e59a92"/>').join('')).join('')}`},
+ hots:[
+  ["l'ardoise","黑板（阴性）",154,34,`<rect x="30" y="30" width="120" height="110" fill="#2b2f36" stroke="${C.wood}" stroke-width="6"/><path d="M46 54h60M46 74h88M46 92h70M46 110h80" stroke="${C.white}" stroke-width="3" opacity=".85"/>`],
+  ["la soupe","汤",196,186,`<ellipse cx="240" cy="226" rx="46" ry="10" fill="#d9d4c5"/><path d="M204 208h72a36 22 0 0 1-72 0z" fill="${C.white}" stroke="${C.zinc}" stroke-width="2"/><ellipse cx="240" cy="208" rx="36" ry="8" fill="#c98a3c"/><path d="M228 196q-5-8 0-16M246 196q-5-8 0-16" fill="none" stroke="${C.zinc}" stroke-width="2" stroke-linecap="round"/>`],
+  ["le steak-frites","牛排配薯条",444,194,`<ellipse cx="390" cy="222" rx="62" ry="16" fill="${C.white}" stroke="${C.zinc}" stroke-width="2"/><ellipse cx="366" cy="218" rx="24" ry="10" fill="#6e3a22"/><g stroke="${C.yel}" stroke-width="5" stroke-linecap="round"><path d="M398 220l20-10M402 224l22-4M400 214l16-12M410 226l18 2"/></g>`],
+  ["la tarte","挞",568,196,`<ellipse cx="520" cy="228" rx="42" ry="10" fill="${C.white}" stroke="${C.zinc}" stroke-width="2"/><path d="M494 226l52-14v14z" fill="#e8c860"/><path d="M494 226l52-14" stroke="#a8642c" stroke-width="5"/>`],
+  ["la carafe","水壶",642,150,`<path d="M596 150h24l6 20v44a6 6 0 0 1-6 6h-24a6 6 0 0 1-6-6v-44z" fill="#dfe8f2" stroke="${C.zinc}" stroke-width="2"/><path d="M592 186h32v28a4 4 0 0 1-4 4h-24a4 4 0 0 1-4-4z" fill="${C.water}" opacity=".7"/>`]
+ ]}
 ];
 
 /* ---------- the room, after Virginia Woolf's "A Room of One's Own": one piece per stop, one extra for three stars ---------- */
@@ -556,6 +688,16 @@ const ROOM=[
   up:{fr:'le coussin',zh:'靠垫',svg:`<rect x="300" y="350" width="40" height="26" rx="9" fill="${C.yel}"/><path d="M308 363h24" stroke="#c98a3c" stroke-width="2"/>`}}
  ,{fr:'la carte postale',zh:'明信片',svg:`<rect x="177" y="213" width="40" height="30" fill="${C.white}" stroke="#cbbfa8" stroke-width="2"/><rect x="181" y="217" width="32" height="13" fill="${C.sky}"/><rect x="181" y="230" width="32" height="9" fill="${C.blue}"/><circle cx="205" cy="224" r="4" fill="${C.yel}"/>`,
   up:{fr:'le soleil',zh:'太阳',svg:`<circle cx="332" cy="78" r="14" fill="${C.yel}"/><path d="M332 56v-6M332 100v6M310 78h-6M354 78h6M316 62l-4-4M348 62l4-4" stroke="${C.yel}" stroke-width="3" stroke-linecap="round"/>`}}
+ ,{fr:'le projecteur',zh:'放映机',svg:`<path d="M660 330L646 410M660 330L674 410M660 330V408" stroke="${C.dark}" stroke-width="3" stroke-linecap="round"/><rect x="644" y="306" width="32" height="22" rx="3" fill="${C.zinc}"/><rect x="636" y="312" width="8" height="8" fill="${C.dark}"/><circle cx="652" cy="298" r="8" fill="${C.zinc}"/><circle cx="668" cy="298" r="8" fill="${C.zinc}"/>`,
+  up:{fr:'le billet',zh:'票',svg:`<g transform="rotate(-6 197 258)"><rect x="180" y="250" width="34" height="16" fill="${C.white}" stroke="${C.red}" stroke-width="1.5" stroke-dasharray="4 2"/><path d="M186 258h18" stroke="${C.red}" stroke-width="2"/></g>`}}
+ ,{fr:'la platine',zh:'唱机',svg:`<path d="M12 378V410M52 378V410" stroke="${C.wood}" stroke-width="4"/><rect x="6" y="372" width="52" height="6" fill="${C.wood}"/><rect x="10" y="358" width="44" height="14" rx="2" fill="${C.dark}"/><ellipse cx="30" cy="358" rx="16" ry="4" fill="${C.zinc}"/><path d="M48 354l-8 5" stroke="${C.white}" stroke-width="2" stroke-linecap="round"/>`,
+  up:{fr:'le disque',zh:'唱片',svg:`<circle cx="32" cy="396" r="12" fill="#15171c"/><circle cx="32" cy="396" r="4" fill="${C.red}"/>`}}
+ ,{fr:'le lustre',zh:'吊灯',svg:`<path d="M500 0v20" stroke="#c9a24a" stroke-width="3"/><ellipse cx="500" cy="30" rx="34" ry="8" fill="#c9a24a"/><g fill="${C.yel}"><circle cx="470" cy="22" r="4"/><circle cx="485" cy="20" r="4"/><circle cx="500" cy="19" r="4"/><circle cx="515" cy="20" r="4"/><circle cx="530" cy="22" r="4"/></g><path d="M478 38v8M492 38v12M508 38v12M522 38v8" stroke="${C.yel}" stroke-width="2"/>`,
+  up:{fr:'le rideau',zh:'窗帘',svg:`<rect x="278" y="36" width="184" height="6" rx="3" fill="#c9a24a"/><rect x="282" y="40" width="20" height="188" rx="4" fill="#8c2f2a"/><rect x="438" y="40" width="18" height="188" rx="4" fill="#8c2f2a"/><path d="M292 40v188M447 40v188" stroke="#6e2420" stroke-width="2"/>`}}
+ ,{fr:'le panier',zh:'篮子',svg:`<path d="M514 388a16 18 0 0 1 32 0" fill="none" stroke="#a8642c" stroke-width="4"/><circle cx="522" cy="386" r="7" fill="${C.red}"/><circle cx="537" cy="386" r="7" fill="${C.red}"/><path d="M506 386h48l-5 26h-38z" fill="#c98a3c"/><path d="M508 396h44M510 404h40" stroke="#a8642c" stroke-width="2"/>`,
+  up:{fr:'la baguette',zh:'法棍',svg:`<path d="M528 392L552 352" stroke="#d9a45a" stroke-width="9" stroke-linecap="round"/><path d="M536 372l6 4M542 362l6 4" stroke="#a8642c" stroke-width="2"/>`}}
+ ,{fr:"l'ardoise",zh:'黑板（阴性）',svg:`<rect x="152" y="62" width="78" height="44" fill="#2b2f36" stroke="${C.wood}" stroke-width="4"/><path d="M162 74h38M162 84h56M162 94h44" stroke="${C.white}" stroke-width="2" opacity=".85"/>`,
+  up:{fr:'le verre',zh:'杯子',svg:`<path d="M340 194h12l-2 11a4 4 0 0 1-8 0z" fill="#8c2f2a"/><path d="M346 209v3M342 212h8" stroke="${C.zinc}" stroke-width="2"/>`}}
 ];
 
 /* ---------- helpers ---------- */
@@ -644,8 +786,9 @@ function fitObj(svg,o){
 
 /* ---------- map: positions follow real longitude and latitude ---------- */
 const PINS=[[241,336,'Quai de Conti',246,311,'middle'],[202,356,'Café de Flore',180,380,'end'],[164,300,"Musée d'Orsay",142,322,'end'],
-  [405,342,'Place des Vosges',428,347,'start'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start'],[337,318,'Le Marais',337,296,'middle'],
-  [170,462,'La Coupole',148,458,'end'],[204,530,'Chez Simone',226,536,'start'],[150,505,'Le cimetière',126,512,'end']];
+  [405,342,'Place des Vosges',414,320,'middle'],[252,52,'Montmartre',276,58,'start'],[577,287,'Père-Lachaise',577,324,'middle'],[229,430,'Jardin du Luxembourg',252,436,'start'],[337,318,'Le Marais',337,296,'middle'],
+  [170,462,'La Coupole',148,458,'end'],[204,530,'Chez Simone',226,536,'start'],[150,505,'Le cimetière',126,512,'end'],
+  [398,174,'Canal Saint-Martin',420,170,'start'],[372,212,'Le disquaire',350,218,'end'],[195,188,'Opéra Garnier',173,184,'end'],[484,404,"Marché d'Aligre",506,410,'start'],[440,366,'Le bistrot',440,396,'middle']];
 function renderMap(){
   const pins=PINS.map((p,i)=>{const r=st.res[i],done=st.done.includes(i);
     return '<g class="pin'+(done?' done':'')+(r&&r.stars===3?' gold':'')+'" data-i="'+i+'" tabindex="0" role="button" aria-label="第 '+(i+1)+' 站：'+DATA[i].place+'">'+
@@ -917,6 +1060,12 @@ const QUART=[
    desc:'山坡、台阶、画架和小酒馆。毕加索年轻时就住在这里，这里适合想自己动手画点什么的人。'},
   {fr:'Montparnasse',zh:'蒙帕纳斯',arr:'第 14 区',stops:[8,9,10],title:['Existentialiste','存在主义者'],
    desc:'大咖啡馆一家挨着一家，萨特和波伏瓦在这里写作、争论，最后也长眠在这里的公墓。这里适合爱追问“人为什么活着”的人。'},
+  {fr:'Le canal Saint-Martin',zh:'圣马丁运河',arr:'第 10 区',stops:[11,12],title:['Cinéphile','影迷和乐迷'],
+   desc:'运河、铁桥、小影院和唱片店。老电影在这里取过景，年轻人傍晚坐在河岸边聊天。这里适合离不开电影和音乐的人。'},
+  {fr:"Le quartier de l'Opéra",zh:'歌剧院一带',arr:'第 9 区',stops:[13],title:['Noctambule','夜游人'],
+   desc:'加尼叶歌剧院、大剧院和灯火通明的大道。这里的生活从傍晚才开始，适合爱看演出、不爱早睡的人。'},
+  {fr:'Bastille et Aligre',zh:'巴士底与阿里格',arr:'第 11、12 区',stops:[14,15],title:['Gourmand · Gourmande','爱吃的人'],
+   desc:'上午逛阿里格市场，中午在小酒馆吃一份套餐。这里适合把“吃什么”当成每天头等大事的人。'},
   {fr:'Ménilmontant',zh:'梅尼蒙当',arr:'第 20 区',stops:[5],title:['Rêveur · Rêveuse','沉思的漫步者'],
    desc:'巴黎东边的坡地，挨着拉雪兹神父公墓，安静，生活气息浓。这里适合喜欢一个人慢慢走、慢慢想的人。'}];
 /* the three voices of the Montparnasse stops; the opinion questions are tallied against them */
@@ -992,7 +1141,7 @@ function renderRoom(){
   const hot=(o,svg)=>'<g class="hot ritem" tabindex="0" role="button" aria-label="'+o.fr+'" data-fr="'+o.fr+'" data-zh="'+o.zh+'">'+svg+'</g>';
   const room=h('div',{id:'room'}),word=h('div',{id:'roomword','aria-live':'polite'});
   room.innerHTML='<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="你的房间">'+ROOM_BG+hot({fr:'la fenêtre',zh:'窗户'},ROOM_WIN)+
-    [0,7,10,8,2,3,4,9,6,1,5].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
+    [0,7,10,8,15,13,2,3,4,9,6,1,5,12,14,11].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
   room.querySelectorAll('.ritem').forEach(g=>{
     const say=()=>{word.replaceChildren(...frLine(g.dataset.fr,g.dataset.zh));speak(g.dataset.fr)};
     g.addEventListener('click',say);
