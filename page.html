@@ -1,5 +1,5 @@
 <title>巴黎文艺漫步</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600&family=Caveat:wght@500&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap">
 <style>
 /* Layout: one narrow column, like walking a single street. A métro-style route line on top,
    then a Paris enamel street plaque naming the stop, then the conversation. */
@@ -93,6 +93,23 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent)}
 .attrs .av{text-align:right;font-variant-numeric:tabular-nums}
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:20px 14px;padding:6px 4px}
+.polaroid{margin:0;background:#fbfaf5;padding:7px 7px 0;box-shadow:0 2px 7px rgba(0,0,0,.2);transform:rotate(var(--r,0deg));display:flex;flex-direction:column;min-width:0;transition:transform .2s}
+.polaroid img,.polaroid .ph{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#d9d4c5}
+.polaroid .ph svg{display:block;width:100%;height:100%}
+.polaroid figcaption{font:500 1.15rem/1.15 'Caveat','Bradley Hand','Segoe Print',cursive;color:#2b2f36;padding:6px 2px 10px;text-align:center;min-height:2.7em;display:flex;align-items:center;justify-content:center}
+.album .polaroid[role="button"]{cursor:pointer}
+.album .polaroid[role="button"]:hover,.album .polaroid[role="button"]:focus-visible{transform:rotate(0deg) scale(1.04);outline:2px solid var(--accent);outline-offset:3px}
+.polaroid.empty{background:transparent;box-shadow:none;border:1px dashed var(--line)}
+.polaroid.empty .ph{background:transparent;display:flex;align-items:center;justify-content:center;color:var(--muted);font:600 1.6rem var(--f-plaque)}
+.polaroid.empty figcaption{font:400 .8rem var(--f-ui);color:var(--muted)}
+.photo{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:560px){.photo{grid-template-columns:minmax(0,1fr)}}
+.photo .polaroid{max-width:230px}
+.photo .story{display:flex;flex-direction:column;gap:8px;min-width:0}
+.develop img{animation:develop 4s ease-out both}
+@keyframes develop{from{filter:grayscale(1) brightness(1.9) contrast(.45)}to{filter:none}}
+@media (prefers-reduced-motion:reduce){.develop img{animation:none}}
 .picbox{display:flex;flex-direction:column;gap:6px}
 #room svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
 .ritem:hover,.ritem:focus-visible{filter:brightness(1.1)}
@@ -699,6 +716,8 @@ const ROOM=[
  ,{fr:"l'ardoise",zh:'黑板（阴性）',svg:`<rect x="152" y="62" width="78" height="44" fill="#2b2f36" stroke="${C.wood}" stroke-width="4"/><path d="M162 74h38M162 84h56M162 94h44" stroke="${C.white}" stroke-width="2" opacity=".85"/>`,
   up:{fr:'le verre',zh:'杯子',svg:`<path d="M340 194h12l-2 11a4 4 0 0 1-8 0z" fill="#8c2f2a"/><path d="M346 209v3M342 212h8" stroke="${C.zinc}" stroke-width="2"/>`}}
 ];
+/* ---------- polaroids: one per stop, a caption to hear and a true story behind it; images are made by make_photos.py ---------- */
+const PHOTO=[{"fr": "Un vieux livre au bord de la Seine.","zh": "塞纳河边的一本旧书。","story": "1857 年《恶之花》出版后，波德莱尔被告上法庭，书里六首诗被判禁止刊印，直到 1949 年才解禁。"},{"fr": "Un café crème, comme Sartre et Beauvoir.","zh": "一杯奶油咖啡，和萨特、波伏瓦一样。","story": "二战时的冬天家里没有暖气，萨特和波伏瓦常常一整天待在花神咖啡馆二楼写作，因为这里有炉子取暖。"},{"fr": "Paris derrière l'horloge.","zh": "大钟后面的巴黎。","story": "奥赛原本是为 1900 年世界博览会建的火车站，1986 年才改成博物馆。从五楼的大钟后面，能望见塞纳河对岸的蒙马特。"},{"fr": "Les arcades de la place des Vosges.","zh": "孚日广场的拱廊。","story": "雨果从 1832 年到 1848 年住在这里，后来成为《悲惨世界》的那部小说，就是在这里动笔的。"},{"fr": "Un tableau encore frais.","zh": "一幅颜料还没干的画。","story": "1907 年，年轻的毕加索在附近的“洗衣船”画室画出了《亚维农少女》，蒙马特从此成了现代艺术的摇篮。"},{"fr": "Une madeleine pour Proust.","zh": "给普鲁斯特的一块玛德莱娜。","story": "在《追忆似水年华》里，一块浸过椴花茶的玛德莱娜小蛋糕，让叙述者想起了整个童年。所以这张照片里，我们放了一块在他的墓前。"},{"fr": "Un petit bateau sur le bassin.","zh": "水池上的小帆船。","story": "卢森堡公园大水池上的木头小帆船，从 1920 年代起就租给孩子们，用一根竹竿推着在水上走，一直到今天。"},{"fr": "Une veste qui a déjà vécu.","zh": "一件有故事的夹克。","story": "玛黑区的老房子在 1960 年代差点被拆光。1962 年，文化部长马尔罗推动了一部新法律，把整片老街区保护了下来。"},{"fr": "La liberté sur une table de café.","zh": "咖啡桌上的自由。","story": "圆顶咖啡馆 1927 年开张时，三十多根柱子都请蒙帕纳斯的画家来画。据说有人是拿画抵了酒钱。"},{"fr": "Le bureau de Simone.","zh": "西蒙娜的书桌。","story": "《第二性》1949 年出版，第一周就卖出两万多册，后来梵蒂冈把它列入了禁书目录。"},{"fr": "Des tickets de métro pour Sartre et Beauvoir.","zh": "给萨特和波伏瓦的地铁票。","story": "1980 年萨特出殡时，五万多人跟着灵车走过巴黎街头。六年后，波伏瓦葬在了他的身边。"},{"fr": "Atmosphère ! Atmosphère !","zh": "“气氛！气氛！”","story": "1938 年的电影《北方旅馆》里，女演员阿尔莱蒂在运河铁桥上喊出这句台词，成了法国电影最有名的台词之一。其实那座桥是在摄影棚里搭的。"},{"fr": "Un vieux vinyle de chanson française.","zh": "一张老香颂黑胶。","story": "1964 年，芭芭拉写了一首《哥廷根》，唱给德国的听众。二战结束不到二十年，这首歌成了德法和解的象征。"},{"fr": "Sous le lustre de l'Opéra.","zh": "歌剧院的大吊灯下。","story": "1896 年，歌剧院大吊灯的一块配重掉下来，砸死了一名观众。作家勒鲁后来把这件事写进了《歌剧魅影》。"},{"fr": "Un pique-nique du marché.","zh": "从市场带来的野餐。","story": "阿里格市场旁边的博沃市场建于 1779 年，是巴黎最古老的有顶市场之一。"},{"fr": "Un déjeuner au bistrot.","zh": "小酒馆里的一顿午饭。","story": "2010 年，“法国美食大餐”被联合国教科文组织列为人类非物质文化遗产。入选的不是哪一道菜，而是法国人坐下来、好好吃一顿饭的习惯。"}];
 
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
@@ -1006,6 +1025,18 @@ function pieceCard(i){
   return [c,o];
 }
 
+/* a polaroid: the generated photo if it exists, otherwise the stop's own drawing */
+const sceneMarkup=i=>{const sc=SCENES[i];return '<svg viewBox="170 0 340 280" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+sc.bg+sc.hots.map((o,k)=>o[4]+(sc.mid&&sc.mid[k]||'')).join('')+'</svg>'};
+function polaroid(i,cls){
+  const P=PHOTO[i],f=h('figure',{class:'polaroid'+(cls?' '+cls:''),style:'--r:'+((i*37)%7-3)+'deg'});
+  const img=h('img',{src:'photos/'+(i+1)+'.jpg',alt:P.zh});
+  img.addEventListener('error',()=>{const ph=h('div',{class:'ph',title:'照片还在冲洗，先看这一站的插图'});ph.innerHTML=sceneMarkup(i);img.replaceWith(ph)});
+  f.append(img,h('figcaption',{lang:'fr'},P.fr));
+  return f;
+}
+const photoBlock=(i,fresh)=>h('div',{class:'photo'},polaroid(i,fresh?'develop':''),
+  h('div',{class:'story'},frLine(PHOTO[i].fr,PHOTO[i].zh),h('p',{},PHOTO[i].story)));
+
 function renderReward(fresh){
   picVis();
   const i=st.cur,S=DATA[i],r=st.res[i],all=st.done.length===DATA.length,R=ROOM[i],plus=r.stars===3;
@@ -1020,6 +1051,9 @@ function renderReward(fresh){
     h('p',{},shown===3&&last?h('span',{class:'fr',lang:'fr'},'Parfait ! '):null,verdict),
     h('div',{class:'keep'},card,h('div',{},h('p',{class:'zh'},'带回你的房间'),frLine(R.fr,R.zh),
       plus?[h('p',{class:'zh'},'三颗星，另外带回'),frLine(R.up.fr,R.up.zh)]:h('p',{class:'zh'},'拿到三颗星，还能带回：'+R.up.zh))),
+    h('h2',{},'咔嚓！一张拍立得'),
+    photoBlock(i,!!last),
+    h('p',{class:'zh'},'照片已经放进房间的相册。'),
     h('h2',{},'这几句话收进了你的手帐'),
     entryList(S),
     h('p',{class:'note'},S.gram),
@@ -1140,6 +1174,13 @@ function renderRoom(){
   const n=st.done.length,u=DATA.filter((S,i)=>plus(i)).length,N=DATA.length;
   const hot=(o,svg)=>'<g class="hot ritem" tabindex="0" role="button" aria-label="'+o.fr+'" data-fr="'+o.fr+'" data-zh="'+o.zh+'">'+svg+'</g>';
   const room=h('div',{id:'room'}),word=h('div',{id:'roomword','aria-live':'polite'});
+  const albumDetail=h('div',{'aria-live':'polite'});
+  const album=h('div',{class:'album'},DATA.map((S,i)=>{
+    if(!have(i))return h('figure',{class:'polaroid empty'},h('div',{class:'ph'},'?'),h('figcaption',{},S.place));
+    const f=polaroid(i);f.tabIndex=0;f.setAttribute('role','button');f.setAttribute('aria-label',PHOTO[i].zh+'，看故事');
+    const open=()=>{albumDetail.replaceChildren(photoBlock(i,false));speak(PHOTO[i].fr);albumDetail.scrollIntoView({block:'nearest',behavior:'smooth'})};
+    f.addEventListener('click',open);f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+    return f;}));
   room.innerHTML='<svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="你的房间">'+ROOM_BG+hot({fr:'la fenêtre',zh:'窗户'},ROOM_WIN)+
     [0,7,10,8,15,13,2,3,4,9,6,1,5,12,14,11].map(i=>have(i)?hot(ROOM[i],ROOM[i].svg)+(plus(i)?hot(ROOM[i].up,ROOM[i].up.svg):''):'').join('')+'</svg>';
   room.querySelectorAll('.ritem').forEach(g=>{
@@ -1155,6 +1196,9 @@ function renderRoom(){
     room,word,
     h('p',{class:'zh'},'已带回 '+n+' / '+N+' 件 · 三颗星添的东西 '+u+' / '+N+'。点房间里的东西可以听它的法语名字。'),
     h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{setTab('carte');window.scrollTo(0,0)}},n?'去地图，再带一件回来':'去地图，出门走走')),
+    h('h2',{},'L\'album · 相册'),
+    h('p',{class:'zh'},n?'每走完一个地方，就多一张拍立得。点一张照片，看它背后的故事。':'相册还是空的。走完第一个地方，就会有第一张拍立得。'),
+    album,albumDetail,
     h('ol',{class:'chapters'},DATA.map((S,i)=>h('li',{},h('button',{type:'button',onclick:()=>enter(i)},
       h('span',{class:'cnum'+(have(i)?' done':'')},String(i+1)),
       h('span',{class:'cname'},have(i)?h('b',{lang:'fr'},ROOM[i].fr+'　',h('span',{lang:'zh'},ROOM[i].zh)):h('b',{},'？'),
