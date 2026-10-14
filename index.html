@@ -95,10 +95,19 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .bar i{display:block;height:100%;background:var(--accent)}
 .attrs .av{text-align:right;font-variant-numeric:tabular-nums}
 .album{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:20px 14px;padding:6px 4px}
-.polaroid{margin:0;background:#fbfaf5;padding:7px 7px 0;box-shadow:0 2px 7px rgba(0,0,0,.2);transform:rotate(var(--r,0deg));display:flex;flex-direction:column;min-width:0;transition:transform .2s}
-.polaroid img,.polaroid .ph{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#d9d4c5}
+.polaroid{margin:0;padding:7% 7% 0;border-radius:2px;transform:rotate(var(--r,0deg));display:flex;flex-direction:column;min-width:0;transition:transform .2s;
+  /* aged instant-film paper: yellowed cream, a few foxing stains, fibre grain, darker edges */
+  background:
+    radial-gradient(ellipse 40% 30% at 82% 88%,rgba(150,115,55,.20),transparent 70%),
+    radial-gradient(ellipse 30% 22% at 12% 8%,rgba(150,115,55,.14),transparent 70%),
+    radial-gradient(circle 3px at 70% 93%,rgba(120,90,40,.35),transparent),
+    radial-gradient(circle 2px at 24% 90%,rgba(120,90,40,.30),transparent),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .25  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    linear-gradient(170deg,#f4eedd,#e9dfc6);
+  box-shadow:0 1px 2px rgba(0,0,0,.28),0 6px 14px rgba(0,0,0,.16),inset 0 0 22px rgba(125,98,50,.22),inset 0 0 0 1px rgba(255,255,255,.4)}
+.polaroid img,.polaroid .ph{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#1d1c1a;border:1px solid rgba(40,32,20,.45);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
 .polaroid .ph svg{display:block;width:100%;height:100%}
-.polaroid figcaption{font:500 1.15rem/1.15 'Caveat','Bradley Hand','Segoe Print',cursive;color:#2b2f36;padding:6px 2px 10px;text-align:center;min-height:2.7em;display:flex;align-items:center;justify-content:center}
+.polaroid figcaption{font:500 1.15rem/1.15 'Caveat','Bradley Hand','Segoe Print',cursive;color:#3a3646;padding:8px 2px 14px;text-align:center;min-height:2.7em;display:flex;align-items:center;justify-content:center}
 .album .polaroid[role="button"]{cursor:pointer}
 .album .polaroid[role="button"]:hover,.album .polaroid[role="button"]:focus-visible{transform:rotate(0deg) scale(1.04);outline:2px solid var(--accent);outline-offset:3px}
 .polaroid.empty{background:transparent;box-shadow:none;border:1px dashed var(--line)}

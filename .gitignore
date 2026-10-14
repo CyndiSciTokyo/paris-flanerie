@@ -1,3 +1,5 @@
 .DS_Store
 .venv/
 .claude/
+photos/sample-*.jpg
+photos/ref/*.png
