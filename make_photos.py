@@ -13,6 +13,7 @@
        python3 make_photos.py --only 3     只重做第 3 站
        python3 make_photos.py --force      全部重做
        python3 make_photos.py --sample 3   只试做第 3 站，存成 photos/sample-3.jpg，网页不会用它
+       python3 make_photos.py --duo        生成每站的满分合影 photos/<站号>b.jpg（可配合 --only/--force）
 可选环境变量 OPENAI_IMAGE_MODEL（默认 gpt-image-1）。
 """
 import base64, json, os, pathlib, subprocess, sys, tempfile, time, urllib.error, urllib.request, uuid
@@ -66,7 +67,7 @@ SCENES = [
     "On the Place du Tertre in Montmartre she paints at an easel, a small fresh oil painting of the white Sacré-Cœur basilica on it, palette in hand, café umbrellas behind.",
     "In Père-Lachaise cemetery she gently lays a small madeleine cake and a red rose on a plain black marble tombstone with no inscription, autumn leaves on the cobblestone path.",
     "By the large round pond of the Jardin du Luxembourg she pushes a wooden toy sailboat with a striped sail using a long stick, green metal chairs around the pond, the palace behind, late afternoon sun.",
-    "In a cosy vintage clothing shop in the Marais she tries on a worn brown leather jacket in front of an old gilded mirror, a felt hat on a stand, the narrow old street through the window.",
+    "In a cosy vintage clothing shop in the Marais she tries on a soft dark green vintage wool coat in front of an old gilded mirror; on the counter old fountain pens, notebooks and teacups; the narrow old street through the window.",
     "In an Art Deco Paris brasserie with painted columns she sits at a round table thinking, chin on hand; across from her an empty chair, and on the table a tobacco pipe, round spectacles and an open notebook, warm evening light.",
     "In a writer's study full of tall bookshelves and photographs she sits on a yellow sofa reading handwritten manuscript pages; a red turban-style headscarf lies on the armrest; a window shows cemetery trees.",
     "In Montparnasse cemetery she places a paper metro ticket on a plain pale stone tombstone already covered with metro tickets and a red rose, no readable inscriptions, soft overcast light.",
@@ -79,6 +80,29 @@ SCENES = [
 
 
 assert len(OUTFITS) == len(SCENES)
+
+
+# the "perfect score" photos: the heroine with the person from each stop's story
+# (name, look): the name helps the likeness; if the request is refused the photo is retried with the look alone
+DUOS = [
+    ("Charles Baudelaire", "a dark-haired 19th-century poet in a black frock coat and a top hat", "On a crowded 1860 Paris boulevard full of horse carriages, the heroine glances back over her shoulder at {p}, who watches her from the pavement."),
+    ("Jean-Paul Sartre and Simone de Beauvoir", "a small man with thick round glasses and a pipe, and a woman with a turban-style headscarf", "Upstairs in a 1940s Paris café, {p} write at a table; the heroine sits opposite them holding a cup of coffee; a waiter with a tray passes with exaggerated gestures."),
+    ("Claude Monet", "a bearded painter in a hat", "In the steam-filled Gare Saint-Lazare in 1877, {p} paints at an easel; the heroine stands beside him pointing at a smoking steam locomotive."),
+    ("Victor Hugo", "a grey-bearded writer in a dark coat", "In a 19th-century study at the Place des Vosges, {p} writes standing at a tall writing desk; the heroine stands beside him holding a round loaf of bread."),
+    ("young Pablo Picasso", "a young Spanish painter with a dark fringe and intense dark eyes", "In a shabby wooden studio crowded with canvases, {p} stands before a huge canvas; the heroine sits on a wooden crate beside him, both looking at the painting."),
+    ("Marcel Proust", "a pale man with a small moustache and centre-parted dark hair", "In a dim bedroom with cork-lined walls, {p} half-lies in bed writing; the heroine sits at the bedside offering him a cup of tea and a madeleine."),
+    ("young Ernest Hemingway", "a young moustached American writer in a tweed jacket", "By the round pond of the Jardin du Luxembourg, {p} writes in a notebook on a green metal chair; the heroine sits on the next chair handing him half a baguette."),
+    (None, "a kind elderly shop owner with white hair and a cardigan", "In a vintage shop in the Marais, {p} shows the heroine an old photograph of a young couple standing by the sea (no text); she wears a dark green vintage wool coat; fountain pens, notebooks and teacups on the counter."),
+    ("Jean-Paul Sartre", "a small man with thick round glasses and a pipe", "Between painted Art Deco columns in a Paris brasserie, {p} pushes a small medal box back across the table with a smile; the heroine laughs across from him; a folded newspaper with no readable text."),
+    ("Simone de Beauvoir", "a woman in her forties with a red turban-style headscarf", "In a study full of books up to the ceiling, {p} and the heroine sit side by side at a desk, each writing in a notebook."),
+    ("Albert Camus", "a man with slicked-back dark hair in a trench coat with the collar turned up", "On a 1950s railway platform with a steaming train, {p} hands the heroine a small blank train ticket."),
+    ("Arletty", "a 1930s French film actress with dark wavy hair and a fitted coat", "On a film-studio replica of an iron canal footbridge in 1938, {p} stands hands on hips laughing with the heroine; an old film camera on a tripod below."),
+    ("Barbara", "a French singer with long black hair, a black dress and dramatic eyeliner", "In a summer garden in 1964, {p} sits at a grand piano; the heroine stands by the piano listening; a few students clap in the background."),
+    (None, "the Phantom of the Opera, a tall figure with a white half-mask and a black cape", "On a dark underground lake lit by candles, {p} rows a small boat; the heroine sits at the bow in an emerald-green silk evening dress."),
+    (None, "an elderly market woman with white hair and an apron", "At a fruit stall under striped awnings piled with apples, strawberries and peaches, {p} hands the heroine a strawberry."),
+    ("Auguste Escoffier", "an old French chef with a tall white toque and a handlebar moustache", "At the kitchen door of a little Paris bistro, {p} holds a copper pan; the heroine holds a slice of upside-down apple tart."),
+]
+assert len(DUOS) == len(SCENES)
 
 
 def api_key():
@@ -103,7 +127,7 @@ def call(url, key, body, ctype):
             msg = e.read().decode(errors='replace')[:400]
             if e.code in (429, 500, 502, 503) and attempt < 2:
                 time.sleep(20 * (attempt + 1)); continue
-            sys.exit(f'OpenAI 返回错误 {e.code}: {msg}')
+            raise RuntimeError(f'OpenAI 返回错误 {e.code}: {msg}')
 
 
 def generate(prompt, key, size='1024x1024'):
@@ -151,15 +175,41 @@ def main():
         save_jpg(REF.read_bytes(), REF.with_suffix('.jpg'), 900)
         if '--heroine' in sys.argv and not (only or sample):
             return
-    for i, scene in enumerate(SCENES, start=1):
-        target = sample or only
-        if target and i != target:
-            continue
-        out = OUT / (f'sample-{i}.jpg' if sample else f'{i}.jpg')
-        if out.exists() and not force and not target:
-            continue
-        print(f'第 {i} 站 …', flush=True)
-        save_jpg(edit(KEEP + 'She wears ' + OUTFITS[i - 1] + '. ' + STYLE + 'Square image, no border. Scene: ' + scene, key, REF), out)
+    failed = []
+    if '--duo' in sys.argv:          # the second photo of each stop: heroine with the story's person
+        for i, (name, look, scene) in enumerate(DUOS, start=1):
+            target = sample or only
+            if target and i != target:
+                continue
+            out = OUT / (f'sample-{i}b.jpg' if sample else f'{i}b.jpg')
+            if out.exists() and not force and not target:
+                continue
+            print(f'第 {i} 站合影 …', flush=True)
+            base = KEEP + 'She wears ' + OUTFITS[i - 1] + '. ' + STYLE.replace('The only person shown is the fictional heroine; no real or famous people. ', '') + 'Square image, no border. Scene: '
+            tries = ([look + f' (a cartoon portrait of {name})'] if name else []) + [look]
+            for who in tries:
+                try:
+                    save_jpg(edit(base + scene.format(p=who), key, REF), out)
+                    break
+                except RuntimeError as e:
+                    print('  ', e)
+            else:
+                failed.append(i)
+    else:
+        for i, scene in enumerate(SCENES, start=1):
+            target = sample or only
+            if target and i != target:
+                continue
+            out = OUT / (f'sample-{i}.jpg' if sample else f'{i}.jpg')
+            if out.exists() and not force and not target:
+                continue
+            print(f'第 {i} 站 …', flush=True)
+            try:
+                save_jpg(edit(KEEP + 'She wears ' + OUTFITS[i - 1] + '. ' + STYLE + 'Square image, no border. Scene: ' + scene, key, REF), out)
+            except RuntimeError as e:
+                print('  ', e); failed.append(i)
+    if failed:
+        print('没有生成成功的站：', failed)
     print('完成。')
 
 
