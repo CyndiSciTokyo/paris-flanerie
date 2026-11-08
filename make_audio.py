@@ -22,7 +22,7 @@ DATA.forEach(S=>{add(S.frPlace,'u');
   S.steps.forEach(p=>{if(p.t==='choose'||p.t==='avis')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
   S.carnet.forEach(c=>add(c[0],'u'));S.vocab.forEach(v=>add(v[0],'u'));S.lesson.ex.forEach(v=>add(v[0],'u'))});
 SCENES.forEach(sc=>sc.hots.forEach(o=>add(o[0],'u')));
-add(INTRO_FR,'u');PHOTO.forEach(p=>add(p.fr,'u'));STORIES.forEach(x=>{add(x.duo,'u');x.vocab.forEach(v=>add(v[0],'u'));x.text.forEach(l=>add(l[0].replace(/[\[\]]/g,''),'u'));x.text.forEach(l=>(l[0].match(/\[[^\]]+\]/g)||[]).forEach(w=>add(w.slice(1,-1),'u')))});ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
+(function walk(o){if(Array.isArray(o))o.forEach(walk);else if(o&&typeof o==='object'){if(typeof o.say==='string')add(o.say,'f');if(typeof o.fr==='string')add(o.fr,'f');Object.keys(o).forEach(k=>walk(o[k]))}})(BASE);BASE.spelled.forEach(w=>add(w,'f'));add(INTRO_FR,'u');PHOTO.forEach(p=>add(p.fr,'u'));STORIES.forEach(x=>{add(x.duo,'u');x.vocab.forEach(v=>add(v[0],'u'));x.text.forEach(l=>add(l[0].replace(/[\[\]]/g,''),'u'));x.text.forEach(l=>(l[0].match(/\[[^\]]+\]/g)||[]).forEach(w=>add(w.slice(1,-1),'u')))});ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
 return JSON.stringify(out);
 '''
 
@@ -48,7 +48,7 @@ async def main():
     for it in items:
         path = OUT / (akey(it['t']) + '.mp3')
         keep.add(path.name)
-        if path.exists() and not force:
+        if path.exists() and path.stat().st_size > 0 and not force:   # an empty file is left behind when a request fails
             continue
         await edge_tts.Communicate(it['t'].replace('—', '.').replace('…', ''), VOICES[it['v']], rate=RATE).save(str(path))
         print('+', path.name, it['v'], it['t'])

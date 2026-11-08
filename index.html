@@ -129,6 +129,26 @@ h1 span{font:italic 400 1rem var(--f-fr);color:var(--muted);margin-left:8px}
 .gap.bad{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
 .bank{position:sticky;bottom:0;background:var(--bg);padding:10px 0;border-top:1px solid var(--line)}
 .bank .tile[hidden]{display:none}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ltile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;min-width:0}
+.ltile:hover{border-color:var(--accent)}
+.lbig{font:600 1.7rem/1 var(--f-plaque);color:var(--accent)}
+.lname{font-size:1.1rem}
+.lpy{font-size:.9rem;font-weight:600}
+.lnote{font-size:.78rem;color:var(--muted)}
+.lex{font-size:.8rem;color:var(--muted)}
+.lchip{display:inline-flex;flex-direction:column;align-items:center;gap:0;padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:3.2em}
+.lchip b{font:600 1.3rem var(--f-plaque)}
+.lchip small{color:var(--muted)}
+.bigword{font-size:2.2rem}
+.lbtn{min-width:2.6em;padding:8px 10px;font-size:1.4rem;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.lbtn.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.lbtn.mute{opacity:.35;text-decoration:line-through}
+.spellin{font-size:1.3rem;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%;max-width:420px}
+.accbar .tile{padding:4px 10px}
+.tile.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.diff .miss{color:var(--bad);text-decoration:underline;font-weight:600}
+.chapters button:disabled{opacity:.5;cursor:default}
 .picbox{display:flex;flex-direction:column;gap:6px}
 #room svg{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
 .ritem:hover,.ritem:focus-visible{filter:brightness(1.1)}
@@ -217,6 +237,7 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
   <header>
     <h1>巴黎文艺漫步<span>Flânerie à Paris</span></h1>
     <div class="tabs" role="tablist">
+      <button id="tab-base" role="tab" type="button">从零开始</button>
       <button id="tab-chambre" role="tab" type="button">房间</button>
       <button id="tab-carte" role="tab" type="button">地图</button>
       <button id="tab-carnet" role="tab" type="button">手帐</button>
@@ -224,6 +245,8 @@ h3{margin:0;font:600 1rem var(--f-plaque);letter-spacing:.08em;text-transform:up
     </div>
   </header>
   <p id="warn" class="warn" hidden>录音文件没有加载出来，这台设备上也没有检测到法语语音，发音按钮可能没有声音。Mac 上可以在"系统设置 → 辅助功能 → 朗读内容 → 系统语音 → 管理语音"里添加法语（推荐 Amélie 或 Thomas），然后刷新本页。</p>
+
+  <main id="basics" class="view" hidden></main>
 
   <main id="chambre" class="view" hidden></main>
 
@@ -741,6 +764,9 @@ const PHOTO=[{"fr": "Un vieux livre au bord de la Seine.","zh": "塞纳河边的
 /* ---------- stories: one short text per stop, read aloud line by line, then a cloze; [word] marks a blank ---------- */
 const STORIES=[{"title":"致一位过路的女子","who":"Charles Baudelaire","duo":"Avec Charles Baudelaire.","duoZh":"和波德莱尔在一起。","vocab":[["bruyant, bruyante","吵闹的"],["une voiture","车（这里指马车）"],["un cheval, des chevaux","马"],["un cri","叫喊"],["la foule","人群"],["voir passer","看见……走过"],["mince","纤细的"],["porter le deuil","服丧"],["l'élégance","优雅"],["se croiser","交会"],["un éclair","闪电"],["disparaître","消失"],["revoir","再见到"],["un inconnu, une inconnue","陌生人"],["sourire","微笑"],["s'en aller","走开"]],"gram":["ne… jamais","和学过的 ne… pas 是同一个结构，把 pas 换成 jamais，意思是“再也不、从不”：Il ne va jamais la revoir（他再也不会见到她），顺带复习了“马上要做的事”。"],"text":[["Paris, 1860. Sur le boulevard, la rue est très [bruyante] : des voitures, des chevaux, des cris.","1860 年的巴黎。大街上震耳欲聋：马车声、马蹄声、叫喊声。"],["Au milieu de la [foule], Baudelaire voit passer une femme.","在人群中，波德莱尔看见一个女人走过。"],["Elle est grande et mince. Elle est en [noir], elle porte le deuil.","她高挑而纤细，一身黑衣，正在服丧。"],["Elle marche [vite], avec élégance.","她走得很快，姿态优雅。"],["Leurs [yeux] se croisent une seconde.","他们的目光交会了一秒。"],["« Un [éclair]… puis la nuit ! »","“一道闪电……然后是黑夜！”"],["La femme disparaît dans la foule. Il ne connaît pas son [nom], elle ne sait pas où il va.","女人消失在人群里。他不知道她的名字，她也不知道他要去哪里。"],["Il ne va [jamais] la revoir. Alors il écrit un poème pour elle : « À une passante ».","他再也不会见到她。于是他为她写了一首诗：《致一位过路的女子》。"],["Aujourd'hui, sur un pont, une inconnue me [sourit], puis elle s'en va. Je pense à Baudelaire.","今天，在一座桥上，一个陌生人对我笑了一下，然后走远了。我想起了波德莱尔。"]]},{"title":"咖啡馆的服务生","who":"Jean-Paul Sartre et Simone de Beauvoir","duo":"Avec Sartre et Beauvoir.","duoZh":"和萨特、波伏瓦在一起。","vocab":[["le chauffage","暖气"],["un poêle","炉子"],["il fait froid, il fait chaud","天冷，天热"],["s'asseoir","坐下"],["le premier étage","二楼（法国的一楼在地面上一层）"],["un geste","动作"],["précis","精确的"],["jouer à","扮演"],["faire semblant de","假装"],["une chose","东西"],["condamné","被判定的"],["choisir","选择"],["toujours","总是"],["s'habiller en","穿着"],["une cave","地窖"],["se demander","心里想"],["un rôle","角色"],["une chercheuse","女学者"]],"gram":["带 se 的动词","ils s'assoient（他们坐下）、les jeunes s'habillent（年轻人穿）、je me demande（我心想）。se 跟着人变：je me、il se、ils se。"],"text":[["Paris, 1943. C'est la guerre, il fait [froid], et il n'y a pas de chauffage dans les appartements.","1943 年的巴黎。正在打仗，天气很冷，家里都没有暖气。"],["Alors, chaque matin, Sartre et Beauvoir viennent au Café de Flore : ici, il y a un poêle, et il fait [chaud].","于是每天早上，萨特和波伏瓦都来花神咖啡馆：这里有一只炉子，很暖和。"],["Ils s'assoient au premier étage et ils [écrivent] toute la journée.","他们坐在二楼，写上一整天。"],["Sartre regarde le garçon de café. Ses gestes sont trop rapides, trop précis : il [joue] au garçon de café.","萨特看着咖啡馆的服务生。他的动作太快、太标准了：他在“扮演”一个服务生。"],["Pour Sartre, cet homme fait semblant d'être une [chose]. Mais un homme n'est pas une chose : il est [libre].","在萨特看来，这个人假装自己是一件东西。可是人不是东西：人是自由的。"],["« L'homme est condamné à être libre. » Il doit [choisir], toujours.","“人注定是自由的。”人必须选择，永远如此。"],["Après la guerre, tout le monde veut voir les « existentialistes ». Les jeunes s'habillent en [noir] et dansent dans les caves de Saint-Germain.","战争结束后，人人都想见一见“存在主义者”。年轻人穿一身黑，在圣日耳曼的地下酒窖里跳舞。"],["Aujourd'hui, au Flore, le garçon m'apporte un café crème. Il joue son rôle, et moi aussi.","今天，在花神，服务生给我端来一杯奶油咖啡。他在扮演他的角色，我也一样。"],["Je suis une étudiante, une fille, une chercheuse, une femme… J'ai beaucoup de [rôles].","我是学生，是女儿，是学者，是一个女人……我有很多角色。"],["Mais je sais que je joue, et je choisis mes rôles. Alors je veux vivre, et bien jouer ma vie.","可是我知道自己在扮演，而且这些角色是我自己选的。所以我要好好活着，把我的人生演好。"]]},{"title":"在火车站里画火车的人","who":"Claude Monet","duo":"Avec Claude Monet.","duoZh":"和莫奈在一起。","vocab":[["un peintre","画家"],["une exposition","展览"],["un port","港口"],["la brume","薄雾"],["le soleil levant","初升的太阳"],["un critique","评论家"],["se moquer de","嘲笑"],["la lumière","光"],["moderne","现代的"],["la fumée","烟，蒸汽"],["une gare","火车站"],["le chef de gare","站长"],["arrêter","停下"],["devenu, devenue","变成了"],["une horloge","钟"],["changer","改变"],["croire","相信"],["rendre","使变得"],["riche","丰富的"],["le bon chemin","正确的路"]],"gram":["讲故事的时间词","en 1874（在 1874 年）、un jour（有一天）、plus de cent ans plus tard（一百多年后）、aujourd'hui（今天）。法语讲历史常用现在时，靠这些词告诉读者时间。"],"text":[["En 1874, un groupe de jeunes [peintres] organise une exposition à Paris.","1874 年，一群年轻画家在巴黎办了一场展览。"],["Claude Monet montre un petit tableau : un port, le matin, un [soleil] orange dans la brume.","克洛德·莫奈展出了一幅小画：清晨的港口，雾里一轮橙色的太阳。"],["Le titre ? Impression, soleil levant. Un critique se [moque] d'eux et les appelle « les impressionnistes ».","画名叫《印象·日出》。一位评论家嘲笑他们，管他们叫“印象派”。"],["Mais Monet continue. Il aime la [lumière] qui change et la vie moderne.","可是莫奈没有停下。他喜欢变幻的光线，也喜欢现代的生活。"],["Il peint les [trains] et la fumée de la gare Saint-Lazare.","他画圣拉扎尔火车站的火车和蒸汽。"],["Un jour, il demande au chef de gare d'arrêter les trains et de faire beaucoup de [fumée]. Et le chef de gare dit oui !","据说有一天，他请站长把火车停下来，再多冒点蒸汽。站长居然答应了！"],["Plus de cent ans plus tard, ses tableaux arrivent… dans une [gare] : la gare d'Orsay, devenue un musée en 1986.","一百多年后，他的画来到了……一座火车站：奥赛火车站，1986 年变成了博物馆。"],["Aujourd'hui, derrière la grande horloge, je regarde la lumière sur la Seine. Elle [change] à chaque minute, comme dans un tableau de Monet.","今天，在大钟后面，我看着塞纳河上的光。它每一分钟都在变，就像莫奈的画。"],["Je comprends la leçon de Monet : si tu crois que ce que tu fais rend le monde plus [riche], tu es sur le bon chemin.","我明白了莫奈教给我的东西：只要你相信你所做的事会让世界变得更丰富，你就走在正确的路上。"]]},{"title":"雨果与一块面包","who":"Victor Hugo","duo":"Avec Victor Hugo.","duoZh":"和雨果在一起。","vocab":[["un soldat","士兵"],["arrêter","逮捕"],["pâle","苍白的"],["maigre","瘦的"],["voler","偷"],["un pain","一个面包"],["une voiture","马车"],["riche","有钱的"],["rentrer","回家"],["oublier","忘记"],["un roman","长篇小说"],["les pauvres","穷人"],["la prison","监狱"],["un éditeur","出版商"],["répondre","回答"],["un succès","成功"]],"gram":["ne… rien","和学过的 ne… pas、ne… jamais 同一个结构，意思是“什么也不”：Elle ne dit rien（她什么也不说）。"],"text":[["Hiver 1846. Victor Hugo marche dans une rue de Paris. Il fait très [froid].","1846 年冬天。维克多·雨果走在巴黎的一条街上。天气非常冷。"],["Devant lui, deux soldats arrêtent un homme pâle et maigre. Qu'est-ce qu'il a fait ? Il a [volé] un pain.","在他面前，两个士兵抓住了一个脸色苍白、骨瘦如柴的男人。他做了什么？他偷了一个面包。"],["À côté, dans une belle voiture, une femme [riche] regarde la scène. Elle ne dit rien.","旁边，一辆漂亮的马车里，一位有钱的女人看着这一幕。她什么也没说。"],["Hugo rentre chez lui, place des Vosges. Il ne peut pas [oublier] cet homme.","雨果回到孚日广场的家。他忘不了那个男人。"],["Il commence un grand roman sur les [pauvres] : Les Misérables.","他开始写一部关于穷人的长篇小说：《悲惨世界》。"],["Dans son livre, Jean Valjean passe dix-neuf ans en [prison] pour un pain.","在他的书里，冉·阿让为了一个面包坐了十九年牢。"],["Le roman sort en 1862. Hugo, loin de Paris, envoie un message à son éditeur : « ? ». L'éditeur répond : « ! ». Le livre est un grand [succès].","小说在 1862 年出版。据说远离巴黎的雨果给出版商发了一封信，只写了一个“？”。出版商回信：“！”。这本书大获成功。"],["Aujourd'hui, sous les arcades, je pense à cet homme et à son [pain].","今天，在拱廊下，我想起那个男人和他的面包。"]]},{"title":"洗衣船里的穷画家","who":"Pablo Picasso","duo":"Avec Pablo Picasso.","duoZh":"和毕加索在一起。","vocab":[["espagnol","西班牙的"],["habiter","住"],["en bois","木头做的"],["un robinet","水龙头"],["seul","唯一的"],["pauvre","穷的"],["triste","忧伤的"],["un cabaret","歌舞小酒馆"],["payer","付钱"],["un repas","一顿饭"],["le patron","老板"],["tomber amoureux","坠入爱河"],["un visage","脸"],["un masque","面具"],["choqué","震惊的"],["l'amour","爱情"],["la joie","愉悦"],["la douleur","伤痛"],["l'inspiration","灵感"],["complet, complète","完整的"]],"gram":["颜色和形容词的复数","名词是复数，形容词也加 s：des tableaux bleus（蓝色的画），des couleurs roses（粉色的颜色），ses amis sont choqués（他的朋友们很震惊）。"],"text":[["En 1904, un jeune [peintre] espagnol arrive à Montmartre. Il s'appelle Pablo Picasso. Il a vingt-deux ans.","1904 年，一个年轻的西班牙画家来到蒙马特。他叫巴勃罗·毕加索，二十二岁。"],["Il habite au Bateau-Lavoir, une vieille maison en [bois]. L'hiver, il fait très froid ; l'été, il fait très chaud. Il y a un seul robinet d'eau pour tout le monde.","他住在“洗衣船”，一栋老旧的木头房子。冬天冷得要命，夏天热得要命。整栋楼只有一个水龙头。"],["Picasso est [pauvre]. Ses tableaux sont tristes et [bleus].","毕加索很穷。他的画又忧伤又蓝。"],["Au cabaret du Lapin Agile, il ne peut pas [payer] son repas. Alors il donne un tableau au patron.","在狡兔酒馆，他付不起饭钱，就送了老板一幅画。"],["Puis il tombe amoureux, et ses couleurs deviennent [roses].","后来他恋爱了，他画里的颜色变成了粉红色。"],["En 1907, il peint un très grand tableau : cinq femmes avec des visages comme des [masques].","1907 年，他画了一幅巨大的画：五个女人，脸像面具一样。"],["Ses amis sont [choqués]. Mais ce tableau change l'art moderne : c'est le début du cubisme.","他的朋友们都惊呆了。可是这幅画改变了现代艺术：立体主义从这里开始。"],["Aujourd'hui, place du Tertre, je regarde les peintres et je pense à Picasso.","今天，在小丘广场，我看着画家们，想起了毕加索。"],["L'amour apporte la joie et la [douleur]. Il réveille l'inspiration, et il nous rend plus complets.","恋爱带给人愉悦，也带来伤痛。它唤醒灵感，让我们成为更完整的人。"]]},{"title":"普鲁斯特的玛德莱娜","who":"Marcel Proust","duo":"Avec Marcel Proust.","duoZh":"和普鲁斯特在一起。","vocab":[["tremper","浸"],["une madeleine","玛德莱娜蛋糕"],["une tasse de thé","一杯茶"],["goûter","尝"],["soudain","突然"],["l'enfance","童年"],["revenir","回来"],["un gâteau","蛋糕"],["le passé","过去"],["malade","生病的"],["l'asthme","哮喘"],["avoir peur de","害怕"],["le bruit","噪音"],["couvert de","覆盖着"],["le liège","软木"],["un souvenir","回忆"],["attaché à","绑在，系在"],["un goût","味道"],["une maison de plain-pied","平房"],["un chien","狗"]],"gram":["用 avoir 表达的感觉","中文说“我冷”“我怕”，法语说“我有冷”“我有怕”：avoir froid（冷）、avoir faim（饿）、avoir peur（害怕）、avoir de l'asthme（有哮喘）。"],"text":[["Dans le roman de Marcel Proust, un homme trempe une petite [madeleine] dans une tasse de thé.","在马塞尔·普鲁斯特的小说里，一个男人把一块小小的玛德莱娜蛋糕浸到一杯茶里。"],["Il goûte… et soudain, toute son [enfance] revient : la maison, le jardin, sa tante, le village.","他尝了一口……突然，整个童年都回来了：那座房子、那个花园、他的姨妈、那个村庄。"],["Un petit [gâteau] peut réveiller tout un passé.","一块小蛋糕，就能唤醒整个过去。"],["Proust est [malade]. Il a de l'asthme, et il a peur du bruit.","普鲁斯特身体不好。他有哮喘，而且害怕噪音。"],["Dans sa chambre, les murs sont couverts de liège. Il écrit la [nuit], dans son lit.","他卧室的墙上都包着软木。他在夜里写作，躺在床上写。"],["Pendant plus de dix ans, il écrit un [roman] immense : À la recherche du temps perdu.","十几年间，他写了一部巨大的小说：《追忆似水年华》。"],["Au printemps 1922, il dit à sa gouvernante : « J'ai écrit le mot fin. » Quelques mois plus tard, il meurt.","1922 年春天，他对女管家说：“我写下了‘完’字。”几个月后，他去世了。"],["Aujourd'hui, devant sa tombe, je mange une madeleine.","今天，在他的墓前，我吃了一块玛德莱娜。"],["Les souvenirs sont comme de la [fumée], mais ils restent attachés à des goûts.","记忆像烟雾一样，却总是和某些味道绑在一起。"],["Ce petit gâteau me ramène dans la maison de plain-pied de mon enfance.","这块小蛋糕把我带回了童年住过的平房。"],["Je revois mes [parents], jeunes, et mon petit chien qui court toujours autour de moi.","我又看见了年轻时的父母，还有那只总在我身边跑来跑去的小狗。"]]},{"title":"饿着肚子逛公园","who":"Ernest Hemingway","duo":"Avec Ernest Hemingway.","duoZh":"和海明威在一起。","vocab":[["un Américain","美国人"],["un écrivain","作家"],["l'argent","钱"],["avoir faim","饿"],["passer devant","从……前面经过"],["une boulangerie","面包店"],["sentir","闻，散发气味"],["la nourriture","食物"],["le ventre vide","空着肚子"],["mieux","更好"],["un crayon","铅笔"],["un carnet","笔记本"],["célèbre","有名的"],["recevoir","获得"],["une fête","节日，盛宴"],["le bonheur","幸福"]],"gram":["否定句里的 de","肯定说 il a de l'argent（他有钱），否定就变成 il n'a pas d'argent（他没有钱）。"],"text":[["Dans les années 1920, un jeune Américain vit à Paris avec sa femme et leur bébé. Il s'appelle Ernest Hemingway.","1920 年代，一个年轻的美国人和妻子、孩子住在巴黎。他叫欧内斯特·海明威。"],["Il veut devenir [écrivain], mais il n'a pas d'[argent].","他想当作家，可是他没有钱。"],["Quand il a [faim], il ne passe pas devant les boulangeries : ça sent trop bon !","饿的时候，他不从面包店门口走：太香了！"],["Il marche dans le jardin du Luxembourg : ici, on ne voit pas et on ne [sent] pas la nourriture.","他到卢森堡公园里散步：在这里，看不见也闻不到吃的。"],["Il va au musée du Luxembourg regarder les [tableaux] de Cézanne. Le ventre vide, dit-il, il les comprend mieux.","他去卢森堡博物馆看塞尚的画。他说，空着肚子，反而看得更懂。"],["Il écrit dans les cafés, avec un crayon et un [carnet].","他在咖啡馆里写作，用一支铅笔和一个笔记本。"],["Plus tard, il devient très [célèbre] et il reçoit le prix Nobel.","后来，他成了大名人，还得了诺贝尔奖。"],["Mais il appelle ces années à Paris « une fête » : il était pauvre, mais très [heureux].","可他把在巴黎的那些年叫作“一场流动的盛宴”：那时他很穷，但非常幸福。"],["Aujourd'hui, assise sur une chaise verte, je pense : le bonheur n'a pas besoin de beaucoup d'argent.","今天，我坐在一把绿色的椅子上，心想：幸福不需要很多钱。"]]},{"title":"墨绿色的大衣","who":"le vieux monsieur de la friperie","duo":"Avec le vieux monsieur de la friperie.","duoZh":"和中古店的老先生在一起。","vocab":[["un manteau","大衣"],["vert foncé","墨绿色"],["doux","柔软的"],["usé","旧了的"],["le comptoir","柜台"],["préféré","最喜欢的"],["mort, morte","去世了的"],["l'année dernière","去年"],["faire le tour du monde","周游世界"],["à deux","两个人一起"],["ranger","整理"],["un voyageur","旅人"],["raconter","讲述"],["les cheveux","头发"],["le rire","笑声"],["porter","穿着，带着"]],"gram":["son、sa、ses","意思是“他的、她的”。和 mon、ma、mes 一样，看的是后面东西的性别，不看主人是男是女：son rire（她的笑声），sa femme（他的妻子），ses tasses（她的杯子）。"],"text":[["Dans une petite friperie du Marais, je prends un [manteau] vert foncé. Il est doux, un peu usé.","在玛黑区一家小小的中古店里，我拿起一件墨绿色的大衣。它很柔软，有一点旧了。"],["Le vieux monsieur derrière le comptoir sourit : « C'était le manteau préféré de ma [femme]. »","柜台后面的老先生笑了笑：“这是我妻子最喜欢的大衣。”"],["Elle s'appelait Hélène. Elle est morte l'année dernière.","她叫埃莱娜。去年去世了。"],["Jeunes, ils ont fait le tour du [monde] ensemble, et ils ont [écrit] des livres à deux.","年轻的时候，他们一起周游世界，两个人一起写书。"],["Dans la boutique, il vend aussi ses stylos, ses carnets et ses [tasses] préférées.","店里还卖着她生前最喜欢的钢笔、笔记本和杯子。"],["« Je range nos [souvenirs], dit-il. Un par un. »","“我在整理我们的回忆，”他说，“一件一件地。”"],["À chaque voyageur qui passe, il raconte Hélène à vingt ans : ses cheveux dans le vent, son [rire], ses grandes idées.","每有一个旅人经过，他就讲起二十岁的埃莱娜：风里的头发，她的笑声，她那些远大的想法。"],["Il veut une seule chose : le monde ne doit pas l'oublier.","他只有一个心愿：这个世界不要忘记她。"],["J'achète le manteau. Maintenant, je porte un peu de son [histoire] avec moi.","我买下了这件大衣。从此，我身上也带着她的一点故事。"]]},{"title":"萨特说“不”","who":"Jean-Paul Sartre","duo":"Avec Jean-Paul Sartre.","duoZh":"和萨特在一起。","vocab":[["le journal","报纸"],["le prix Nobel","诺贝尔奖"],["la littérature","文学"],["important","重要的"],["refuser","拒绝"],["rester","保持"],["une statue","雕像"],["un journaliste","记者"],["attendre","等"],["la porte","门"],["continuer","继续"],["déjeuner","吃午饭"],["un choix","选择"],["difficile","难的"],["parfois","有时"],["soi-même","自己"]],"gram":["最高级 le plus","比较是 plus… que（比……更），前面加上 le 就是“最”：le prix le plus important（最重要的奖）。"],"text":[["Octobre 1964. À La Coupole, tout le monde lit le [journal] : Jean-Paul Sartre reçoit le prix Nobel de littérature !","1964 年 10 月。在圆顶咖啡馆，所有人都在看报纸：让-保罗·萨特获得了诺贝尔文学奖！"],["C'est le [prix] le plus important pour un écrivain, et il y a aussi beaucoup d'[argent].","这是一个作家能得到的最重要的奖，还有一大笔奖金。"],["Mais Sartre dit non. Il [refuse] le prix.","可是萨特说“不”。他拒绝了这个奖。"],["Pourquoi ? Pour lui, un écrivain doit rester [libre]. Il ne veut pas devenir une statue.","为什么？在他看来，作家必须保持自由。他不想变成一座雕像。"],["Les [journalistes] ne comprennent pas. Ils l'attendent devant sa porte.","记者们不明白。他们守在他家门口。"],["Sartre continue sa vie : il écrit, il marche dans Montparnasse, il [déjeune] à La Coupole avec Simone de Beauvoir.","萨特照常过日子：写作，在蒙帕纳斯散步，和西蒙娜·德·波伏瓦在圆顶咖啡馆吃午饭。"],["Refuser, c'est aussi un [choix]. Et choisir, pour Sartre, c'est être libre.","拒绝，也是一种选择。而对萨特来说，选择就是自由。"],["Aujourd'hui, à La Coupole, je pense : dire non, c'est difficile. Mais parfois, c'est dire oui à soi-même.","今天，在圆顶咖啡馆，我心想：说“不”很难。可有时候，说“不”就是对自己说“是”。"]]},{"title":"二十一岁的哲学家","who":"Simone de Beauvoir","duo":"Avec Simone de Beauvoir.","duoZh":"和波伏瓦在一起。","vocab":[["un examen","考试"],["la philosophie","哲学"],["réussir","通过，成功"],["à cette époque","那个年代"],["se marier","结婚"],["gagner sa vie","自己挣钱生活"],["rencontrer","遇见"],["s'aimer","相爱"],["un pacte","约定"],["tout se dire","什么都告诉对方"],["enseigner","教书"],["un scandale","轰动"],["d'abord","首先"],["étudier","研究"],["un désir","欲望"],["la tendresse","温情"],["partout","到处"],["l'air","空气"],["une épouse","妻子"],["le courage","勇气"],["à nouveau","重新"],["partager","分享"]],"gram":["表示“彼此”的 se","se 还可以表示“互相”：ils s'aiment（他们相爱），ils se marient（他们结婚），se dire（互相说）。"],"text":[["En 1929, une jeune femme de vingt et un ans passe un examen très difficile : l'agrégation de philosophie.","1929 年，一位二十一岁的年轻女子参加了一场非常难的考试：哲学教师资格会考。"],["Elle s'appelle Simone de Beauvoir. Elle est la plus [jeune] de France à réussir cet examen.","她叫西蒙娜·德·波伏瓦。她是全法国通过这场考试的人里年纪最小的。"],["À cette époque, on dit : « Une fille doit se marier et avoir des enfants. » Simone, elle, veut penser, [écrire] et gagner sa vie.","那个年代，人们说：“女孩就该结婚生孩子。”西蒙娜呢，她想思考、写作，自己挣钱养活自己。"],["Elle rencontre Sartre. Ils s'aiment, mais ils ne se [marient] pas, et ils n'habitent pas ensemble.","她遇见了萨特。他们相爱，但没有结婚，也不住在一起。"],["Ils font un pacte : rester [libres] et tout se dire.","他们立了一个约定：彼此自由，什么都告诉对方。"],["Elle enseigne, elle voyage, elle écrit. En 1949, son livre Le Deuxième Sexe fait scandale dans le monde entier.","她教书、旅行、写作。1949 年，她的书《第二性》在全世界引起轰动。"],["Pour elle, une femme libre, c'est d'abord une femme qui [travaille] et qui [choisit].","在她看来，一个自由的女人，首先是一个工作、能自己做选择的女人。"],["Aujourd'hui, dans son bureau plein de livres, Simone me demande : « Et vous, qu'est-ce que vous faites ? »","今天，在她堆满书的书房里，西蒙娜问我：“那您呢，您做什么？”"],["« J'étudie la finance. L'argent porte les désirs des gens, et aussi leur [tendresse]. Il est partout, comme l'air, mais peu de gens le voient vraiment. »","“我研究金融。钱承载着人的欲望，也承载着人的温情。它像空气一样无处不在，可是很少有人真正看见它。”"],["« Je suis chercheuse, fille, épouse, et peut-être un jour mère. Je n'ai plus peur de mes [rôles] : ils sont tous moi. »","“我是学者，是女儿，是妻子，也许有一天会成为母亲。我不再害怕我的角色：它们都是我。”"],["« Ma liberté, c'est le [courage] de choisir à nouveau, à tout moment. »","“我的自由，就是无论何时都有重新选择的勇气。”"],["Simone sourit : « Alors gardez votre travail, et ce courage. Et partagez-le avec les autres femmes. »","西蒙娜笑了：“那就守住你的工作，守住这份勇气。也把它分给别的女人。”"]]},{"title":"加缪口袋里的火车票","who":"Albert Camus","duo":"Avec Albert Camus.","duoZh":"和加缪在一起。","vocab":[["naître","出生"],["la guerre","战争"],["savoir lire","识字"],["un instituteur","小学老师"],["remarquer","注意到"],["aider","帮助"],["les études","学业"],["une lettre","信"],["remercier","感谢"],["un accident","事故"],["une poche","口袋"],["un billet de train","火车票"],["utiliser","用"],["un sac","包"],["fini","完成的"],["moi-même","我自己"],["trahir","背叛"]],"gram":["savoir 和 connaître","都是“知道”。connaître 用于认识人、知道作品；savoir 是“会做某事、知道某件事”：elle ne sait pas lire（她不识字）。"],"text":[["Albert Camus naît en Algérie, en 1913. Sa famille est très [pauvre].","阿尔贝·加缪 1913 年出生在阿尔及利亚。他家非常穷。"],["Son père meurt à la guerre quand Albert est bébé. Sa mère ne sait pas [lire].","他还是婴儿时，父亲就死在了战场上。他的母亲不识字。"],["À l'[école], un instituteur, Monsieur Germain, remarque ce petit garçon. Il l'[aide] à continuer ses études.","在学校里，一位名叫热尔曼的小学老师注意到了这个小男孩。他帮他继续读书。"],["Camus devient écrivain. En 1957, il reçoit le prix Nobel. Lui, il dit oui.","加缪成了作家。1957 年，他获得了诺贝尔奖。他接受了。"],["Quelques jours plus tard, il écrit une [lettre] à son vieil instituteur pour le remercier : sans lui, rien n'est possible.","几天后，他给当年的老师写了一封信，向他道谢：没有老师，这一切都不可能发生。"],["En 1960, Camus meurt dans un accident de voiture. Dans sa [poche], il y a un billet de train qu'il n'a pas utilisé.","1960 年，加缪死于一场车祸。他的口袋里，有一张没用上的火车票。"],["Dans son sac, il y a un roman pas [fini] : Le Premier Homme, l'histoire de son enfance.","他的包里，有一部没写完的小说：《第一个人》，写的是他的童年。"],["Aujourd'hui, devant la tombe couverte de tickets de métro, je pense au billet de train de Camus. Et moi, à qui est-ce que je veux dire merci ?","今天，在铺满地铁票的墓前，我想起了加缪那张火车票。那么我呢，我想对谁说一声谢谢？"],["À [moi-même]. Sur toute ma route, je ne me suis jamais trahie.","谢谢我自己。一路走来，我从未背叛过自己。"]]},{"title":"气氛！气氛！","who":"Arletty","duo":"Avec Arletty.","duoZh":"和阿尔莱蒂在一起。","vocab":[["un réalisateur","导演"],["tourner un film","拍电影"],["se passer","发生"],["au bord de","在……边上"],["un studio","摄影棚"],["même","甚至"],["une scène","一场戏"],["une actrice","女演员"],["se mettre en colère","发火"],["avoir besoin de","需要"],["crier","喊"],["une gueule","脸（俚语，有点粗）"],["une voix","嗓音"],["un accent","口音"],["sauver","拯救"],["rire","笑"]],"gram":["用 est-ce que 提问","在一句话前面加上 est-ce que，就变成疑问句：J'ai une gueule d'atmosphère. → Est-ce que j'ai une gueule d'atmosphère ?"],"text":[["En 1938, le réalisateur Marcel Carné tourne un [film] : Hôtel du Nord.","1938 年，导演马塞尔·卡尔内拍了一部电影：《北方旅馆》。"],["L'histoire se passe dans un petit [hôtel] au bord du canal Saint-Martin.","故事发生在圣马丁运河边的一家小旅馆里。"],["Mais on ne tourne pas au bord du canal : tout est construit en [studio], même le pont et l'eau !","可是电影并不是在运河边拍的：一切都是在摄影棚里搭出来的，连桥和水都是！"],["Dans une scène, sur le [pont], l'actrice Arletty se met en [colère]. Son ami dit qu'il a besoin de « changer d'atmosphère ».","有一场戏，在桥上，女演员阿尔莱蒂发火了。她的男友说他需要“换换气氛”。"],["Elle [crie] : « Atmosphère ! Atmosphère ! Est-ce que j'ai une gueule d'atmosphère ? »","她喊道：“气氛！气氛！我长得像‘气氛’吗？”"],["Avec sa [voix] et son accent de Paris, elle devient une star.","凭着她的嗓音和一口巴黎腔，她成了明星。"],["Cinquante ans plus tard, le vrai Hôtel du Nord doit être détruit. Les Parisiens protestent, et on le [sauve].","五十年后，真正的北方旅馆要被拆掉。巴黎人站出来抗议，旅馆被保了下来。"],["Ce soir, sur la passerelle, je crie tout bas : « Atmosphère ! » Et je ris.","今晚，在运河的铁桥上，我小声喊了一句：“气氛！”然后笑了起来。"]]},{"title":"一架被抬来的钢琴","who":"Barbara","duo":"Avec Barbara.","duoZh":"和芭芭拉在一起。","vocab":[["une chanteuse","女歌手"],["juif, juive","犹太的"],["se cacher","躲藏"],["inviter","邀请"],["hésiter","犹豫"],["faire peur","让人害怕"],["quand même","还是，仍然"],["un concert","演出"],["le bon","合适的那个"],["un étudiant","学生"],["porter","抬，搬"],["touché","感动的"],["le public","观众"],["les mêmes","一样的"],["un symbole","象征"],["l'amitié","友谊"]],"gram":["代词 y","已经说过的地方，第二次就用 y（那里）代替，放在动词前面：Elle va à Göttingen. → Elle y va.（她去那里。）"],"text":[["Barbara est une [chanteuse] française. Pendant la guerre, petite fille juive, elle doit se [cacher].","芭芭拉是一位法国女歌手。战争期间，还是犹太小女孩的她不得不躲藏起来。"],["En 1964, on l'invite à chanter en Allemagne, à Göttingen. Elle hésite : l'Allemagne lui fait encore [peur].","1964 年，有人邀请她去德国的哥廷根演唱。她犹豫了：德国仍然让她害怕。"],["Elle y va quand même. Mais le soir du concert, le [piano] n'est pas le bon. Barbara refuse de chanter.","她还是去了。可是演出那晚，钢琴不合适。芭芭拉拒绝上台。"],["Alors les étudiants cherchent un autre piano dans la ville, et ils le [portent] jusqu'à la salle.","于是学生们在城里找来另一架钢琴，一路抬到了演出厅。"],["Barbara est très [touchée]. Elle chante, et le public l'adore.","芭芭拉非常感动。她唱了，观众爱上了她。"],["Elle reste une semaine. Dans un jardin, elle écrit une nouvelle [chanson] : « Göttingen ».","她在那里待了一个星期。在一座花园里，她写了一首新歌：《哥廷根》。"],["Elle chante que les [enfants] sont les mêmes, à Paris ou à Göttingen. Cette chanson devient un symbole d'amitié entre la France et l'Allemagne.","她唱道：无论在巴黎还是在哥廷根，孩子们都是一样的。这首歌成了法德友谊的象征。"],["Aujourd'hui, chez le disquaire, j'écoute ce vieux vinyle. Une chanson peut faire ce que la politique ne peut pas : rapprocher les gens.","今天，在唱片店里，我听着这张老黑胶。一首歌能做到政治做不到的事：把人拉近。"]]},{"title":"歌剧院地下的湖","who":"le Fantôme de l'Opéra","duo":"Avec le Fantôme de l'Opéra.","duoZh":"和歌剧魅影在一起。","vocab":[["un lac","湖"],["un architecte","建筑师"],["un réservoir","水池"],["solide","稳固的"],["les pompiers","消防员"],["nager","游泳"],["le noir","黑暗"],["s'entraîner","训练"],["un contrepoids","配重"],["tomber","掉落"],["un fantôme","幽灵"],["caché","遮住的，藏起来的"],["une loge","包厢"],["personne ne…","没有人"],["l'ombre","阴影，暗处"],["montrer","露出，给人看"]],"gram":["faire 加动词原形","表示“让某事发生”：le Fantôme fait tomber le lustre（魅影让吊灯掉下来）。"],"text":[["Sous l'Opéra Garnier, il y a un vrai [lac]. Les architectes ont construit un grand réservoir d'eau pour que le bâtiment reste solide.","加尼叶歌剧院底下，真的有一个湖。建筑师们修了一个巨大的蓄水池，好让整座建筑稳稳当当。"],["Aujourd'hui encore, les pompiers viennent y [nager] dans le noir pour s'entraîner.","直到今天，消防员们还会来这里，在黑暗中游泳训练。"],["En 1896, pendant un spectacle, un contrepoids du grand [lustre] [tombe] sur le public. Une femme meurt.","1896 年，演出进行中，大吊灯的一块配重掉了下来，砸到观众席。一个女人死了。"],["Le journaliste Gaston Leroux n'oublie pas ces histoires. En 1910, il écrit un [roman].","记者加斯东·勒鲁一直记着这些故事。1910 年，他写了一部小说。"],["Un homme au visage caché vit sous l'Opéra, au bord du lac. Il aime une jeune [chanteuse], Christine. C'est le Fantôme de l'Opéra.","一个遮住脸的男人住在歌剧院底下的湖边。他爱上了年轻的女歌手克里斯汀。他就是“歌剧魅影”。"],["Dans le roman, le Fantôme fait tomber le lustre.","在小说里，魅影让大吊灯掉了下来。"],["Aujourd'hui, la [loge] numéro cinq est toujours la loge du Fantôme. Personne ne s'y assoit.","今天，五号包厢依然是魅影的包厢，据说没有人坐。"],["Ce soir, assise sous le lustre, je pense au Fantôme. Il aime dans l'[ombre], sans montrer son visage.","今晚，坐在大吊灯下，我想起了魅影。他在暗处爱着一个人，从不露出自己的脸。"],["Il y a des amours cachées, comme un lac sous un opéra : on ne les voit pas, mais elles portent tout.","有些爱是被藏起来的，就像歌剧院底下的湖：没有人看得见，却撑起了一切。"]]},{"title":"罗丝太太的水果摊","who":"Madame Rose","duo":"Avec Madame Rose.","duoZh":"和罗丝太太在一起。","vocab":[["un étal","摊位"],["au même endroit","在同一个地方"],["installer","摆放"],["une pêche","桃子"],["une montagne","山"],["connaître","认识"],["un fruit de plus","多一个水果"],["sans rien dire","什么也不说"],["un village","村子"],["couvert","有顶的"],["exister","存在"],["un roi","国王"],["une révolution","革命"],["un marchand","摊贩"],["goûter","尝"],["sucré","甜的"]],"gram":["depuis 加现在时","说“做某事已经多久了”用现在时：elle vend des fruits depuis cinquante ans（她卖水果已经五十年了，而且还在卖）。"],"text":[["Au marché d'Aligre, Madame Rose vend des [fruits] depuis cinquante ans.","在阿里格市场，罗丝太太卖水果已经卖了五十年。"],["Avant elle, il y avait sa mère, et avant sa mère, sa [grand-mère]. Le même étal, au même endroit.","在她之前是她母亲，再之前是她外婆。同一个摊位，同一个地方。"],["Chaque [matin], à six heures, elle installe les pommes, les fraises et les pêches en petites montagnes.","每天早上六点，她把苹果、草莓和桃子堆成一座座小山。"],["Elle [connaît] tout le monde : le vieux monsieur qui achète une seule pomme, l'étudiante qui n'a pas beaucoup d'argent.","她认识每一个人：只买一个苹果的老先生，手头不宽裕的女学生。"],["À l'étudiante, elle donne souvent un fruit de plus, sans rien dire.","她常常多塞给那个女学生一个水果，什么也不说。"],["« Un marché, ce n'est pas seulement des fruits, dit-elle. C'est un [village] au milieu de Paris. »","“市场可不只是卖水果，”她说，“它是巴黎中间的一个村子。”"],["Le marché couvert, à côté, existe depuis 1779. Les [rois] sont partis, les révolutions sont passées, mais les marchands sont toujours là.","旁边的室内市场从 1779 年就在了。国王们走了，革命也过去了，可是摊贩们一直都在。"],["Madame Rose me donne une [fraise] : « Goûtez ! » Elle est sucrée comme un souvenir d'été.","罗丝太太递给我一颗草莓：“尝尝！”它甜得像一段夏天的回忆。"]]},{"title":"一顿有历史的午饭","who":"Auguste Escoffier","duo":"Avec Auguste Escoffier.","duoZh":"和埃斯科菲耶在一起。","vocab":[["le mot","词"],["naître","诞生"],["un bouillon","浓汤"],["restaurer","恢复"],["les forces","体力"],["se réchauffer","取暖"],["selon la légende","据传说"],["une erreur","错误"],["le four","烤炉"],["à l'envers","倒过来"],["une armée","军队"],["un cuisinier","厨师"],["la maison","家"],["le dimanche","星期天"],["un poulet rôti","烤鸡"],["les pommes de terre","土豆"],["rester à table","坐在饭桌边"],["cuire","煮"],["tout doucement","慢慢地"],["mesurer","量"],["une recette","菜谱，方子"],["une bouchée","一口"]],"gram":["从前常常发生的事","讲过去反复发生的事，法语用另一种过去时：il y avait（那时有）、elle faisait（她那时常做）、la famille restait（一家人那时常常坐着）。词尾常见 -ait。"],"text":[["Monsieur Paul pose ma soupe sur la table : « Vous savez que le mot [restaurant] est né à Paris ? »","保罗先生把汤放在我桌上：“您知道‘餐馆’这个词是在巴黎诞生的吗？”"],["Vers 1765, un homme vend des bouillons qui « restaurent » les forces. Le restaurant est né.","大约 1765 年，有个人卖一种能“恢复”体力的浓汤。“餐馆”就这样诞生了。"],["Ma soupe à l'oignon a aussi une histoire : la [nuit], les ouvriers des Halles, le grand marché de Paris, la mangeaient pour se réchauffer.","我这碗洋葱汤也有来历：从前在巴黎的大市场“中央菜市场”，工人们夜里喝它来取暖。"],["Pour le dessert, une tarte Tatin. Selon la légende, vers 1880, les sœurs Tatin font une erreur : elles mettent la tarte au [four] à l'[envers]. Et c'est délicieux !","甜点是一块翻转苹果挞。传说大约在 1880 年，塔坦姐妹出了个错：她们把苹果挞倒着放进了烤炉。结果好吃极了！"],["Au début du XXe siècle, le grand chef Auguste Escoffier organise la cuisine comme une [armée] : chaque cuisinier a son poste.","二十世纪初，大厨奥古斯特·埃斯科菲耶把厨房组织得像一支军队：每个厨师各守一个位置。"],["« Mais la vraie cuisine française, dit Monsieur Paul, ce n'est pas au restaurant. C'est à la [maison]. »","“可是真正的法国菜，”保罗先生说，“不在餐馆里，在家里。”"],["« Le [dimanche], chez ma grand-mère, il y avait un poulet rôti, des pommes de terre, du fromage et une tarte. Toute la famille restait à table pendant trois heures. »","“每个星期天，在我外婆家，桌上有烤鸡、土豆、奶酪和一个苹果挞。一大家子人在桌边一坐就是三个钟头。”"],["« L'hiver, elle faisait un pot-au-feu : la viande et les légumes cuisent tout doucement, toute la matinée. »","“冬天，她做蔬菜炖牛肉：肉和菜用小火慢慢地煮，煮上一整个上午。”"],["« Et chez nous, les enfants apprennent à faire un [gâteau] au yaourt : on mesure tout avec le petit pot de yaourt ! »","“在我们这儿，孩子们学做的第一个蛋糕是酸奶蛋糕：所有东西都用那个小酸奶杯来量！”"],["« Ma blanquette, c'est la [recette] de ma grand-mère. Je ne l'ai jamais changée. »","“我店里的白汁炖小牛肉，用的就是我外婆的方子。我从来没改过。”"],["Je goûte ma tarte. Dans chaque bouchée, il y a deux cents ans d'histoire, et un peu de sa grand-mère. Santé, Paris !","我尝了一口苹果挞。每一口里，都有两百年的历史，还有一点点他外婆的味道。干杯，巴黎！"]]}];
 
+/* ---------- beginner course data (letters, reading rules, lesson 1) ---------- */
+const BASE={"alpha":[{"l":"A","name":"a","py":"a（阿）","note":"","say":"A","ex":{"fr":"ami","zh":"朋友"}},{"l":"B","name":"bé","py":"bei","note":"浊音，比拼音 b 更“闷”，声带要振动","say":"B","ex":{"fr":"bonjour","zh":"你好"}},{"l":"C","name":"cé","py":"sei","note":"","say":"C","ex":{"fr":"café","zh":"咖啡"}},{"l":"D","name":"dé","py":"dei","note":"浊音，声带要振动","say":"D","ex":{"fr":"deux","zh":"二"}},{"l":"E","name":"e","py":"e（轻声“的”的 e）","note":"嘴唇略圆","say":"E","ex":{"fr":"petit","zh":"小的"}},{"l":"F","name":"effe","py":"ai-fu","note":"fu 很轻","say":"F","ex":{"fr":"fleur","zh":"花"}},{"l":"G","name":"gé","py":"rei","note":"r 要软，像英语 measure 里的 s","say":"G","ex":{"fr":"gare","zh":"火车站"}},{"l":"H","name":"hache","py":"a-shi","note":"shi 很轻；h 在单词里永远不发音","say":"H","ex":{"fr":"hôtel","zh":"旅馆"}},{"l":"I","name":"i","py":"yi","note":"","say":"I","ex":{"fr":"idée","zh":"主意"}},{"l":"J","name":"ji","py":"ri","note":"和 G 一样的软 r","say":"J","ex":{"fr":"jour","zh":"天，日子"}},{"l":"K","name":"ka","py":"ga","note":"不送气","say":"K","ex":{"fr":"kilo","zh":"公斤"}},{"l":"L","name":"elle","py":"ai-le","note":"le 很轻","say":"L","ex":{"fr":"livre","zh":"书"}},{"l":"M","name":"emme","py":"ai-m","note":"闭上嘴收尾","say":"M","ex":{"fr":"merci","zh":"谢谢"}},{"l":"N","name":"enne","py":"ai-n","note":"","say":"N","ex":{"fr":"nuit","zh":"夜"}},{"l":"O","name":"o","py":"o（喔）","note":"不要滑成 ou","say":"O","ex":{"fr":"orange","zh":"橙子"}},{"l":"P","name":"pé","py":"bei","note":"不送气；和 B 的区别是声带不振动","say":"P","ex":{"fr":"Paris","zh":"巴黎"}},{"l":"Q","name":"ku","py":"gü（“绿”的韵母）","note":"","say":"Q","ex":{"fr":"qui","zh":"谁"}},{"l":"R","name":"erre","py":"ai-r","note":"r 在喉咙里，像轻轻漱口，一定要听录音","say":"R","ex":{"fr":"rouge","zh":"红色的"}},{"l":"S","name":"esse","py":"ai-si","note":"","say":"S","ex":{"fr":"soleil","zh":"太阳"}},{"l":"T","name":"té","py":"dei","note":"不送气","say":"T","ex":{"fr":"thé","zh":"茶"}},{"l":"U","name":"u","py":"ü（鱼）","note":"“鱼”的口型","say":"U","ex":{"fr":"une","zh":"一个（阴性）"}},{"l":"V","name":"vé","py":"wei","note":"上牙轻咬下唇","say":"V","ex":{"fr":"vin","zh":"葡萄酒"}},{"l":"W","name":"double vé","py":"du-ble-wei","note":"字面是“两个 V”","say":"W","ex":{"fr":"wagon","zh":"车厢"}},{"l":"X","name":"ixe","py":"yi-ke-si","note":"","say":"X","ex":{"fr":"taxi","zh":"出租车"}},{"l":"Y","name":"i grec","py":"yi-ge-rai-ke","note":"字面是“希腊的 i”","say":"Y","ex":{"fr":"yaourt","zh":"酸奶"}},{"l":"Z","name":"zède","py":"zai-de","note":"是英语 zoo 的 z，不是拼音的 z","say":"Z","ex":{"fr":"zéro","zh":"零"}}],"accents":[{"l":"é","name":"e accent aigu（尖音符）","py":"ei","note":"闭口的 e","ex":{"fr":"café","zh":"咖啡"}},{"l":"è","name":"e accent grave（钝音符）","py":"ê（欸）","note":"开口的 e","ex":{"fr":"mère","zh":"母亲"}},{"l":"ê","name":"e accent circonflexe（长音符）","py":"ê（欸）","note":"和 è 一样读","ex":{"fr":"fête","zh":"节日"}},{"l":"à","name":"a accent grave","py":"a","note":"读音不变，只为区分意思","ex":{"fr":"voilà","zh":"瞧，这就是"}},{"l":"ç","name":"c cédille（软音符）","py":"s","note":"让 c 在 a、o、u 前也读 s","ex":{"fr":"français","zh":"法语"}},{"l":"ô","name":"o accent circonflexe","py":"o","note":"","ex":{"fr":"hôtel","zh":"旅馆"}},{"l":"ù","name":"u accent grave","py":"ü","note":"只出现在 où（哪里）这个词里","ex":{"fr":"où","zh":"哪里"}},{"l":"ë","name":"e tréma（分音符）","py":"分开读","note":"两点表示这个字母和前一个元音分开读","ex":{"fr":"Noël","zh":"圣诞节"}}],"spelled":["merci","Paris","livre","chat","ami","jour","rouge","soleil","fille","vin","taxi","zéro"],"combos":[{"w":"ou","py":"u（乌）","fr":"vous","zh":"您"},{"w":"u","py":"ü（鱼）","fr":"tu","zh":"你"},{"w":"oi","py":"wa（哇）","fr":"moi","zh":"我"},{"w":"au, eau, o","py":"o（喔）","fr":"beau","zh":"美的"},{"w":"ai, ei, è, ê","py":"ê（欸）","fr":"lait","zh":"牛奶"},{"w":"é，词尾 -er、-ez","py":"ei","fr":"café","zh":"咖啡"},{"w":"eu, œu","py":"e，嘴唇收圆","fr":"deux","zh":"二"},{"w":"an, en","py":"ang（鼻音，不发出 ng）","fr":"enfant","zh":"孩子"},{"w":"on","py":"ong（鼻音）","fr":"bonjour","zh":"你好"},{"w":"in, ain, un","py":"an（鼻音）","fr":"vin","zh":"葡萄酒"},{"w":"ch","py":"sh","fr":"chat","zh":"猫"},{"w":"gn","py":"ni","fr":"montagne","zh":"山"},{"w":"ill","py":"yi","fr":"fille","zh":"女孩"},{"w":"ph","py":"f","fr":"photo","zh":"照片"},{"w":"qu","py":"g（不送气的 k）","fr":"qui","zh":"谁"}],"rules":[{"t":"h 永远不发音","d":"hôtel 读“o-tel”，h 只是写着。","ex":[{"fr":"hôtel","zh":"旅馆"},{"fr":"homme","zh":"男人"}]},{"t":"词尾的辅音大多不读","d":"Paris 的 s、petit 的 t 都不读。例外是 c、r、f、l，常常要读，记口诀 CaReFuL。","ex":[{"fr":"Paris","zh":"巴黎"},{"fr":"petit","zh":"小的"},{"fr":"avec","zh":"和"},{"fr":"hôtel","zh":"旅馆"}]},{"t":"词尾的 e 不读","d":"table 读“ta-ble”，最后的 e 几乎听不见。","ex":[{"fr":"table","zh":"桌子"},{"fr":"rouge","zh":"红色的"}]},{"t":"动词词尾的 -ent 不读","d":"ils parlent（他们说）和 il parle（他说）读音一样。","ex":[{"fr":"il parle","zh":"他说"},{"fr":"ils parlent","zh":"他们说"}]},{"t":"c 和 g 的变化","d":"在 e、i、y 前面，c 读 s、g 读软 r；在别的字母前，c 读不送气的 k，g 读 g。","ex":[{"fr":"ceci","zh":"这个"},{"fr":"page","zh":"页"},{"fr":"café","zh":"咖啡"},{"fr":"gare","zh":"火车站"}]},{"t":"两个元音之间的 s 读 z","d":"maison（房子）的 s 读 z。","ex":[{"fr":"maison","zh":"房子"},{"fr":"rose","zh":"玫瑰"}]},{"t":"连读","d":"本来不读的词尾辅音，遇到下一个词以元音开头时要读出来：vous êtes 读“vu-zet”。","ex":[{"fr":"vous êtes","zh":"您是"},{"fr":"les amis","zh":"朋友们"}]}],"pron":[{"t":"pron","fr":"beau","opts":["bo","be-o","bi-ao"]},{"t":"pron","fr":"moi","opts":["mwa","mo-yi","mei"]},{"t":"pron","fr":"vous","opts":["vu","vu-si","wo-u"]},{"t":"pron","fr":"chat","opts":["sha","cha-te","ka-te"]},{"t":"pron","fr":"maison","opts":["mê-zong","mai-song","ma-yi-song"]},{"t":"pron","fr":"fille","opts":["fi-yi","fi-le","fai-le"]},{"t":"pron","fr":"deux","opts":["de（嘴唇收圆）","dei-u-ke-si","du"]},{"t":"pron","fr":"vin","opts":["van（鼻音）","vin","wei-yin"]}],"hear":[{"t":"hear","fr":"gâteau","opts":["gâteau","gato","gâtau"]},{"t":"hear","fr":"maison","opts":["maison","mézon","maizon"]},{"t":"hear","fr":"fille","opts":["fille","fiye","file"]},{"t":"hear","fr":"enfant","opts":["enfant","anfan","enfan"]},{"t":"hear","fr":"photo","opts":["photo","foto","fotau"]},{"t":"hear","fr":"qui","opts":["qui","ki","kui"]},{"t":"hear","fr":"bonjour","opts":["bonjour","bonjur","bonjoure"]},{"t":"hear","fr":"chat","opts":["chat","sha","chah"]}],"silent":[{"t":"silent","fr":"Paris","silent":[4]},{"t":"silent","fr":"petit","silent":[4]},{"t":"silent","fr":"hôtel","silent":[0]},{"t":"silent","fr":"vous","silent":[3]},{"t":"silent","fr":"beaucoup","silent":[7],"zh":"很多"},{"t":"silent","fr":"chocolat","silent":[7],"zh":"巧克力"},{"t":"silent","fr":"trois","silent":[4],"zh":"三"},{"t":"silent","fr":"parlent","silent":[4,5,6],"zh":"（他们）说"},{"t":"silent","fr":"table","silent":[4],"zh":"桌子"}],"dict05":[{"t":"spell","fr":"bonjour","zh":"你好"},{"t":"spell","fr":"merci","zh":"谢谢"},{"t":"spell","fr":"maison","zh":"房子"},{"t":"spell","fr":"chat","zh":"猫"},{"t":"spell","fr":"gâteau","zh":"蛋糕"},{"t":"spell","fr":"deux","zh":"二"},{"t":"spell","fr":"fille","zh":"女孩"},{"t":"spell","fr":"photo","zh":"照片"}],"l1":{"vocab":[{"fr":"Bonjour","zh":"您好（白天）"},{"fr":"Bonsoir","zh":"晚上好"},{"fr":"Salut","zh":"嗨（熟人之间）"},{"fr":"Au revoir","zh":"再见"},{"fr":"Merci","zh":"谢谢"},{"fr":"De rien","zh":"不客气"},{"fr":"Je m'appelle…","zh":"我叫……"},{"fr":"Comment vous appelez-vous ?","zh":"您叫什么名字？"},{"fr":"Comment tu t'appelles ?","zh":"你叫什么名字？"},{"fr":"Enchanté, enchantée","zh":"幸会（男生说／女生说）"},{"fr":"Ça va ?","zh":"你好吗？"},{"fr":"Ça va bien, merci.","zh":"我很好，谢谢。"},{"fr":"Et vous ?","zh":"您呢？"},{"fr":"Et toi ?","zh":"你呢？"},{"fr":"Je suis chinois, je suis chinoise.","zh":"我是中国人（男生说／女生说）"},{"fr":"un étudiant, une étudiante","zh":"学生（男／女）"},{"fr":"oui","zh":"是"},{"fr":"non","zh":"不"}],"gram":{"title":"être（是）和 tu / vous","text":["être 是法语里最常用的动词，意思是“是”。它跟着“谁”变形，六个形式要整体背下来：","和陌生人、长辈、老师说话用 vous（您）；和朋友、家人、小孩说话用 tu（你）。拿不准就用 vous，不会失礼。vous 同时也是“你们”。","法语的形容词和身份名词也分男女：男生说 je suis chinois，女生说 je suis chinoise，阴性多一个 e。"],"table":[{"fr":"je suis","zh":"我是"},{"fr":"tu es","zh":"你是"},{"fr":"il est, elle est","zh":"他是，她是"},{"fr":"nous sommes","zh":"我们是"},{"fr":"vous êtes","zh":"您是，你们是"},{"fr":"ils sont, elles sont","zh":"他们是，她们是"}],"ex":[{"fr":"Je suis étudiante.","zh":"我是学生。"},{"fr":"Tu es chinois ?","zh":"你是中国人吗？"},{"fr":"Il est français.","zh":"他是法国人。"},{"fr":"Nous sommes à Paris.","zh":"我们在巴黎。"},{"fr":"Vous êtes professeur ?","zh":"您是老师吗？"},{"fr":"Elles sont amies.","zh":"她们是朋友。"}]},"items":[{"t":"listen","fr":"Comment vous appelez-vous ?","opts":["您叫什么名字？","您好吗？","您是学生吗？"]},{"t":"listen","fr":"Ça va bien, merci. Et vous ?","opts":["我很好，谢谢。您呢？","我叫……，您呢？","再见，谢谢您。"]},{"t":"fill","before":"Je ","after":" étudiante.","opts":["suis","es","est"],"fr":"Je suis étudiante.","zh":"我是学生。"},{"t":"fill","before":"Vous ","after":" chinois ?","opts":["êtes","est","sommes"],"fr":"Vous êtes chinois ?","zh":"您是中国人吗？"},{"t":"fill","before":"Nous ","after":" à Paris.","opts":["sommes","sont","êtes"],"fr":"Nous sommes à Paris.","zh":"我们在巴黎。"},{"t":"fill","before":"Elle ","after":" française.","opts":["est","es","suis"],"fr":"Elle est française.","zh":"她是法国人。"},{"t":"fill","before":"Tu ","after":" étudiant ?","opts":["es","est","êtes"],"fr":"Tu es étudiant ?","zh":"你是学生吗？"},{"t":"choose","ctx":"你问一位第一次见面的老先生：您呢？","opts":[{"fr":"Et vous ?","zh":"您呢？"},{"fr":"Et toi ?","zh":"你呢？（对熟人）"}]},{"t":"choose","ctx":"晚上见到邻居，打个招呼：","opts":[{"fr":"Bonsoir !","zh":"晚上好！"},{"fr":"Au revoir !","zh":"再见！"},{"fr":"De rien !","zh":"不客气！"}]},{"t":"choose","ctx":"别人对你说 Merci，你回答：","opts":[{"fr":"De rien.","zh":"不客气。"},{"fr":"Bonjour.","zh":"您好。"},{"fr":"Enchantée.","zh":"幸会。"}]},{"t":"build","ctx":"自我介绍：您好，我叫莱雅。","tokens":["Bonjour,","je","m'appelle","Léa."],"extra":["suis"],"fr":"Bonjour, je m'appelle Léa.","zh":"您好，我叫莱雅。"},{"t":"build","ctx":"我是学生，您呢？（女生说）","tokens":["Je","suis","étudiante,","et","vous ?"],"extra":["es"],"fr":"Je suis étudiante, et vous ?","zh":"我是学生，您呢？"},{"t":"spell","fr":"bonjour","zh":"你好"},{"t":"spell","fr":"merci","zh":"谢谢"},{"t":"spell","fr":"salut","zh":"嗨"},{"t":"spell","fr":"oui","zh":"是"},{"t":"spell","fr":"non","zh":"不"},{"t":"spell","fr":"suis","zh":"（我）是"}]}};
+
 /* ---------- helpers ---------- */
 const $=s=>document.querySelector(s);
 const h=(t,a={},...c)=>{const e=document.createElement(t);
@@ -751,12 +777,13 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const ICON='<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 
 /* ---------- state ---------- */
-let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null,avis:{},story:{}};
+let st={done:[],cur:0,step:0,tab:'carte',voice:null,found:{},res:{},run:null,combo:0,best:0,last:null,avis:{},story:{},basics:{},spellStrict:false,bopen:null,bphase:'learn'};
 try{const s=JSON.parse(localStorage.getItem('flanerie')||'null');if(s&&Array.isArray(s.done))st=Object.assign(st,s)}catch(e){}
 if(!(st.cur>=0&&st.cur<DATA.length))st.cur=0;
 if(!(st.step>=-1&&st.step<=DATA[st.cur].steps.length+1))st.step=-1;
 st.done.forEach(i=>{if(!st.res[i])st.res[i]={stars:2,old:true}});  /* stops finished before stars existed */
-st.tab=(st.tab==='jeu'&&st.run)?'jeu':'chambre';
+st.tab=(st.tab==='jeu'&&st.run)?'jeu':(st.tab==='base'&&st.bopen)?'base':'chambre';
+if(st.bphase!=='learn')st.bphase='learn';  /* an unfinished practice or quiz restarts from the lesson page */
 const save=()=>{try{localStorage.setItem('flanerie',JSON.stringify(st))}catch(e){}};
 let acted=false;document.addEventListener('pointerdown',()=>{acted=true},{once:true});
 
@@ -1295,6 +1322,8 @@ function renderRoom(){
   $('#chambre').replaceChildren(
     h('div',{class:'line'},h('h2',{class:'fr',lang:'fr',style:'font-size:1.6rem;font-weight:500'},INTRO_FR),spk(INTRO_FR)),
     h('p',{class:'scene'},intro),
+    n===0&&!Object.keys(st.basics||{}).length&&h('div',{class:'note'},h('p',{},'没学过法语？建议先上“从零开始”：字母、发音和最基础的句子，三课大约一小时。学过的可以直接出门。'),
+      h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>setTab('base')},'先上基础课'))),
     room,word,
     h('p',{class:'zh'},'已带回 '+n+' / '+N+' 件 · 三颗星添的东西 '+u+' / '+N+'。点房间里的东西可以听它的法语名字。'),
     h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{setTab('carte');window.scrollTo(0,0)}},n?'去地图，再带一件回来':'去地图，出门走走')),
@@ -1308,16 +1337,289 @@ function renderRoom(){
       have(i)?starEl(st.res[i].stars):h('span',{class:'zh'},'未去过'))))));
 }
 
+/* ---------- basics: a beginner course, separate from the walk; recommended, never required ---------- */
+const COURSE=[
+  {id:'0',title:'字母表',sub:'26 个字母怎么念，带符号的字母，拼出你的名字',ready:true},
+  {id:'0.5',title:'看词读音',sub:'看到新单词，就能读出来',ready:true},
+  {id:'1',title:'你好，我叫……',sub:'être（是），tu 和 vous',ready:true},
+  {id:'2',title:'身边的东西',sub:'阴阳性，un / une，le / la / les'},
+  {id:'3',title:'数字、价钱、年龄',sub:'avoir（有），0 到 100'},
+  {id:'4',title:'我喜欢……',sub:'-er 动词现在时'},
+  {id:'5',title:'不和问',sub:'ne… pas，est-ce que，疑问词'},
+  {id:'6',title:'颜色和样子',sub:'形容词的配合和位置'},
+  {id:'7',title:'去哪里',sub:'aller，au / à la / aux'},
+  {id:'8',title:'吃什么',sub:'du / de la / des，je voudrais'},
+  {id:'9',title:'一天的时间',sub:'几点、星期、月份，带 se 的动词'},
+  {id:'10',title:'我的家人',sub:'mon / ma / mes'},
+  {id:'11',title:'昨天发生了什么',sub:'过去时'},
+  {id:'12',title:'明天的计划',sub:'aller + 动词原形；结业'}];
+const bstat=id=>(st.basics||{})[id]||null;
+const PASS=0.8;
+
+/* small helpers */
+const deaccent=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+const sameWord=(a,b,strict)=>{const n=x=>x.trim().toLowerCase().replace(/[’`]/g,"'").replace(/\s+/g,' ');return strict?n(a)===n(b):deaccent(n(a))===deaccent(n(b))};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+/* play letters one after another (used to spell a word aloud) */
+async function speakLetters(word){
+  const seq=[...deaccent(word).toUpperCase()].filter(c=>/[A-Z]/.test(c));
+  for(const c of seq){
+    if(player){player.pause();player=null}
+    await new Promise(res=>{const a=new Audio('audio/'+akey(c)+'.mp3');player=a;
+      a.addEventListener('ended',res);a.addEventListener('error',()=>{speakTTS(c);setTimeout(res,700)});
+      const p=a.play();if(p&&p.catch)p.catch(()=>res());});
+    await sleep(160);
+  }
+}
+const letterChip=c=>{const L=BASE.alpha.find(x=>x.l===deaccent(c).toUpperCase());
+  return h('span',{class:'lchip'},h('b',{lang:'fr'},c),L?h('span',{lang:'fr'},L.name):null,L?h('small',{},L.py):null)};
+
+/* spelling: compare letter by letter and explain the usual French traps */
+function spellDiff(typed,ans,strict){
+  const a=[...ans],t=[...typed.toLowerCase()];const A=a.map(x=>x.toLowerCase());
+  const m=a.length,n=t.length,dp=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=deaccent(A[i])===deaccent(t[j])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const keep=new Array(m).fill(false);let i=0,j=0;
+  while(i<m&&j<n){if(deaccent(A[i])===deaccent(t[j])){keep[i]=!strict||A[i]===t[j];i++;j++}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++}
+  return h('span',{class:'fr diff',lang:'fr'},a.map((c,k)=>h('span',{class:keep[k]?'':'miss'},c)));
+}
+function spellHint(typed,ans){
+  const t=deaccent(typed.toLowerCase()),a=deaccent(ans.toLowerCase()),hints=[];
+  if(a.startsWith('h')&&!t.startsWith('h'))hints.push('h 不发音，但要写出来。');
+  if(/[stxdzp]$/.test(a)&&t===a.slice(0,-1))hints.push('词尾这个辅音不发音，但要写出来。');
+  if(/eau|au/.test(a)&&!/eau|au/.test(t)&&/o/.test(t))hints.push('o 这个音还可以写成 au 或 eau。');
+  if(/ou/.test(a)&&!/ou/.test(t))hints.push('“乌”的音写成 ou。');
+  if(/ch/.test(a)&&!/ch/.test(t))hints.push('“sh”的音写成 ch。');
+  if(/ill/.test(a)&&!/ill/.test(t))hints.push('“yi”的音常写成 ill。');
+  if(/ph/.test(a)&&!/ph/.test(t))hints.push('f 的音有时写成 ph。');
+  if(/[aeiouy]s[aeiouy]/.test(a)&&/z/.test(t)&&!/z/.test(a))hints.push('两个元音之间的 s 读 z，但还是写成 s。');
+  if(/ai|ei/.test(a)&&!/ai|ei/.test(t)&&/[eé]/.test(t))hints.push('“欸”的音常写成 ai 或 ei。');
+  if(/qu/.test(a)&&!/qu/.test(t))hints.push('k 的音在 i、e 前常写成 qu。');
+  if(/[éèêëàâçôûùîïœ]/.test(ans)&&t===a&&typed.toLowerCase()!==ans.toLowerCase())hints.push('字母都对了，注意重音符号。');
+  return hints;
+}
+
+/* one exercise runner for every question type; first-try answers are scored */
+function runSet(title,items,onEnd){
+  const box=$('#basics');let k=0,score=0;
+  const go=()=>{if(k>=items.length)return onEnd(score,items.length);show(items[k])};
+  function show(q){
+    const fb=h('div',{class:'fb','aria-live':'polite'});let tried=false,done=false;
+    const head=h('p',{class:'count'},title+' · '+(k+1)+' / '+items.length);
+    const nextBtn=()=>h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>{k++;go();window.scrollTo(0,0)}},k+1<items.length?'下一题':'看结果'));
+    const win=(say,extra)=>{if(done)return;done=true;if(!tried)score++;
+      box.querySelectorAll('.opt,.tile,.lbtn,.check').forEach(b=>b.disabled=true);
+      fb.replaceChildren(h('p',{class:'ok',lang:'fr'},'Très bien !'),...(extra||[]),nextBtn());if(say)speak(say);
+      fb.querySelector('.primary').focus({preventScroll:true});};
+    const miss=msg=>{tried=true;fb.replaceChildren(h('p',{class:'no'},msg))};
+    const kids=[head];
+    const optList=(opts,right,label,onRight,fr)=>h('div',{class:'opts'},shuffle(opts).map(o=>h('button',{class:'opt'+(fr?' fr':''),lang:fr?'fr':null,type:'button',onclick:e=>{
+      if(o===right){e.target.classList.add('right');onRight()}else{e.target.classList.add('wrong');e.target.disabled=true;miss(label(o))}}},o)));
+    if(q.t==='letter'){
+      const pool=shuffle(BASE.alpha.filter(x=>x.l!==q.l)).slice(0,3).map(x=>x.l).concat(q.l);
+      kids.push(h('p',{class:'ctx'},'听一听，是哪个字母？'),h('div',{class:'line'},spk(q.l,true)),
+        optList(pool,q.l,o=>'不是 '+o+'，再听一遍。',()=>{const L=BASE.alpha.find(x=>x.l===q.l);win(q.l,[h('p',{},q.l+' 念 ',h('b',{lang:'fr'},L.name),'，拼音近似 '+L.py)])},true));
+      if(acted)setTimeout(()=>speak(q.l),200);
+    }
+    if(q.t==='spelled'){
+      const words=shuffle([q.fr].concat(shuffle(BASE.spelled.filter(w=>w!==q.fr)).slice(0,3)));
+      kids.push(h('p',{class:'ctx'},'有人一个字母一个字母地拼了一个词。是哪个词？'),
+        h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>speakLetters(q.fr)},'听拼读')),
+        optList(words,q.fr,o=>'不是 '+o+'。再听一遍拼读，留意每个字母。',()=>win(q.fr,[h('p',{class:'zh'},[...q.fr].join(' - '))]),true));
+      if(acted)setTimeout(()=>speakLetters(q.fr),200);
+    }
+    if(q.t==='listen'){
+      kids.push(h('p',{class:'ctx'},'听一听，是什么意思？'),h('div',{class:'line'},spk(q.fr,true)),
+        optList(q.opts,q.opts[0],()=>'不是这个意思，再听一遍。',()=>win(null,frLine(q.fr,q.opts[0]))));
+      if(acted)setTimeout(()=>speak(q.fr),200);
+    }
+    if(q.t==='pron'){
+      kids.push(h('p',{class:'ctx'},'这个词怎么读？选最接近的拼音。'),h('p',{class:'bigword fr',lang:'fr'},q.fr),
+        optList(q.opts,q.opts[0],()=>'不对。想想 0.5 课的组合和规则。',()=>win(q.fr,[h('p',{class:'zh'},'听录音对照一下。')])));
+    }
+    if(q.t==='hear'){
+      kids.push(h('p',{class:'ctx'},'听一听，这个词怎么写？'),h('div',{class:'line'},spk(q.fr,true)),
+        optList(q.opts,q.opts[0],()=>'拼法不对。想想这个音在法语里通常怎么写。',()=>win(q.fr),true));
+      if(acted)setTimeout(()=>speak(q.fr),200);
+    }
+    if(q.t==='fill'){
+      const blank=h('span',{class:'blank'},'　');
+      kids.push(h('p',{class:'ctx'},'选出正确的词：'),h('p',{class:'fr',lang:'fr'},q.before,blank,q.after),
+        h('div',{class:'opts pills'},shuffle(q.opts).map(o=>h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
+          if(o===q.opts[0]){e.target.classList.add('right');blank.textContent=o;win(q.fr,frLine(q.fr,q.zh))}
+          else{e.target.classList.add('wrong');e.target.disabled=true;miss('不是 '+o+'。看看主语是谁，再对照 être 的变形表。')}}},o))));
+    }
+    if(q.t==='choose'){
+      kids.push(h('p',{class:'ctx'},q.ctx),h('div',{class:'opts'},shuffle(q.opts).map(o=>h('div',{class:'optrow'},
+        h('button',{class:'opt fr',lang:'fr',type:'button',onclick:e=>{
+          if(o===q.opts[0]){e.target.classList.add('right');win(o.fr,frLine(o.fr,o.zh))}
+          else{e.target.classList.add('wrong');e.target.disabled=true;miss('这句的意思是：'+o.zh)}}},o.fr),spk(o.fr)))));
+    }
+    if(q.t==='build'){
+      const target=q.tokens.join(' ');
+      const slot=h('div',{class:'slot fr',lang:'fr'}),pool=h('div',{class:'pool fr',lang:'fr'});
+      const check=h('button',{class:'primary check',type:'button',disabled:true,onclick:()=>{
+        if([...slot.children].map(x=>x.textContent).join(' ')===target)win(target,frLine(target,q.zh));else miss('顺序还不对。可以点“听答案”。')}},'检查');
+      shuffle(q.tokens.concat(q.extra||[])).forEach(tok=>{const src=h('button',{class:'tile',type:'button'},tok);
+        src.addEventListener('click',()=>{src.disabled=true;const put=h('button',{class:'tile',type:'button',onclick:()=>{put.remove();src.disabled=false;check.disabled=!slot.children.length}},tok);slot.append(put);check.disabled=false});
+        pool.append(src)});
+      kids.push(h('p',{class:'ctx'},q.ctx),slot,pool,h('div',{class:'row'},check,h('span',{class:'spk'},h('button',{type:'button',onclick:()=>speak(target)},'听答案'),h('button',{type:'button',onclick:()=>speak(target,true)},'慢速'))));
+    }
+    if(q.t==='silent'){
+      const picked=new Set();
+      const letters=h('div',{class:'row'},[...q.fr].map((c,ix)=>{const b=h('button',{class:'lbtn fr',lang:'fr',type:'button'},c);
+        b.addEventListener('click',()=>{if(picked.has(ix)){picked.delete(ix);b.classList.remove('sel')}else{picked.add(ix);b.classList.add('sel')}});return b}));
+      const check=h('button',{class:'primary check',type:'button',onclick:()=>{
+        const ok=q.silent.length===picked.size&&q.silent.every(x=>picked.has(x));
+        if(ok){[...letters.children].forEach((b,ix)=>{if(q.silent.includes(ix))b.classList.add('mute')});win(q.fr,[h('p',{class:'zh'},(q.zh?q.zh+'。':'')+'灰掉的字母不发音。')])}
+        else miss('还不对。想想 0.5 课的规则：词尾辅音、h、动词的 -ent、词尾的 e。')}},'检查');
+      kids.push(h('p',{class:'ctx'},'点出这个词里不发音的字母（可以点好几个）：'),letters,h('div',{class:'row'},check,spk(q.fr)));
+    }
+    if(q.t==='spell'){
+      const strict=!!st.spellStrict;
+      const inp=h('input',{type:'text',class:'spellin fr',lang:'fr',autocomplete:'off',autocapitalize:'off',spellcheck:'false','aria-label':'在这里拼写'});
+      const ins=c=>{const s=inp.selectionStart??inp.value.length,e=inp.selectionEnd??inp.value.length;inp.value=inp.value.slice(0,s)+c+inp.value.slice(e);inp.focus();inp.setSelectionRange(s+1,s+1)};
+      const bar=h('div',{class:'row accbar'},['é','è','ê','à','ç','ô','û','ù','ë','ï','î','œ'].map(c=>h('button',{class:'tile fr',type:'button',onclick:()=>ins(c)},c)));
+      const check=h('button',{class:'primary check',type:'button',onclick:()=>{
+        const v=inp.value;if(!v.trim())return;
+        if(sameWord(v,q.fr,strict)){inp.disabled=true;win(q.fr,[h('p',{},'正确写法：',h('b',{class:'fr',lang:'fr'},q.fr),'　'+q.zh),
+          !sameWord(v,q.fr,true)?h('p',{class:'zh'},'字母都对。注意重音符号：'+q.fr):null])}
+        else{const hs=spellHint(v,q.fr);tried=true;fb.replaceChildren(h('p',{class:'no'},'还不对。标红的是你漏掉或写错的地方：'),h('p',{},spellDiff(v,q.fr,strict)),
+          ...hs.map(x=>h('p',{class:'note'},x)),h('div',{class:'row'},h('button',{class:'tile',type:'button',onclick:()=>{inp.value='';inp.focus()}},'清空重写')))}}},'检查');
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter')check.click()});
+      kids.push(h('p',{class:'ctx'},'听写：把听到的词拼出来。'+(strict?'（进阶：重音符号也要对）':'（入门：先不计较重音符号）')),
+        h('div',{class:'line'},spk(q.fr,true)),inp,bar,h('div',{class:'row'},check,h('button',{class:'tile',type:'button',onclick:()=>speakLetters(q.fr)},'听字母拼读（提示）')));
+      if(acted)setTimeout(()=>speak(q.fr),200);
+    }
+    kids.push(fb);box.replaceChildren(...kids);
+  }
+  go();
+}
+
+/* ---------- course pages ---------- */
+function renderBasics(){
+  const box=$('#basics'),cur=st.bopen;
+  if(cur){const L=COURSE.find(c=>c.id===cur);if(L&&L.ready)return openLesson(cur,st.bphase||'learn');}
+  const passed=COURSE.filter(c=>bstat(c.id)&&bstat(c.id).passed).length;
+  box.replaceChildren(
+    h('h2',{},'从零开始 · Les bases'),
+    h('p',{class:'scene'},'没学过法语也没关系。这里从字母和发音开始，一课一课学会最基础的单词和语法。每课先学、再练、最后小测，答对八成算通过。不学这部分也可以直接去漫步巴黎，这里只是推荐。'),
+    h('p',{class:'zh'},'已通过 '+passed+' 课。前三课已经开放，后面的课正在准备。'),
+    h('div',{class:'row'},h('span',{class:'zh'},'拼写要求：'),
+      h('button',{class:'tile'+(st.spellStrict?'':' on'),type:'button',onclick:()=>{st.spellStrict=false;save();renderBasics()}},'入门：先不计较重音符号'),
+      h('button',{class:'tile'+(st.spellStrict?' on':''),type:'button',onclick:()=>{st.spellStrict=true;save();renderBasics()}},'进阶：符号也要对')),
+    h('ol',{class:'chapters'},COURSE.map(c=>{const s=bstat(c.id);
+      return h('li',{},h('button',{type:'button',disabled:!c.ready,onclick:()=>{st.bopen=c.id;st.bphase='learn';save();openLesson(c.id,'learn');window.scrollTo(0,0)}},
+        h('span',{class:'cnum'+(s&&s.passed?' done':'')},c.id),
+        h('span',{class:'cname'},h('b',{},c.title),h('span',{},c.sub)),
+        h('span',{class:'zh'},!c.ready?'准备中':s&&s.passed?'已通过 · 最好 '+s.best+' 分':s?'最好 '+s.best+' 分':'未开始')))})));
+}
+function lessonHead(id){
+  const L=COURSE.find(c=>c.id===id);
+  return [h('button',{class:'back',type:'button',onclick:()=>{st.bopen=null;save();renderBasics();window.scrollTo(0,0)}},'← 课程表'),
+    h('p',{class:'count'},'第 '+id+' 课'),h('h2',{},L.title)];
+}
+function finish(id,score,total){
+  const pct=score/total,rec=(st.basics=st.basics||{})[id]||(st.basics[id]={passed:false,best:0});
+  rec.best=Math.max(rec.best,Math.round(pct*100));if(pct>=PASS)rec.passed=true;st.bphase='learn';save();
+  const i=COURSE.findIndex(c=>c.id===id),nxt=COURSE[i+1];
+  $('#basics').replaceChildren(...lessonHead(id),
+    h('p',{class:'bigstars'},Math.round(pct*100)+' 分'),
+    h('p',{},pct>=PASS?'通过了！':'这次没到 80 分。回去看看“学”的部分，再测一次。'),
+    h('div',{class:'row'},
+      pct>=PASS&&nxt&&nxt.ready?h('button',{class:'primary',type:'button',onclick:()=>{st.bopen=nxt.id;save();openLesson(nxt.id,'learn');window.scrollTo(0,0)}},'下一课：'+nxt.title):null,
+      pct>=PASS&&id==='1'?h('button',{class:'primary',type:'button',onclick:()=>{st.bopen=null;save();setTab('carte')}},'去漫步巴黎试试'):null,
+      h('button',{class:'tile',type:'button',onclick:()=>openLesson(id,'learn')},'回到这一课'),
+      h('button',{class:'tile',type:'button',onclick:()=>openLesson(id,'quiz')},'再测一次')));
+}
+const pick=(arr,n)=>shuffle(arr).slice(0,n);
+function openLesson(id,phase){
+  st.bopen=id;st.bphase=phase;save();
+  const box=$('#basics');
+  const startBtns=()=>h('div',{class:'row'},
+    h('button',{class:'primary',type:'button',onclick:()=>{openLesson(id,'practice');window.scrollTo(0,0)}},'开始练习'),
+    h('button',{class:'tile',type:'button',onclick:()=>openLesson(id,'quiz')},'直接小测'));
+  const sets={
+    '0':{practice:()=>pick(BASE.alpha,8).map(x=>({t:'letter',l:x.l})).concat(pick(BASE.spelled,3).map(w=>({t:'spelled',fr:w}))),
+         quiz:()=>shuffle(pick(BASE.alpha,7).map(x=>({t:'letter',l:x.l})).concat(pick(BASE.spelled,3).map(w=>({t:'spelled',fr:w}))))},
+    '0.5':{practice:()=>pick(BASE.pron,3).concat(pick(BASE.hear,3),pick(BASE.silent,3),pick(BASE.dict05,3)),
+         quiz:()=>shuffle(pick(BASE.pron,3).concat(pick(BASE.hear,2),pick(BASE.silent,2),pick(BASE.dict05,3)))},
+    '1':{practice:()=>BASE.l1.items.filter(q=>q.t!=='spell').concat(pick(BASE.l1.items.filter(q=>q.t==='spell'),3)),
+         quiz:()=>pick(BASE.l1.items,10)}};
+  const S=sets[id];
+  if(phase==='afterPractice'){
+    box.replaceChildren(...lessonHead(id),h('p',{},'练习做完了。准备好就做小测：10 道题，答对 8 道算通过。'),
+      h('div',{class:'row'},h('button',{class:'primary',type:'button',onclick:()=>openLesson(id,'quiz')},'开始小测'),
+        h('button',{class:'tile',type:'button',onclick:()=>openLesson(id,'learn')},'再看看“学”的部分')));
+    return;
+  }
+  if(phase==='quiz'||phase==='practice'){
+    const isQuiz=phase==='quiz';
+    runSet(isQuiz?'小测':'练习',isQuiz?S.quiz():S.practice(),(sc,n)=>isQuiz?finish(id,sc,n):openLesson(id,'afterPractice'));
+    return;
+  }
+  /* learn */
+  if(id==='0'){
+    const nameOut=h('div',{class:'row'}),nameIn=h('input',{type:'text',class:'spellin',placeholder:'输入你的名字（拼音或英文）',autocomplete:'off','aria-label':'你的名字'});
+    const showName=()=>nameOut.replaceChildren(...[...nameIn.value].filter(c=>/[a-zà-ÿ]/i.test(c)).map(letterChip));
+    nameIn.addEventListener('input',showName);
+    box.replaceChildren(...lessonHead(id),
+      h('p',{class:'scene'},'法语用和英语一样的 26 个字母，但念法不同。点一个字母，听它的法语念法。拼音只是近似，最准的还是录音。'),
+      h('div',{class:'note'},h('p',{},'三个最要紧的提醒：'),h('p',{},'1. p、t、k 不送气，听起来更像拼音的 b、d、g。'),h('p',{},'2. b、d、g 是浊音，声带要振动，普通话里没有。'),h('p',{},'3. z 是英语 zoo 的 z；u 是“鱼”的口型；r 在喉咙里。')),
+      h('div',{class:'lgrid'},BASE.alpha.map(L=>h('button',{class:'ltile',type:'button',onclick:()=>speak(L.say)},
+        h('span',{class:'lbig',lang:'fr'},L.l+' '+L.l.toLowerCase()),h('span',{class:'lname fr',lang:'fr'},L.name),h('span',{class:'lpy'},L.py),
+        L.note?h('span',{class:'lnote'},L.note):null,h('span',{class:'lex'},h('span',{lang:'fr'},L.ex.fr),' '+L.ex.zh)))),
+      h('p',{class:'zh'},'点字母听它的名字；想听例词，点下面这排。'),
+      h('div',{class:'row'},BASE.alpha.map(L=>h('button',{class:'tile fr',lang:'fr',type:'button',onclick:()=>speak(L.ex.fr)},L.ex.fr))),
+      h('h3',{},'带符号的字母'),
+      h('p',{class:'scene'},'法语有几个带符号的字母。拼单词时，符号要说出来，比如 é 说“e accent aigu”。'),
+      h('ul',{class:'entries'},BASE.accents.map(a=>h('li',{},h('div',{class:'line'},h('b',{class:'fr',lang:'fr',style:'font-size:1.4rem'},a.l),h('span',{lang:'fr'},a.name),h('span',{class:'zh'},'读 '+a.py+(a.note?'。'+a.note:''))),
+        h('div',{class:'line'},h('span',{class:'fr',lang:'fr'},a.ex.fr),spk(a.ex.fr),h('span',{class:'zh'},a.ex.zh))))),
+      h('h3',{},'拼出你的名字'),
+      h('p',{class:'scene'},'在法国订座、登记时，常常要一个字母一个字母地拼出名字。输进去，看看每个字母怎么念，再点“听拼读”。'),
+      nameIn,nameOut,h('div',{class:'row'},h('button',{class:'tile',type:'button',onclick:()=>speakLetters(nameIn.value)},'听拼读')),
+      startBtns());
+    return;
+  }
+  if(id==='0.5'){
+    box.replaceChildren(...lessonHead(id),
+      h('p',{class:'scene'},'法语的拼写看起来复杂，其实规律性很强。记住下面的组合和七条规则，大部分新单词你看一眼就能读出来。'),
+      h('h3',{},'字母组合'),
+      h('ul',{class:'entries'},BASE.combos.map(c=>h('li',{},h('div',{class:'line'},h('b',{class:'fr',lang:'fr',style:'min-width:7em;display:inline-block'},c.w),h('span',{},c.py)),
+        h('div',{class:'line'},h('span',{class:'fr',lang:'fr'},c.fr),spk(c.fr),h('span',{class:'zh'},c.zh))))),
+      h('h3',{},'七条规则'),
+      ...BASE.rules.map((r,i)=>h('div',{class:'stop'},h('p',{},h('b',{},(i+1)+'. '+r.t)),h('p',{class:'zh'},r.d),
+        h('div',{class:'row'},r.ex.map(e=>h('span',{class:'line'},h('span',{class:'fr',lang:'fr'},e.fr),spk(e.fr),h('span',{class:'zh'},e.zh)))))),
+      h('p',{class:'note'},'练习里会有：看词选读音、听音选拼写、找出不发音的字母，还有听写。'),
+      startBtns());
+    return;
+  }
+  if(id==='1'){
+    const G=BASE.l1.gram;
+    box.replaceChildren(...lessonHead(id),
+      h('p',{class:'scene'},'这一课学打招呼和介绍自己。先把单词都点开听一遍，跟着读。'),
+      h('h3',{},'这一课的词'),h('ul',{class:'entries vocab'},BASE.l1.vocab.map(v=>h('li',{},frLine(v.fr,v.zh)))),
+      h('h3',{},'语法：'+G.title),
+      h('p',{class:'scene'},G.text[0]),
+      h('ul',{class:'entries vocab'},G.table.map(v=>h('li',{},frLine(v.fr,v.zh)))),
+      ...G.text.slice(1).map(x=>h('p',{class:'scene'},x)),
+      h('h3',{},'例句'),h('ul',{class:'entries'},G.ex.map(v=>h('li',{},frLine(v.fr,v.zh)))),
+      startBtns());
+  }
+}
+
 /* ---------- views ---------- */
 function setTab(t){
   st.tab=t;save();
-  ['chambre','carte','jeu','carnet','profil'].forEach(v=>{$('#'+v).hidden=v!==t});
+  ['basics','chambre','carte','jeu','carnet','profil'].forEach(v=>{$('#'+v).hidden=v!==(t==='base'?'basics':t)});
+  $('#tab-base').setAttribute('aria-selected',t==='base');
   $('#tab-chambre').setAttribute('aria-selected',t==='chambre');
   $('#tab-carte').setAttribute('aria-selected',t==='carte'||t==='jeu');
   $('#tab-carnet').setAttribute('aria-selected',t==='carnet');
   $('#tab-profil').setAttribute('aria-selected',t==='profil');
-  if(t==='chambre')renderRoom();else if(t==='carte')renderMap();else if(t==='jeu')renderStation(false);else if(t==='carnet')renderCarnet();else renderProfil();
+  if(t==='base')renderBasics();else if(t==='chambre')renderRoom();else if(t==='carte')renderMap();else if(t==='jeu')renderStation(false);else if(t==='carnet')renderCarnet();else renderProfil();
 }
+$('#tab-base').addEventListener('click',()=>{st.bopen=null;setTab('base')});
 $('#tab-chambre').addEventListener('click',()=>setTab('chambre'));
 $('#tab-carte').addEventListener('click',()=>setTab('carte'));
 $('#tab-carnet').addEventListener('click',()=>setTab('carnet'));
