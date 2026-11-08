@@ -22,7 +22,7 @@ DATA.forEach(S=>{add(S.frPlace,'u');
   S.steps.forEach(p=>{if(p.t==='choose'||p.t==='avis')p.opts.forEach(o=>add(o[0],'u'));if(p.t==='fill')add(p.full,'u');if(p.t==='build')add(p.tokens.join(' '),'u')});
   S.carnet.forEach(c=>add(c[0],'u'));S.vocab.forEach(v=>add(v[0],'u'));S.lesson.ex.forEach(v=>add(v[0],'u'))});
 SCENES.forEach(sc=>sc.hots.forEach(o=>add(o[0],'u')));
-(function walk(o){if(Array.isArray(o))o.forEach(walk);else if(o&&typeof o==='object'){if(typeof o.say==='string')add(o.say,'f');if(typeof o.fr==='string')add(o.fr,'f');Object.keys(o).forEach(k=>walk(o[k]))}})(BASE);BASE.spelled.forEach(w=>add(w,'f'));add(INTRO_FR,'u');PHOTO.forEach(p=>add(p.fr,'u'));STORIES.forEach(x=>{add(x.duo,'u');x.vocab.forEach(v=>add(v[0],'u'));x.text.forEach(l=>add(l[0].replace(/[\[\]]/g,''),'u'));x.text.forEach(l=>(l[0].match(/\[[^\]]+\]/g)||[]).forEach(w=>add(w.slice(1,-1),'u')))});ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
+(function walk(o){if(Array.isArray(o))o.forEach(walk);else if(o&&typeof o==='object'){if(typeof o.say==='string')add(o.say,'f');if(typeof o.fr==='string')add(o.fr,'f');Object.keys(o).forEach(k=>walk(o[k]))}})(BASE);BASE.spelled.forEach(w=>add(w,'f'));Object.keys(BASE).filter(k=>/^l\d+$/.test(k)).forEach(k=>BASE[k].items.filter(q=>q.t==='sort').forEach(q=>q.words.forEach(w=>add((w.g==='m'?'un ':'une ')+w.fr,'f'))));add(INTRO_FR,'u');PHOTO.forEach(p=>add(p.fr,'u'));STORIES.forEach(x=>{add(x.duo,'u');x.vocab.forEach(v=>add(v[0],'u'));x.text.forEach(l=>add(l[0].replace(/[\[\]]/g,''),'u'));x.text.forEach(l=>(l[0].match(/\[[^\]]+\]/g)||[]).forEach(w=>add(w.slice(1,-1),'u')))});ROOM.forEach(r=>{add(r.fr,'u');add(r.up.fr,'u')});
 return JSON.stringify(out);
 '''
 
